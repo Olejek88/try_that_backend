@@ -2,12 +2,13 @@
 
 namespace api\controllers;
 
-use yii\rest\Controller;
-
-class SiteController extends Controller
+/**
+ * Site controller
+ */
+class SiteController extends \yii\rest\Controller
 {
     public function actionIndex()
     {
-        return ['message' => 'hello world!'];
+        return ['message' => 'home page'];
     }
 }
