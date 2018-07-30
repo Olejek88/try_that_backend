@@ -12,9 +12,14 @@ set('repository', 'https://bitbucket.org/4938x8_tes-team/tt_backend.git');
 // [Optional] Allocate tty for git clone. Default value is false.
 set('git_tty', true); 
 
-// Shared files/dirs between deploys 
-add('shared_files', []);
-add('shared_dirs', []);
+// Shared files/dirs between deploys
+add('shared_files', [
+    'api/config/main-local.php',
+    'api/config/params-local.php',
+]);
+add('shared_dirs', [
+    'api/runtime',
+]);
 
 // Writable dirs by web server 
 add('writable_dirs', []);
