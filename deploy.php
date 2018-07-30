@@ -25,7 +25,7 @@ add('writable_dirs', []);
 host('tt-dev.local.net')
 //    ->user('koputo')
 //    ->set('deploy_path', '~/{{application}}');
-    ->set('deploy_path', '/media/www/tt-dev.local.net/html');
+    ->set('deploy_path', '/media/www/tt-dev.local.net');
 
 // Tasks
 
@@ -37,7 +37,7 @@ task('build', function () {
 after('deploy:failed', 'deploy:unlock');
 
 task('changeright', function() {
-    run('cd {{release_path}} && echo $PWD && mkdir testdir');
+    run('cd {{release_path}} && ls -f -s current html && chown -R www-data: html && chmod -R g+W html');
 });
 
 after('success', 'changeright');
