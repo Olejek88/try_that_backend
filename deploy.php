@@ -42,7 +42,7 @@ task('build', function () {
 after('deploy:failed', 'deploy:unlock');
 
 task('changeright', function() {
-    run('cd {{deploy_path}} && ls -f -s current html && chown -R www-data: html && chmod -R g+W html');
+    run('cd {{deploy_path}} && chown -R -h -L www-data\: html && chmod -R g+w html');
 });
 
 after('success', 'changeright');
