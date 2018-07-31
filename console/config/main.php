@@ -13,13 +13,28 @@ return [
     'controllerNamespace' => 'console\controllers',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
+        '@npm' => '@vendor/npm-asset',
     ],
     'controllerMap' => [
         'fixture' => [
             'class' => 'yii\console\controllers\FixtureController',
             'namespace' => 'common\fixtures',
-          ],
+        ],
+        'migrate' => [
+            'class' => 'console\controllers\MigrateController',
+            'migrationPath' => '@app/migrations/schema',
+            'migrationTable' => '{{%migration_schema}}',
+        ],
+        'migrate-rbac' => [
+            'class' => 'console\controllers\RbacMigrateController',
+            'migrationPath' => '@app/migrations/rbac',
+            'migrationTable' => '{{%migration_rbac}}',
+        ],
+        'migrate-content' => [
+            'class' => 'console\controllers\ContentMigrateController',
+            'migrationPath' => '@app/migrations/content',
+            'migrationTable' => '{{%migration_content}}',
+        ],
     ],
     'components' => [
         'log' => [
