@@ -23,7 +23,7 @@ return [
         'migrate' => [
             'class' => 'console\controllers\MigrateController',
             'migrationPath' => '@app/migrations/schema',
-            'migrationTable' => '{{%migration_schema}}',
+            'migrationTable' => '{{%migration}}',
         ],
         'migrate-rbac' => [
             'class' => 'console\controllers\RbacMigrateController',
