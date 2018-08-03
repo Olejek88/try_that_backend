@@ -50,7 +50,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function behaviors()
     {
         return [
-            TimestampBehavior::className(),
+            TimestampBehavior::class,
         ];
     }
 
