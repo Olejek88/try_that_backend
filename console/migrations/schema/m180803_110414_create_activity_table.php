@@ -7,10 +7,28 @@ use console\yii2\Migration;
  */
 class m180803_110414_create_activity_table extends Migration
 {
+    const LOCATION = '{{%location}}';
+    const COUNTRY = '{{%country}}';
     const ACTIVITY = '{{%activity}}';
 
     public function up()
     {
+        // @todo: Добавить связь (user).
+        $this->createTable(self::LOCATION, [
+            'id' => $this->primaryKey(),
+            'title' => $this->string()->notNull(),
+            'latitude' => $this->integer()->notNull()->defaultValue(0),
+            'longitude' => $this->integer()->notNull()->defaultValue(0),
+            'image_id' => $this->integer(),
+        ]);
+
+        // @todo: Добавить связь (user).
+        $this->createTable(self::COUNTRY, [
+            'id' => $this->primaryKey(),
+            'title' => $this->string()->notNull(),
+            'image_id' => $this->integer(),
+        ]);
+
         // @todo[msdev]: Добавить таблицы для связей и реализовать множественные обвязки (не забыть про порядок связей).
         $this->createTable(self::ACTIVITY, [
             'id' => $this->primaryKey(),
@@ -25,10 +43,11 @@ class m180803_110414_create_activity_table extends Migration
             'duration_id' => $this->integer(),
             'tag_id' => $this->integer(),
             'image_id' => $this->integer(),
+            'min_customers' => $this->integer(),
+            'max_customers' => $this->integer(),
+            // @todo: Сабж.
             'start_date' => $this->integer()->notNull(),
             'end_date' => $this->integer()->notNull(),
-            'min_customers' => $this->integer(),
-            'max_customers' => $this->integer()
         ]);
 
         // @todo[msdev]: Создать: occasion, tag, image, trending, duration.
@@ -47,5 +66,7 @@ class m180803_110414_create_activity_table extends Migration
     public function down()
     {
         $this->dropTable(self::ACTIVITY);
+        $this->dropTable(self::COUNTRY);
+        $this->dropTable(self::LOCATION);
     }
 }
