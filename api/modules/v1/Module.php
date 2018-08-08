@@ -5,3 +5,23 @@
  * Date: 18.07.18
  * Time: 1:12
  */
+
+namespace api\modules\v1;
+
+use api\modules\v1\components\PaySystems;
+
+class Module extends \yii\base\Module
+{
+    /**
+     * Namespace
+     *
+     * @inheritdoc
+     */
+    public $controllerNamespace = 'api\modules\v1';
+
+    public function init()
+    {
+        parent::init();
+        $ps = PaySystems::getInstance();
+    }
+}
