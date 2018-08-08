@@ -6,6 +6,10 @@ return [
     ],
     'vendorPath' => dirname(dirname(__DIR__)) . '/vendor',
     'components' => [
+        'db' => [
+            // @todo: Прописать подключение для сервера.
+            'tablePrefix' => 'tt_'
+        ],
         'cache' => [
             'class' => 'yii\caching\FileCache',
         ],
