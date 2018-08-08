@@ -1,33 +1,45 @@
 <?php
 
-use yii\db\Migration;
+use common\models\User;
+use console\yii2\Migration;
 
+/**
+ * @todo: Добавить автоматическое подключение от console\yii2\Migration.
+ * Class m130524_201442_init
+ */
 class m130524_201442_init extends Migration
 {
+    const USER = '{{%user}}';
+
     public function up()
     {
-        $tableOptions = null;
-        if ($this->db->driverName === 'mysql') {
-            // http://stackoverflow.com/questions/766809/whats-the-difference-between-utf8-general-ci-and-utf8-unicode-ci
-            $tableOptions = 'CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE=InnoDB';
-        }
-
-        $this->createTable('{{%user}}', [
+        // @note: По-умолчанию, пользователь создается с неактивным статусом и ролью клиента.
+        $this->createTable(self::USER, [
             'id' => $this->primaryKey(),
+            // @todo: Может провести нормализацию и оставить лишь служебные поля?
+            'firstName' => $this->string()->notNull(),
+            'lastName' => $this->string()->notNull(),
+            'birthDate' => $this->dateTime(),
+            'email' => $this->string()->notNull()->unique(),
             'username' => $this->string()->notNull()->unique(),
             'auth_key' => $this->string(32)->notNull(),
             'password_hash' => $this->string()->notNull(),
             'password_reset_token' => $this->string()->unique(),
-            'email' => $this->string()->notNull()->unique(),
-
-            'status' => $this->smallInteger()->notNull()->defaultValue(10),
+            'location_id' => $this->integer()->notNull(),
+            'country_id' => $this->integer()->notNull(),
+            'phone' => $this->string(),
+            // @todo: В дальнейшем пересмотреть поле (notNull()->defaultValue("заглушка")).
+            'image_id' => $this->integer(),
+            'registeredDate' => $this->dateTime(),
+            'role' => $this->string(32)->notNull()->defaultValue(User::ROLE_CLIENT),
+            'status' => $this->smallInteger()->notNull()->defaultValue(User::STATUS_DELETED),
             'created_at' => $this->integer()->notNull(),
             'updated_at' => $this->integer()->notNull(),
-        ], $tableOptions);
+        ]);
     }
 
     public function down()
     {
-        $this->dropTable('{{%user}}');
+        $this->dropTable(self::USER);
     }
 }
