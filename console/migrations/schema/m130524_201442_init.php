@@ -3,6 +3,10 @@
 use common\models\User;
 use console\yii2\Migration;
 
+/**
+ * @todo: Добавить автоматическое подключение от console\yii2\Migration.
+ * Class m130524_201442_init
+ */
 class m130524_201442_init extends Migration
 {
     const USER = '{{%user}}';
@@ -36,6 +40,6 @@ class m130524_201442_init extends Migration
 
     public function down()
     {
-        $this->dropTable('{{%user}}');
+        $this->dropTable(self::USER);
     }
 }

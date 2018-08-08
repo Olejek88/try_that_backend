@@ -141,7 +141,6 @@ class m180803_110414_create_activity_table extends Migration
             'id' => $this->primaryKey(),
             'title' => $this->string(),
             'description' => $this->string(),
-            // @todo: Добавить связь!
             'luminary_id' => $this->integer()->notNull(),
             'category_id' => $this->integer()->notNull(),
             'activity_category_id' => $this->integer()->notNull(),
@@ -155,10 +154,10 @@ class m180803_110414_create_activity_table extends Migration
 
         $this->createTable(self::CUSTOMER, [
             'id' => $this->primaryKey(),
-            // @todo: Реализовать константу для дефолтного значения в модели customer.
-            'verified' => $this->smallInteger()->notNull()->defaultValue(0),
-            'verifiedDate' => $this->dateTime(),
-            'rating' => $this->double(),
+            // @todo: Сабж.
+            'positive' => $this->integer()->notNull()->defaultValue(0),
+            'negative' => $this->integer()->notNull()->defaultValue(0),
+            'active' => $this->smallInteger()->notNull()->defaultValue(0),
         ]);
 
         $this->createTable(self::ACTIVITY_LISTING, [
@@ -169,10 +168,8 @@ class m180803_110414_create_activity_table extends Migration
             'currency_id' => $this->integer()->notNull(),
             'cost' => $this->double(),
             // @todo: Реализовать константу для дефолтного значения в модели activity_listing.
-            'isGroup' => $this->smallInteger()->notNull()->defaultValue(0),
+            'is_group' => $this->smallInteger()->notNull()->defaultValue(0),
         ]);
-
-        // @todo[msdev]: Добавить таблицы для связей и реализовать множественные обвязки (не забыть про порядок связей).
 
         $this->addForeignKey(
             'fk_location_image_id__image_id',
