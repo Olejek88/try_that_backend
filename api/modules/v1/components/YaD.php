@@ -17,9 +17,11 @@ class YaD implements IPaySystem
 {
     // номер "счёта" на который будут перечисленны деньги
     private $account = '';
+    private const ACCOUNT_CONFIG = 'account';
 
     // секрет
     private $secret = '';
+    private const SECRET_CONFIG = 'secret';
 
     // Хост на который отправляются запросы к системе
     private $paySite;
@@ -34,29 +36,36 @@ class YaD implements IPaySystem
     private $toPayScript;
 
     // допустимая частота опроса платежной системы в секундах
-    private static $QUERY_FREQUENCY = 300;
+    private $queryFrequency = 300;
+    private const QUERY_FREQUENCY_CONFIG = 'queryFrequency';
 
     // максимальное время жизни заявки до того как она "протухнет" в секундах
-    private static $MAX_LIFE_TIME = 7200;
+    private $maxLifeTime = 7200;
+    private const MAX_LIFE_TIME_CONFIG = 'maxLifeTime';
 
     /**
      * YaD constructor.
      */
     public function __construct()
     {
-        // TODO: Реализовать установку параметров из $app->params
+        $params = \Yii::$app->params;
+        $className = 'api\modules\v1\components\YaD';
 
-        //
+        if (isset($params['paySystems']['classes'][$className])) {
+            $yadParams = $params['paySystems']['classes'][$className];
+            $this->setupParams($yadParams);
+        }
+
         if (YII_DEBUG) {
-            $this->paySite = '';
-            $this->payScript = 'init_payment.php';
-            $this->getStatusScript = 'get_status.php';
-            $this->toPayScript = 'payment_params.php';
+            $this->paySite = 'https://money.yandex.ru';
+            $this->payScript = '';
+            $this->getStatusScript = '';
+            $this->toPayScript = '/quickpay/confirm.xml';
         } else {
-            $this->paySite = '';
-            $this->payScript = 'init_payment.php';
-            $this->getStatusScript = 'get_status.php';
-            $this->toPayScript = 'payment_params.php';
+            $this->paySite = 'https://money.yandex.ru';
+            $this->payScript = '';
+            $this->getStatusScript = '';
+            $this->toPayScript = '/quickpay/confirm.xml';
         }
 
     }
@@ -110,14 +119,31 @@ class YaD implements IPaySystem
 
     public function getMaxInvoiceLifeTime()
     {
-        // TODO: реализовать проверку данного параметра в $app->params
-        return self::$MAX_LIFE_TIME;
+        return $this->maxLifeTime;
     }
 
     public function getQueryFrequency()
     {
-        // TODO: реализовать проверку данного параметра в $app->params
-        return self::$QUERY_FREQUENCY;
+        return $this->queryFrequency;
+    }
+
+    private function setupParams($params = [])
+    {
+        if (isset($params[self::ACCOUNT_CONFIG]) && $params[self::ACCOUNT_CONFIG] !== '') {
+            $this->account = $params[self::ACCOUNT_CONFIG];
+        }
+
+        if (isset($params[self::SECRET_CONFIG]) && $params[self::SECRET_CONFIG] !== '') {
+            $this->secret = $params[self::SECRET_CONFIG];
+        }
+
+        if (isset($params[self::QUERY_FREQUENCY_CONFIG]) && $params[self::QUERY_FREQUENCY_CONFIG] !== '') {
+            $this->queryFrequency = $params[self::QUERY_FREQUENCY_CONFIG];
+        }
+
+        if (isset($params[self::MAX_LIFE_TIME_CONFIG]) && $params[self::MAX_LIFE_TIME_CONFIG] !== '') {
+            $this->maxLifeTime = $params[self::MAX_LIFE_TIME_CONFIG];
+        }
     }
 
 }
