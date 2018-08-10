@@ -8,6 +8,8 @@
 
 namespace api\modules\v1\components;
 
+use common\models\PaySystemStatus;
+
 /**
  * Class YaD
  * Класс реализует интерфейс взаимодействия с Яндекс.Деньги в режими p2p платежей.
@@ -23,14 +25,11 @@ class YaD implements IPaySystem
     private $secret = '';
     private const SECRET_CONFIG = 'secret';
 
+    // форма "кнопки"
+    private $quickPayForm = 'donate';
+
     // Хост на который отправляются запросы к системе
     private $paySite;
-
-    // скрипт который обрабатывает запрос на регистрацию платежа
-    private $payScript;
-
-    // скрипт который обрабатывает запрос о состоянии заявки в платежной системе
-    private $getStatusScript;
 
     // URL на который отправляется клиент для оплаты заказа
     private $toPayScript;
@@ -58,63 +57,207 @@ class YaD implements IPaySystem
 
         if (YII_DEBUG) {
             $this->paySite = 'https://money.yandex.ru';
-            $this->payScript = '';
-            $this->getStatusScript = '';
             $this->toPayScript = '/quickpay/confirm.xml';
         } else {
             $this->paySite = 'https://money.yandex.ru';
-            $this->payScript = '';
-            $this->getStatusScript = '';
             $this->toPayScript = '/quickpay/confirm.xml';
         }
 
     }
 
-    public function registerInvoice(
-        $queryId,
-        $goodsId,
-        $amount,
-        $description,
-        $backURL,
-        &$paySystemNumber,
-        $params = []
-    ) {
-        // TODO: Implement registerInvoice() method.
+    public function isRegisterInvoice()
+    {
+        // yad p2p не требует регистрации платежа
+        return false;
     }
 
-    public function registerPreAuth($queryId, $goodsId, $amount, $description, $backURL, &$paySystemNumber, $params)
+    public function registerInvoice($payInfo) {
+        return null;
+    }
+
+    public function registerPreAuth($payInfo)
     {
-        // TODO: Implement registerPreAuth() method.
+        return null;
     }
 
     public function deposit($paySystemNumber, $amount)
     {
-        // TODO: Implement deposit() method.
+        return null;
     }
 
     public function reverse($paySystemNumber)
     {
-        // TODO: Implement reverse() method.
+        return null;
+    }
+
+    public function isGetStatus()
+    {
+        // yad p2p не предоставляет возможности получить статус платежа, т.к. сама система
+        // информирует по url кторый указан в настройках кошелька
+        return false;
     }
 
     public function getStatus($paySystemNumber)
     {
-        // TODO: Implement getStatus() method.
+        return null;
     }
 
-    public function getHtmlForPay($orderData)
+    public function getHtmlForPay($payInfo)
     {
+        // вместо регистрации платежа используется форма
         // TODO: Implement getURLForPay() method.
+        $form['receiver'] = array(
+            '#type' => 'hidden',
+            '#value' => $this->account,
+        );
+
+        $form['formcomment'] = array(
+            '#type' => 'hidden',
+            '#value' => $payInfo->getDescription(),
+        );
+
+        $form['short-dest'] = array(
+            '#type' => 'hidden',
+            '#value' => $payInfo->getDescription(),
+        );
+
+        $form['label'] = array(
+            '#type' => 'hidden',
+            '#value' => json_encode($payInfo->getInvoiceQueryId()),
+        );
+
+        $form['quickpay-form'] = array(
+            '#type' => 'hidden',
+            '#value' => $this->quickPayForm,
+        );
+
+        $form['targets'] = array(
+            '#type' => 'hidden',
+            '#value' => $payInfo->getTarget(),
+        );
+
+        $form['sum'] = array(
+            '#type' => 'hidden',
+            '#value' => $payInfo->getCost(),
+        );
+
+        // варианты оплаты
+        $form['paymentType'] = array(
+            '#type' => 'radios',
+            '#options' => array(
+                'PC' => 'Яндекс.Деньгами',
+                'AC' => 'Банковской картой',
+                'MC' => 'Мобильный телефон',
+            ),
+            '#default_value' => 'PC',
+        );
+
+        $from['actions'] = array(
+            '#type' => 'actions',
+            '#weight' => 10,
+            '#action' => $this->paySite . $this->toPayScript,
+            'submit' => [
+                '#type' => 'submit',
+                '#value' => 'Оплатить',
+            ],
+            'cancel' => [
+                '#type' => 'link',
+                '#title' => 'Отмена',
+                '#href' => $payInfo->getCancelUrl(),
+            ]
+        );
+
+        return $form;
     }
 
-    public function parseBackURLAnswer()
+    public function parseBackUrlAnswer()
     {
-        // TODO: Implement parseBackURLAnswer() method.
+        // при редиректе пользователя обратно на сайт yad ни чего нам не передаёт
+        return null;
     }
 
     public function parsePaySystemAnswer()
     {
-        // TODO: Implement parsePaySystemAnswer() method.
+        $hook_param = array();
+
+        if ($this->secret == '') {
+            // не указан секрет для работы с яндексом
+            // запись в лог об этом
+            return null;
+        }
+
+        // параметры запроса
+        // notification_type
+        $notification_type = isset($_REQUEST['notification_type']) ? $_REQUEST['notification_type'] : '';
+        $hook_param['notification_type'] = $notification_type;
+
+        // operation_id
+        $operation_id = isset($_REQUEST['operation_id']) ? $_REQUEST['operation_id'] : '';
+        $hook_param['operation_id'] = $operation_id;
+
+        // amount
+        $amount = isset($_REQUEST['amount']) ? $_REQUEST['amount'] : '';
+        $hook_param['amount'] = $amount;
+
+        // currency
+        $currency = isset($_REQUEST['currency']) ? $_REQUEST['currency'] : '';
+        $hook_param['currency'] = $currency;
+
+        // datetime
+        $datetime = isset($_REQUEST['datetime']) ? $_REQUEST['datetime'] : '';
+        $hook_param['datetime'] = $datetime;
+
+        // sender
+        $sender = isset($_REQUEST['sender']) ? $_REQUEST['sender'] : '';
+        $hook_param['sender'] = $sender;
+
+        // codepro
+        $codepro = isset($_REQUEST['codepro']) ? $_REQUEST['codepro'] : '';
+        $hook_param['codepro'] = $codepro;
+
+        // label
+        $label = isset($_REQUEST['label']) ? $_REQUEST['label'] : '';
+        $hook_param['label'] = json_decode($label, true);
+
+        // sha1_hash
+        $inHash = isset($_REQUEST['sha1_hash']) ? $_REQUEST['sha1_hash'] : '';
+        $hook_param['sha1_hash'] = $inHash;
+
+        // строка для расчёта хеша
+        $val = $notification_type . '&' .
+            $operation_id . '&' .
+            $amount . '&' .
+            $currency . '&' .
+            $datetime . '&' .
+            $sender . '&' .
+            $codepro . '&' .
+            $this->secret . '&' .
+            $label;
+
+        // расчитываем хеш
+        $sha1_hash = sha1($val);
+        // строка для отправки в лог
+        $req_p = 'notification_type=' . $notification_type. ',' .
+            'operation_id=' . $operation_id . ',' .
+            'amount=' . $amount . ',' .
+            'currency=' . $currency . ',' .
+            'datetime=' . $datetime . ',' .
+            'sender=' . $sender . ',' .
+            'codepro=' . $codepro . ',' .
+            'label=' . $label;
+
+        // проверка подлинности подтверждения
+        if($sha1_hash != $inHash) {
+            $hook_param['confirmed'] = false;
+        } else {
+            $hook_param['confirmed'] = true;
+        }
+
+        // отправляем в лог информацию о платеже
+        \Yii::warning($req_p,'application');
+
+        // в зависимости от результата проверки уведомления от платёжной системы возвращаем статус платежа
+        return PaySystemStatus::PAYED;
     }
 
     public function getMaxInvoiceLifeTime()

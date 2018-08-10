@@ -8,70 +8,62 @@
 
 namespace api\modules\v1\components;
 
+use common\models\PayInfo;
+
 interface IPaySystem
 {
     /**
+     * Признак того что перед оплатой нужно зарегистрировать платёжн в платёжной системе.
+     *
+     * @return boolean
+     */
+    public function isRegisterInvoice();
+
+    /**
      * Метод регистрирует в платёжной системе заявку на платёж.
      *
-     * @param string $queryId Id записи в таблице order_query
-     * @param string $goodsId локальный номер заказа (имя таблицы и ид в ней) ????
-     * @param float $amount сумма заказа (в рублях 100.69)
-     * @param string $description коментарий к заказу (описание)
-     * @param string $backURL урл на который будет возвращен пользователь после ввода реквизитов карты (оплаты)
-     * @param string $paySystemNumber уникальный номер заказа в платежной системе
-     * @param array $params специфические параметры для платёжных систем
-     * @return array возвращаем массив с двумя статусам - основным и дополнительным,
-     *               а также номер заявки в платежной системе $paySystemNumber
+     * @param PayInfo $payInfo
+     * @return null|string статус согласно константам из модели PaySystemStatus
      */
-    public function registerInvoice(
-        $queryId,
-        $goodsId,
-        $amount,
-        $description,
-        $backURL,
-        &$paySystemNumber,
-        $params = []
-    );
+    public function registerInvoice($payInfo);
 
     /**
-     * Метод регистрирует в платёжной системе зявку на двухстадийный платёж
-     * и возвращает номер заявки в формате платёжной системы.
+     * Метод регистрирует в платёжной системе заявку на двухстадийный платёж.
      *
-     * @param string $queryId Id записи в таблице order_query
-     * @param string $goodsId локальный номер заказа (имя таблицы и ид в ней)
-     * @param float $amount сумма заказа (в рублях 100.69)
-     * @param string $description коментарий к заказу (описание)
-     * @param string $backURL урл на который будет возвращен пользователь после ввода реквизитов карты (оплаты)
-     * @param string $paySystemNumber уникальный номер заказа в платежной системе
-     * @param array $params специфические параметры для платёжных систем
-     * @return array возвращаем массив с двумя статусам - основным и дополнительным,
-     *               а также номер заявки в платежной системе $paySystemNumber
+     * @param PayInfo $payInfo
+     * @return null|string статус согласно константам из модели PaySystemStatus
      */
-    public function registerPreAuth($queryId, $goodsId, $amount, $description, $backURL, &$paySystemNumber, $params);
+    public function registerPreAuth($payInfo);
 
     /**
-     * функция списывает заблокированные средства по заказу
+     * Метод списывает заблокированные средства при двухстадийном платеже.
      *
      * @param string $paySystemNumber уникальный номер заказа в платежной системе
      * @param float $amount сумма заказа (в рублях 100.69)
-     * @return array возвращаем массив с двумя статусам - основным и дополнительным
+     * @return null|string статус согласно константам из модели PaySystemStatus
      */
     public function deposit($paySystemNumber, $amount);
 
     /**
-     * Метод разблокирует средства по заказу (мы отдаём деньги обратно клиенту, не возвращаем,
-     * а не берём. Возврат взятых денег - refund)
+     * Метод разблокирует средства заблокированные при двухстадийном платеже.
      *
      * @param string $paySystemNumber уникальный номер заказа в платежной системе
-     * @return array возвращаем массив с двумя статусам - основным и дополнительным
+     * @return null|string статус согласно константам из модели PaySystemStatus
      */
     public function reverse($paySystemNumber);
+
+    /**
+     * Признак того что у платёжной системы можно запросить информацию по платежу.
+     *
+     * @return boolean
+     */
+    public function isGetStatus();
 
     /**
      * Получение статуса/информации о платеже из платёжной системы
      *
      * @param string $paySystemNumber уникальный номер заказа в платежной системе
-     * @return array возвращаем массив с двумя статусам - основным и дополнительным
+     * @return null|string статус согласно константам из модели PaySystemStatus
      */
     public function getStatus($paySystemNumber);
 
@@ -79,12 +71,10 @@ interface IPaySystem
      * Возвращает html код для отправки клиента на сайт платёжной системы для оплаты заказа.
      * (сформированная ссылка, форма и т.п.)
      *
-     * @param array $orderData (возможно здесь должен быть объект OrderInfo - который в себе будет содержать
-     *                         всю необходимую инфорамацию для показа пользователю перед оплатой и отправки в платёжную
-     *                         систему)
+     * @param PayInfo $payInfo информация о платеже
      * @return string
      */
-    public function getHtmlForPay($orderData);
+    public function getHtmlForPay($payInfo);
 
     /**
      * Разбирает ответ платежной системы когда клиент возвращается на сайт по BACKURL
@@ -92,9 +82,9 @@ interface IPaySystem
      * Необходимо контролировать от кого пришел ответ,
      * для предотвращения мошеннический действий по установке ложного статуса.
      *
-     * @return array возвращаем два статуса
+     * @return null|string статус согласно константам из модели PaySystemStatus
      */
-    public function parseBackURLAnswer();
+    public function parseBackUrlAnswer();
 
     /**
      * Метод для разбора ответа от платежной системы.
@@ -103,7 +93,7 @@ interface IPaySystem
      * Необходимо контролировать от кого пришел ответ,
      * для предотвращения мошеннический действий по установке ложного статуса.
      *
-     * @return array возвращаем два статуса
+     * @return null|string статус согласно константам из модели PaySystemStatus
      */
     public function parsePaySystemAnswer();
 
