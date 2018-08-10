@@ -27,10 +27,10 @@ add('writable_dirs', []);
 
 // Hosts
 
-host('tt-dev.local.net')
+host('tt-dev.local')
 //    ->user('koputo')
 //    ->set('deploy_path', '~/{{application}}');
-    ->set('deploy_path', '/media/www/tt-dev.local.net');
+    ->set('deploy_path', '/media/www/api.tt.tehnosber.ru');
 
 // Tasks
 
