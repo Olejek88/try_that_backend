@@ -76,12 +76,15 @@ interface IPaySystem
     public function getStatus($paySystemNumber);
 
     /**
-     * Возвращает урл для отправки клиента на сайт платёжной системы для оплаты заказа.
+     * Возвращает html код для отправки клиента на сайт платёжной системы для оплаты заказа.
+     * (сформированная ссылка, форма и т.п.)
      *
-     * @param array $orderData (возможно здесь должен быть объект Order)
+     * @param array $orderData (возможно здесь должен быть объект OrderInfo - который в себе будет содержать
+     *                         всю необходимую инфорамацию для показа пользователю перед оплатой и отправки в платёжную
+     *                         систему)
      * @return string
      */
-    public function getURLForPay($orderData);
+    public function getHtmlForPay($orderData);
 
     /**
      * Разбирает ответ платежной системы когда клиент возвращается на сайт по BACKURL
@@ -117,4 +120,11 @@ interface IPaySystem
      * @return integer Время в секундах.
      */
     public function getQueryFrequency();
+
+    /**
+     * Возвращает название платёжной системы
+     *
+     * @return string
+     */
+    public function getName();
 }

@@ -102,7 +102,7 @@ class YaD implements IPaySystem
         // TODO: Implement getStatus() method.
     }
 
-    public function getURLForPay($orderData)
+    public function getHtmlForPay($orderData)
     {
         // TODO: Implement getURLForPay() method.
     }
@@ -144,6 +144,11 @@ class YaD implements IPaySystem
         if (isset($params[self::MAX_LIFE_TIME_CONFIG]) && $params[self::MAX_LIFE_TIME_CONFIG] !== '') {
             $this->maxLifeTime = $params[self::MAX_LIFE_TIME_CONFIG];
         }
+    }
+
+    public function getName()
+    {
+        return 'Yandex.Money';
     }
 
 }
