@@ -15,6 +15,7 @@ class PaymentsUrlRule extends BaseObject implements UrlRuleInterface
      * @param Request $request the request component
      * @return array|bool the parsing result. The route and the parameters are returned as an array.
      * If false, it means this rule cannot be used to parse this path info.
+     * @throws \yii\base\InvalidConfigException
      */
     public function parseRequest($manager, $request)
     {

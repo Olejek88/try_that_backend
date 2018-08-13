@@ -77,6 +77,13 @@ interface IPaySystem
     public function getHtmlForPay($payInfo);
 
     /**
+     * Признак необходимости разбирать "ответ" платёжной системы когда пользователь возвращается на сайт.
+     *
+     * @return boolean
+     */
+    public function isParseBackUrl();
+
+    /**
      * Разбирает ответ платежной системы когда клиент возвращается на сайт по BACKURL
      *
      * Необходимо контролировать от кого пришел ответ,
@@ -87,7 +94,7 @@ interface IPaySystem
     public function parseBackUrlAnswer();
 
     /**
-     * Метод для разбора ответа от платежной системы.
+     * Метод для разбора уведомления от платежной системы.
      * Используется в случае когда платежная система сама нас информирует о состоянии платежа.
      *
      * Необходимо контролировать от кого пришел ответ,
@@ -95,7 +102,7 @@ interface IPaySystem
      *
      * @return null|string статус согласно константам из модели PaySystemStatus
      */
-    public function parsePaySystemAnswer();
+    public function parseNotification();
 
     /**
      * Возвращает максимальный срок жизни заявки на оплату в платёжной системе.

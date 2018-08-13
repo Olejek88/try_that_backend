@@ -19,20 +19,59 @@ namespace common\models;
  * @property string $invoiceQueryId id заявки на оплату в локальной очереди
  * @property string $target назначение платежа
  * @property string $successUrl Url на который платёжная система отправит пользователя после оплаты в случае успеха
- * @property string $failUrl  Url на который платёжная система отправит пользователя после оплаты в случае неуспеха
+ * @property string $failUrl Url на который платёжная система отправит пользователя после оплаты в случае неуспеха
  * @property string $cancelUrl урл для перехода в случае отмены платежа пользователем
  */
-abstract class PayInfo
+class PayInfo
 {
-    private $deposit;
-    private $description;
-    private $cost;
-    private $paySystemNumber;
-    private $invoiceQueryId;
-    private $target;
-    private $successUrl;
-    private $failUrl;
-    private $cancelUrl;
+    private $deposit = false;
+    private $description = '';
+    private $cost = 0.0;
+    private $paySystemNumber = '';
+    private $invoiceQueryId = '';
+    private $target = '';
+    private $successUrl = '';
+    private $failUrl = '';
+    private $cancelUrl = '';
+
+    public function __construct($options = [])
+    {
+        if (isset($options['deposit'])) {
+            $this->deposit = $options['deposit'];
+        }
+
+        if (isset($options['description'])) {
+            $this->description = $options['description'];
+        }
+
+        if (isset($options['cost'])) {
+            $this->cost = $options['cost'];
+        }
+
+        if (isset($options['paySystemNumber'])) {
+            $this->paySystemNumber = $options['paySystemNumber'];
+        }
+
+        if (isset($options['invoiceQueryId'])) {
+            $this->invoiceQueryId = $options['invoiceQueryId'];
+        }
+
+        if (isset($options['target'])) {
+            $this->target = $options['target'];
+        }
+
+        if (isset($options['successUrl'])) {
+            $this->successUrl = $options['successUrl'];
+        }
+
+        if (isset($options['failUrl'])) {
+            $this->failUrl = $options['failUrl'];
+        }
+
+        if (isset($options['cancelUrl'])) {
+            $this->cancelUrl = $options['cancelUrl'];
+        }
+    }
 
     /**
      * @return bool

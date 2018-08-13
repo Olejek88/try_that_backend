@@ -9,6 +9,7 @@
 namespace api\modules\v1\components;
 
 use common\models\PaySystemStatus;
+use yii\helpers\Html;
 
 /**
  * Class YaD
@@ -71,7 +72,8 @@ class YaD implements IPaySystem
         return false;
     }
 
-    public function registerInvoice($payInfo) {
+    public function registerInvoice($payInfo)
+    {
         return null;
     }
 
@@ -105,68 +107,24 @@ class YaD implements IPaySystem
     public function getHtmlForPay($payInfo)
     {
         // вместо регистрации платежа используется форма
-        // TODO: Implement getURLForPay() method.
-        $form['receiver'] = array(
-            '#type' => 'hidden',
-            '#value' => $this->account,
-        );
-
-        $form['formcomment'] = array(
-            '#type' => 'hidden',
-            '#value' => $payInfo->getDescription(),
-        );
-
-        $form['short-dest'] = array(
-            '#type' => 'hidden',
-            '#value' => $payInfo->getDescription(),
-        );
-
-        $form['label'] = array(
-            '#type' => 'hidden',
-            '#value' => json_encode($payInfo->getInvoiceQueryId()),
-        );
-
-        $form['quickpay-form'] = array(
-            '#type' => 'hidden',
-            '#value' => $this->quickPayForm,
-        );
-
-        $form['targets'] = array(
-            '#type' => 'hidden',
-            '#value' => $payInfo->getTarget(),
-        );
-
-        $form['sum'] = array(
-            '#type' => 'hidden',
-            '#value' => $payInfo->getCost(),
-        );
-
+        $form = Html::beginForm($this->paySite . $this->toPayScript);
+        $form .= "\n" . Html::hiddenInput('receiver', $this->account);
+        $form .= "\n" . Html::hiddenInput('formcomment', $payInfo->getDescription());
+        $form .= "\n" . Html::hiddenInput('short-dest', $payInfo->getDescription());
+        $form .= "\n" . Html::hiddenInput('label', json_encode($payInfo->getInvoiceQueryId()));
+        $form .= "\n" . Html::hiddenInput('quickpay-form', $this->quickPayForm);
+        $form .= "\n" . Html::hiddenInput('targets', $payInfo->getTarget());
+        $form .= "\n" . Html::hiddenInput('sum', $payInfo->getCost());
         // варианты оплаты
-        $form['paymentType'] = array(
-            '#type' => 'radios',
-            '#options' => array(
-                'PC' => 'Яндекс.Деньгами',
-                'AC' => 'Банковской картой',
-                'MC' => 'Мобильный телефон',
-            ),
-            '#default_value' => 'PC',
-        );
-
-        $from['actions'] = array(
-            '#type' => 'actions',
-            '#weight' => 10,
-            '#action' => $this->paySite . $this->toPayScript,
-            'submit' => [
-                '#type' => 'submit',
-                '#value' => 'Оплатить',
-            ],
-            'cancel' => [
-                '#type' => 'link',
-                '#title' => 'Отмена',
-                '#href' => $payInfo->getCancelUrl(),
-            ]
-        );
-
+        $items = [
+            'PC' => 'Яндекс.Деньгами',
+            'AC' => 'Банковской картой',
+            'MC' => 'Мобильный телефон',
+            ];
+        $form .= "\n" . Html::radioList('paymentType', 'PC', $items);
+        $form .= "\n" . Html::submitButton('Оплатить');
+        $form .= "\n" . html::a('Отмена', $payInfo->getCancelUrl());
+        $form .= "\n" . Html::endForm();
         return $form;
     }
 
@@ -176,10 +134,8 @@ class YaD implements IPaySystem
         return null;
     }
 
-    public function parsePaySystemAnswer()
+    public function parseNotification()
     {
-        $hook_param = array();
-
         if ($this->secret == '') {
             // не указан секрет для работы с яндексом
             // запись в лог об этом
@@ -187,41 +143,16 @@ class YaD implements IPaySystem
         }
 
         // параметры запроса
-        // notification_type
-        $notification_type = isset($_REQUEST['notification_type']) ? $_REQUEST['notification_type'] : '';
-        $hook_param['notification_type'] = $notification_type;
-
-        // operation_id
-        $operation_id = isset($_REQUEST['operation_id']) ? $_REQUEST['operation_id'] : '';
-        $hook_param['operation_id'] = $operation_id;
-
-        // amount
-        $amount = isset($_REQUEST['amount']) ? $_REQUEST['amount'] : '';
-        $hook_param['amount'] = $amount;
-
-        // currency
-        $currency = isset($_REQUEST['currency']) ? $_REQUEST['currency'] : '';
-        $hook_param['currency'] = $currency;
-
-        // datetime
-        $datetime = isset($_REQUEST['datetime']) ? $_REQUEST['datetime'] : '';
-        $hook_param['datetime'] = $datetime;
-
-        // sender
-        $sender = isset($_REQUEST['sender']) ? $_REQUEST['sender'] : '';
-        $hook_param['sender'] = $sender;
-
-        // codepro
-        $codepro = isset($_REQUEST['codepro']) ? $_REQUEST['codepro'] : '';
-        $hook_param['codepro'] = $codepro;
-
-        // label
-        $label = isset($_REQUEST['label']) ? $_REQUEST['label'] : '';
-        $hook_param['label'] = json_decode($label, true);
-
-        // sha1_hash
-        $inHash = isset($_REQUEST['sha1_hash']) ? $_REQUEST['sha1_hash'] : '';
-        $hook_param['sha1_hash'] = $inHash;
+        $request = \Yii::$app->request;
+        $notification_type = $request->post('notification_type', null);
+        $operation_id = $request->post('operation_id', null);
+        $amount = $request->post('amount', null);
+        $currency = $request->post('currency', null);
+        $datetime = $request->post('datetime', null);
+        $sender = $request->post('sender', null);
+        $codePro = $request->post('codepro', null);
+        $label = $request->post('label', null);
+        $inSha1Hash = $request->post('sha1_hash', null);
 
         // строка для расчёта хеша
         $val = $notification_type . '&' .
@@ -230,34 +161,34 @@ class YaD implements IPaySystem
             $currency . '&' .
             $datetime . '&' .
             $sender . '&' .
-            $codepro . '&' .
+            $codePro . '&' .
             $this->secret . '&' .
             $label;
 
         // расчитываем хеш
-        $sha1_hash = sha1($val);
+        $testSha1Hash = sha1($val);
+
         // строка для отправки в лог
-        $req_p = 'notification_type=' . $notification_type. ',' .
+        $req_p = 'notification_type=' . $notification_type . ',' .
             'operation_id=' . $operation_id . ',' .
             'amount=' . $amount . ',' .
             'currency=' . $currency . ',' .
             'datetime=' . $datetime . ',' .
             'sender=' . $sender . ',' .
-            'codepro=' . $codepro . ',' .
+            'codepro=' . $codePro . ',' .
             'label=' . $label;
 
-        // проверка подлинности подтверждения
-        if($sha1_hash != $inHash) {
-            $hook_param['confirmed'] = false;
-        } else {
-            $hook_param['confirmed'] = true;
-        }
-
         // отправляем в лог информацию о платеже
-        \Yii::warning($req_p,'application');
+        \Yii::info($req_p, 'application');
 
-        // в зависимости от результата проверки уведомления от платёжной системы возвращаем статус платежа
-        return PaySystemStatus::PAYED;
+        // проверка подлинности подтверждения
+        if ($testSha1Hash == $inSha1Hash) {
+            \Yii::info('Товар с ид ' . $label . ' оплачен.', 'application');
+            return PaySystemStatus::PAYED;
+        } else {
+            \Yii::info('Для товара с ид ' . $label . ' подтверждение платежа не верное.', 'application');
+            return PaySystemStatus::NOT_PAYED;
+        }
     }
 
     public function getMaxInvoiceLifeTime()
@@ -294,4 +225,8 @@ class YaD implements IPaySystem
         return 'Yandex.Money';
     }
 
+    public function isParseBackUrl()
+    {
+        return false;
+    }
 }
