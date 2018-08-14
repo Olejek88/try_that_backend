@@ -34,7 +34,7 @@ class Category extends \yii\db\ActiveRecord
             [['title'], 'required'],
             [['image_id'], 'integer'],
             [['title'], 'string', 'max' => 255],
-            [['image_id'], 'exist', 'skipOnError' => true, 'targetClass' => Image::className(), 'targetAttribute' => ['image_id' => 'id']],
+            [['image_id'], 'exist', 'skipOnError' => true, 'targetClass' => Image::class, 'targetAttribute' => ['image_id' => 'id']],
         ];
     }
 
@@ -55,7 +55,7 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getActivities()
     {
-        return $this->hasMany(Activity::className(), ['category_id' => 'id']);
+        return $this->hasMany(Activity::class, ['category_id' => 'id']);
     }
 
     /**
@@ -63,7 +63,7 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getImage()
     {
-        return $this->hasOne(Image::className(), ['id' => 'image_id']);
+        return $this->hasOne(Image::class, ['id' => 'image_id']);
     }
 
     /**
@@ -71,7 +71,7 @@ class Category extends \yii\db\ActiveRecord
      */
     public function getTags()
     {
-        return $this->hasMany(Tag::className(), ['category_id' => 'id']);
+        return $this->hasMany(Tag::class, ['category_id' => 'id']);
     }
 
     /**

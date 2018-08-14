@@ -50,7 +50,7 @@ class Duration extends \yii\db\ActiveRecord
      */
     public function getActivities()
     {
-        return $this->hasMany(Activity::className(), ['duration_id' => 'id']);
+        return $this->hasMany(Activity::class, ['duration_id' => 'id']);
     }
 
     /**
@@ -58,7 +58,7 @@ class Duration extends \yii\db\ActiveRecord
      */
     public function getActivityListings()
     {
-        return $this->hasMany(ActivityListing::className(), ['duration_id' => 'id']);
+        return $this->hasMany(ActivityListing::class, ['duration_id' => 'id']);
     }
 
     /**
@@ -66,7 +66,7 @@ class Duration extends \yii\db\ActiveRecord
      */
     public function getOrders()
     {
-        return $this->hasMany(Order::className(), ['duration_id' => 'id']);
+        return $this->hasMany(Order::class, ['duration_id' => 'id']);
     }
 
     /**

@@ -34,8 +34,8 @@ class Tag extends \yii\db\ActiveRecord
             [['title', 'category_id', 'activity_id'], 'required'],
             [['category_id', 'activity_id'], 'integer'],
             [['title'], 'string', 'max' => 255],
-            [['activity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::className(), 'targetAttribute' => ['activity_id' => 'id']],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
+            [['activity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::class, 'targetAttribute' => ['activity_id' => 'id']],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
         ];
     }
 
@@ -57,7 +57,7 @@ class Tag extends \yii\db\ActiveRecord
      */
     public function getActivity()
     {
-        return $this->hasOne(Activity::className(), ['id' => 'activity_id']);
+        return $this->hasOne(Activity::class, ['id' => 'activity_id']);
     }
 
     /**
@@ -65,7 +65,7 @@ class Tag extends \yii\db\ActiveRecord
      */
     public function getCategory()
     {
-        return $this->hasOne(Category::className(), ['id' => 'category_id']);
+        return $this->hasOne(Category::class, ['id' => 'category_id']);
     }
 
     /**

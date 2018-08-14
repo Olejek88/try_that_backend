@@ -32,7 +32,7 @@ class ExceptionTT extends \yii\db\ActiveRecord
             [['luminary_id', 'date'], 'required'],
             [['luminary_id'], 'integer'],
             [['date'], 'safe'],
-            [['luminary_id'], 'exist', 'skipOnError' => true, 'targetClass' => Luminary::className(), 'targetAttribute' => ['luminary_id' => 'id']],
+            [['luminary_id'], 'exist', 'skipOnError' => true, 'targetClass' => Luminary::class, 'targetAttribute' => ['luminary_id' => 'id']],
         ];
     }
 
@@ -53,7 +53,7 @@ class ExceptionTT extends \yii\db\ActiveRecord
      */
     public function getLuminary()
     {
-        return $this->hasOne(Luminary::className(), ['id' => 'luminary_id']);
+        return $this->hasOne(Luminary::class, ['id' => 'luminary_id']);
     }
 
     /**

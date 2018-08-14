@@ -39,9 +39,9 @@ class Order extends \yii\db\ActiveRecord
             [['activity_listing_id', 'order_status_id', 'duration_id', 'created_at', 'updated_at'], 'required'],
             [['activity_listing_id', 'order_status_id', 'duration_id', 'created_at', 'updated_at'], 'integer'],
             [['start_date'], 'safe'],
-            [['activity_listing_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActivityListing::className(), 'targetAttribute' => ['activity_listing_id' => 'id']],
-            [['duration_id'], 'exist', 'skipOnError' => true, 'targetClass' => Duration::className(), 'targetAttribute' => ['duration_id' => 'id']],
-            [['order_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => OrderStatus::className(), 'targetAttribute' => ['order_status_id' => 'id']],
+            [['activity_listing_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActivityListing::class, 'targetAttribute' => ['activity_listing_id' => 'id']],
+            [['duration_id'], 'exist', 'skipOnError' => true, 'targetClass' => Duration::class, 'targetAttribute' => ['duration_id' => 'id']],
+            [['order_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => OrderStatus::class, 'targetAttribute' => ['order_status_id' => 'id']],
         ];
     }
 
@@ -66,7 +66,7 @@ class Order extends \yii\db\ActiveRecord
      */
     public function getMails()
     {
-        return $this->hasMany(Mail::className(), ['order_id' => 'id']);
+        return $this->hasMany(Mail::class, ['order_id' => 'id']);
     }
 
     /**
@@ -74,7 +74,7 @@ class Order extends \yii\db\ActiveRecord
      */
     public function getActivityListing()
     {
-        return $this->hasOne(ActivityListing::className(), ['id' => 'activity_listing_id']);
+        return $this->hasOne(ActivityListing::class, ['id' => 'activity_listing_id']);
     }
 
     /**
@@ -82,7 +82,7 @@ class Order extends \yii\db\ActiveRecord
      */
     public function getDuration()
     {
-        return $this->hasOne(Duration::className(), ['id' => 'duration_id']);
+        return $this->hasOne(Duration::class, ['id' => 'duration_id']);
     }
 
     /**
@@ -90,7 +90,7 @@ class Order extends \yii\db\ActiveRecord
      */
     public function getOrderStatus()
     {
-        return $this->hasOne(OrderStatus::className(), ['id' => 'order_status_id']);
+        return $this->hasOne(OrderStatus::class, ['id' => 'order_status_id']);
     }
 
     /**

@@ -49,7 +49,7 @@ class MailStatus extends \yii\db\ActiveRecord
      */
     public function getMails()
     {
-        return $this->hasMany(Mail::className(), ['status_id' => 'id']);
+        return $this->hasMany(Mail::class, ['status_id' => 'id']);
     }
 
     /**

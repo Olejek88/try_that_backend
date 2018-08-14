@@ -36,7 +36,7 @@ class News extends \yii\db\ActiveRecord
             [['luminary_id', 'date'], 'integer'],
             [['text'], 'string'],
             [['title'], 'string', 'max' => 255],
-            [['luminary_id'], 'exist', 'skipOnError' => true, 'targetClass' => Luminary::className(), 'targetAttribute' => ['luminary_id' => 'id']],
+            [['luminary_id'], 'exist', 'skipOnError' => true, 'targetClass' => Luminary::class, 'targetAttribute' => ['luminary_id' => 'id']],
         ];
     }
 
@@ -59,7 +59,7 @@ class News extends \yii\db\ActiveRecord
      */
     public function getLuminary()
     {
-        return $this->hasOne(Luminary::className(), ['id' => 'luminary_id']);
+        return $this->hasOne(Luminary::class, ['id' => 'luminary_id']);
     }
 
     /**
@@ -67,7 +67,7 @@ class News extends \yii\db\ActiveRecord
      */
     public function getNewsImages()
     {
-        return $this->hasMany(NewsImage::className(), ['news_id' => 'id']);
+        return $this->hasMany(NewsImage::class, ['news_id' => 'id']);
     }
 
     /**

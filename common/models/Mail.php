@@ -44,11 +44,11 @@ class Mail extends \yii\db\ActiveRecord
             [['text'], 'string'],
             [['order_id', 'from_user_id', 'to_user_id', 'status_id', 'activity_id', 'send_date', 'read_date'], 'integer'],
             [['title'], 'string', 'max' => 255],
-            [['activity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::className(), 'targetAttribute' => ['activity_id' => 'id']],
-            [['from_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['from_user_id' => 'id']],
-            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => MailStatus::className(), 'targetAttribute' => ['status_id' => 'id']],
-            [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Order::className(), 'targetAttribute' => ['order_id' => 'id']],
-            [['to_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['to_user_id' => 'id']],
+            [['activity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::class, 'targetAttribute' => ['activity_id' => 'id']],
+            [['from_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['from_user_id' => 'id']],
+            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => MailStatus::class, 'targetAttribute' => ['status_id' => 'id']],
+            [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Order::class, 'targetAttribute' => ['order_id' => 'id']],
+            [['to_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['to_user_id' => 'id']],
         ];
     }
 
@@ -76,7 +76,7 @@ class Mail extends \yii\db\ActiveRecord
      */
     public function getActivity()
     {
-        return $this->hasOne(Activity::className(), ['id' => 'activity_id']);
+        return $this->hasOne(Activity::class, ['id' => 'activity_id']);
     }
 
     /**
@@ -84,7 +84,7 @@ class Mail extends \yii\db\ActiveRecord
      */
     public function getFromUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'from_user_id']);
+        return $this->hasOne(User::class, ['id' => 'from_user_id']);
     }
 
     /**
@@ -92,7 +92,7 @@ class Mail extends \yii\db\ActiveRecord
      */
     public function getStatus()
     {
-        return $this->hasOne(MailStatus::className(), ['id' => 'status_id']);
+        return $this->hasOne(MailStatus::class, ['id' => 'status_id']);
     }
 
     /**
@@ -100,7 +100,7 @@ class Mail extends \yii\db\ActiveRecord
      */
     public function getOrder()
     {
-        return $this->hasOne(Order::className(), ['id' => 'order_id']);
+        return $this->hasOne(Order::class, ['id' => 'order_id']);
     }
 
     /**
@@ -108,7 +108,7 @@ class Mail extends \yii\db\ActiveRecord
      */
     public function getToUser()
     {
-        return $this->hasOne(User::className(), ['id' => 'to_user_id']);
+        return $this->hasOne(User::class, ['id' => 'to_user_id']);
     }
 
     /**

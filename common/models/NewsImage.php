@@ -32,8 +32,8 @@ class NewsImage extends \yii\db\ActiveRecord
         return [
             [['news_id', 'image_id'], 'required'],
             [['news_id', 'image_id'], 'integer'],
-            [['image_id'], 'exist', 'skipOnError' => true, 'targetClass' => Image::className(), 'targetAttribute' => ['image_id' => 'id']],
-            [['news_id'], 'exist', 'skipOnError' => true, 'targetClass' => News::className(), 'targetAttribute' => ['news_id' => 'id']],
+            [['image_id'], 'exist', 'skipOnError' => true, 'targetClass' => Image::class, 'targetAttribute' => ['image_id' => 'id']],
+            [['news_id'], 'exist', 'skipOnError' => true, 'targetClass' => News::class, 'targetAttribute' => ['news_id' => 'id']],
         ];
     }
 
@@ -54,7 +54,7 @@ class NewsImage extends \yii\db\ActiveRecord
      */
     public function getImage()
     {
-        return $this->hasOne(Image::className(), ['id' => 'image_id']);
+        return $this->hasOne(Image::class, ['id' => 'image_id']);
     }
 
     /**
@@ -62,7 +62,7 @@ class NewsImage extends \yii\db\ActiveRecord
      */
     public function getNews()
     {
-        return $this->hasOne(News::className(), ['id' => 'news_id']);
+        return $this->hasOne(News::class, ['id' => 'news_id']);
     }
 
     /**

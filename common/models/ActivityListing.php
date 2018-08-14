@@ -38,8 +38,8 @@ class ActivityListing extends \yii\db\ActiveRecord
             [['activity_id', 'duration_id', 'currency_id'], 'required'],
             [['activity_id', 'duration_id', 'currency_id', 'is_group'], 'integer'],
             [['cost'], 'number'],
-            [['activity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::className(), 'targetAttribute' => ['activity_id' => 'id']],
-            [['duration_id'], 'exist', 'skipOnError' => true, 'targetClass' => Duration::className(), 'targetAttribute' => ['duration_id' => 'id']],
+            [['activity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::class, 'targetAttribute' => ['activity_id' => 'id']],
+            [['duration_id'], 'exist', 'skipOnError' => true, 'targetClass' => Duration::class, 'targetAttribute' => ['duration_id' => 'id']],
         ];
     }
 
@@ -63,7 +63,7 @@ class ActivityListing extends \yii\db\ActiveRecord
      */
     public function getActivity()
     {
-        return $this->hasOne(Activity::className(), ['id' => 'activity_id']);
+        return $this->hasOne(Activity::class, ['id' => 'activity_id']);
     }
 
     /**
@@ -71,7 +71,7 @@ class ActivityListing extends \yii\db\ActiveRecord
      */
     public function getDuration()
     {
-        return $this->hasOne(Duration::className(), ['id' => 'duration_id']);
+        return $this->hasOne(Duration::class, ['id' => 'duration_id']);
     }
 
     /**
@@ -79,7 +79,7 @@ class ActivityListing extends \yii\db\ActiveRecord
      */
     public function getGroupExperiences()
     {
-        return $this->hasMany(GroupExperience::className(), ['activity_listing_id' => 'id']);
+        return $this->hasMany(GroupExperience::class, ['activity_listing_id' => 'id']);
     }
 
     /**
@@ -87,7 +87,7 @@ class ActivityListing extends \yii\db\ActiveRecord
      */
     public function getOrders()
     {
-        return $this->hasMany(Order::className(), ['activity_listing_id' => 'id']);
+        return $this->hasMany(Order::class, ['activity_listing_id' => 'id']);
     }
 
     /**

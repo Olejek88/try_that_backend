@@ -58,7 +58,7 @@ class Image extends \yii\db\ActiveRecord
      */
     public function getActivityCategories()
     {
-        return $this->hasMany(ActivityCategory::className(), ['image_id' => 'id']);
+        return $this->hasMany(ActivityCategory::class, ['image_id' => 'id']);
     }
 
     /**
@@ -66,7 +66,7 @@ class Image extends \yii\db\ActiveRecord
      */
     public function getActivityImages()
     {
-        return $this->hasMany(ActivityImage::className(), ['image_id' => 'id']);
+        return $this->hasMany(ActivityImage::class, ['image_id' => 'id']);
     }
 
     /**
@@ -74,7 +74,7 @@ class Image extends \yii\db\ActiveRecord
      */
     public function getCategories()
     {
-        return $this->hasMany(Category::className(), ['image_id' => 'id']);
+        return $this->hasMany(Category::class, ['image_id' => 'id']);
     }
 
     /**
@@ -82,7 +82,7 @@ class Image extends \yii\db\ActiveRecord
      */
     public function getCountries()
     {
-        return $this->hasMany(Country::className(), ['image_id' => 'id']);
+        return $this->hasMany(Country::class, ['image_id' => 'id']);
     }
 
     /**
@@ -90,7 +90,7 @@ class Image extends \yii\db\ActiveRecord
      */
     public function getLocations()
     {
-        return $this->hasMany(Location::className(), ['image_id' => 'id']);
+        return $this->hasMany(Location::class, ['image_id' => 'id']);
     }
 
     /**
@@ -98,7 +98,7 @@ class Image extends \yii\db\ActiveRecord
      */
     public function getNewsImages()
     {
-        return $this->hasMany(NewsImage::className(), ['image_id' => 'id']);
+        return $this->hasMany(NewsImage::class, ['image_id' => 'id']);
     }
 
     /**
@@ -106,7 +106,7 @@ class Image extends \yii\db\ActiveRecord
      */
     public function getOccasions()
     {
-        return $this->hasMany(Occasion::className(), ['image_id' => 'id']);
+        return $this->hasMany(Occasion::class, ['image_id' => 'id']);
     }
 
     /**
@@ -114,7 +114,7 @@ class Image extends \yii\db\ActiveRecord
      */
     public function getTrendings()
     {
-        return $this->hasMany(Trending::className(), ['image_id' => 'id']);
+        return $this->hasMany(Trending::class, ['image_id' => 'id']);
     }
 
     /**

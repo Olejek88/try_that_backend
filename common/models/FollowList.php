@@ -32,8 +32,8 @@ class FollowList extends \yii\db\ActiveRecord
         return [
             [['customer_id', 'luminary_id'], 'required'],
             [['customer_id', 'luminary_id'], 'integer'],
-            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id' => 'id']],
-            [['luminary_id'], 'exist', 'skipOnError' => true, 'targetClass' => Luminary::className(), 'targetAttribute' => ['luminary_id' => 'id']],
+            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::class, 'targetAttribute' => ['customer_id' => 'id']],
+            [['luminary_id'], 'exist', 'skipOnError' => true, 'targetClass' => Luminary::class, 'targetAttribute' => ['luminary_id' => 'id']],
         ];
     }
 
@@ -54,7 +54,7 @@ class FollowList extends \yii\db\ActiveRecord
      */
     public function getCustomer()
     {
-        return $this->hasOne(Customer::className(), ['id' => 'customer_id']);
+        return $this->hasOne(Customer::class, ['id' => 'customer_id']);
     }
 
     /**
@@ -62,7 +62,7 @@ class FollowList extends \yii\db\ActiveRecord
      */
     public function getLuminary()
     {
-        return $this->hasOne(Luminary::className(), ['id' => 'luminary_id']);
+        return $this->hasOne(Luminary::class, ['id' => 'luminary_id']);
     }
 
     /**

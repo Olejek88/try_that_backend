@@ -35,8 +35,8 @@ class Review extends \yii\db\ActiveRecord
             [['customer_id', 'activity_id'], 'required'],
             [['customer_id', 'activity_id', 'rate'], 'integer'],
             [['description'], 'string', 'max' => 255],
-            [['activity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::className(), 'targetAttribute' => ['activity_id' => 'id']],
-            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id' => 'id']],
+            [['activity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::class, 'targetAttribute' => ['activity_id' => 'id']],
+            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::class, 'targetAttribute' => ['customer_id' => 'id']],
         ];
     }
 
@@ -59,7 +59,7 @@ class Review extends \yii\db\ActiveRecord
      */
     public function getActivity()
     {
-        return $this->hasOne(Activity::className(), ['id' => 'activity_id']);
+        return $this->hasOne(Activity::class, ['id' => 'activity_id']);
     }
 
     /**
@@ -67,7 +67,7 @@ class Review extends \yii\db\ActiveRecord
      */
     public function getCustomer()
     {
-        return $this->hasOne(Customer::className(), ['id' => 'customer_id']);
+        return $this->hasOne(Customer::class, ['id' => 'customer_id']);
     }
 
     /**

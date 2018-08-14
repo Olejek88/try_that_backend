@@ -57,7 +57,7 @@ class Luminary extends \yii\db\ActiveRecord
      */
     public function getActivities()
     {
-        return $this->hasMany(Activity::className(), ['luminary_id' => 'id']);
+        return $this->hasMany(Activity::class, ['luminary_id' => 'id']);
     }
 
     /**
@@ -65,7 +65,7 @@ class Luminary extends \yii\db\ActiveRecord
      */
     public function getExceptions()
     {
-        return $this->hasMany(ExceptionTT::className(), ['luminary_id' => 'id']);
+        return $this->hasMany(ExceptionTT::class, ['luminary_id' => 'id']);
     }
 
     /**
@@ -73,7 +73,7 @@ class Luminary extends \yii\db\ActiveRecord
      */
     public function getFollowLists()
     {
-        return $this->hasMany(FollowList::className(), ['luminary_id' => 'id']);
+        return $this->hasMany(FollowList::class, ['luminary_id' => 'id']);
     }
 
     /**
@@ -81,7 +81,7 @@ class Luminary extends \yii\db\ActiveRecord
      */
     public function getNews()
     {
-        return $this->hasMany(News::className(), ['luminary_id' => 'id']);
+        return $this->hasMany(News::class, ['luminary_id' => 'id']);
     }
 
     /**

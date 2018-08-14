@@ -32,8 +32,8 @@ class GroupExperience extends \yii\db\ActiveRecord
         return [
             [['activity_listing_id', 'customer_id'], 'required'],
             [['activity_listing_id', 'customer_id'], 'integer'],
-            [['activity_listing_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActivityListing::className(), 'targetAttribute' => ['activity_listing_id' => 'id']],
-            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::className(), 'targetAttribute' => ['customer_id' => 'id']],
+            [['activity_listing_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActivityListing::class, 'targetAttribute' => ['activity_listing_id' => 'id']],
+            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::class, 'targetAttribute' => ['customer_id' => 'id']],
         ];
     }
 
@@ -54,7 +54,7 @@ class GroupExperience extends \yii\db\ActiveRecord
      */
     public function getActivityListing()
     {
-        return $this->hasOne(ActivityListing::className(), ['id' => 'activity_listing_id']);
+        return $this->hasOne(ActivityListing::class, ['id' => 'activity_listing_id']);
     }
 
     /**
@@ -62,7 +62,7 @@ class GroupExperience extends \yii\db\ActiveRecord
      */
     public function getCustomer()
     {
-        return $this->hasOne(Customer::className(), ['id' => 'customer_id']);
+        return $this->hasOne(Customer::class, ['id' => 'customer_id']);
     }
 
     /**

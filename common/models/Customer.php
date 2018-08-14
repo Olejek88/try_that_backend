@@ -55,7 +55,7 @@ class Customer extends \yii\db\ActiveRecord
      */
     public function getFollowLists()
     {
-        return $this->hasMany(FollowList::className(), ['customer_id' => 'id']);
+        return $this->hasMany(FollowList::class, ['customer_id' => 'id']);
     }
 
     /**
@@ -63,7 +63,7 @@ class Customer extends \yii\db\ActiveRecord
      */
     public function getGroupExperiences()
     {
-        return $this->hasMany(GroupExperience::className(), ['customer_id' => 'id']);
+        return $this->hasMany(GroupExperience::class, ['customer_id' => 'id']);
     }
 
     /**
@@ -71,7 +71,7 @@ class Customer extends \yii\db\ActiveRecord
      */
     public function getReviews()
     {
-        return $this->hasMany(Review::className(), ['customer_id' => 'id']);
+        return $this->hasMany(Review::class, ['customer_id' => 'id']);
     }
 
     /**
@@ -79,7 +79,7 @@ class Customer extends \yii\db\ActiveRecord
      */
     public function getWishlists()
     {
-        return $this->hasMany(Wishlist::className(), ['customer_id' => 'id']);
+        return $this->hasMany(Wishlist::class, ['customer_id' => 'id']);
     }
 
     /**
