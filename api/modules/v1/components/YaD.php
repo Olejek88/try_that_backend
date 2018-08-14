@@ -119,7 +119,7 @@ class YaD implements IPaySystem
         $items = [
             'PC' => 'Яндекс.Деньгами',
             'AC' => 'Банковской картой',
-            'MC' => 'Мобильный телефон',
+//            'MC' => 'Мобильный телефон',
             ];
         $form .= "\n" . Html::radioList('paymentType', 'PC', $items);
         $form .= "\n" . Html::submitButton('Оплатить');
