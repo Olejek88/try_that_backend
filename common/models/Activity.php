@@ -51,10 +51,10 @@ class Activity extends \yii\db\ActiveRecord
             [['luminary_id', 'category_id', 'activity_category_id', 'start_date', 'end_date'], 'required'],
             [['luminary_id', 'category_id', 'activity_category_id', 'duration_id', 'min_customers', 'max_customers', 'start_date', 'end_date'], 'integer'],
             [['title', 'description'], 'string', 'max' => 255],
-            [['activity_category_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActivityCategory::className(), 'targetAttribute' => ['activity_category_id' => 'id']],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],
-            [['duration_id'], 'exist', 'skipOnError' => true, 'targetClass' => Duration::className(), 'targetAttribute' => ['duration_id' => 'id']],
-            [['luminary_id'], 'exist', 'skipOnError' => true, 'targetClass' => Luminary::className(), 'targetAttribute' => ['luminary_id' => 'id']],
+            [['activity_category_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActivityCategory::class, 'targetAttribute' => ['activity_category_id' => 'id']],
+            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
+            [['duration_id'], 'exist', 'skipOnError' => true, 'targetClass' => Duration::class, 'targetAttribute' => ['duration_id' => 'id']],
+            [['luminary_id'], 'exist', 'skipOnError' => true, 'targetClass' => Luminary::class, 'targetAttribute' => ['luminary_id' => 'id']],
         ];
     }
 
@@ -83,7 +83,7 @@ class Activity extends \yii\db\ActiveRecord
      */
     public function getActivityCategory()
     {
-        return $this->hasOne(ActivityCategory::className(), ['id' => 'activity_category_id']);
+        return $this->hasOne(ActivityCategory::class, ['id' => 'activity_category_id']);
     }
 
     /**
@@ -91,7 +91,7 @@ class Activity extends \yii\db\ActiveRecord
      */
     public function getCategory()
     {
-        return $this->hasOne(Category::className(), ['id' => 'category_id']);
+        return $this->hasOne(Category::class, ['id' => 'category_id']);
     }
 
     /**
@@ -99,7 +99,7 @@ class Activity extends \yii\db\ActiveRecord
      */
     public function getDuration()
     {
-        return $this->hasOne(Duration::className(), ['id' => 'duration_id']);
+        return $this->hasOne(Duration::class, ['id' => 'duration_id']);
     }
 
     /**
@@ -107,7 +107,7 @@ class Activity extends \yii\db\ActiveRecord
      */
     public function getLuminary()
     {
-        return $this->hasOne(Luminary::className(), ['id' => 'luminary_id']);
+        return $this->hasOne(Luminary::class, ['id' => 'luminary_id']);
     }
 
     /**
@@ -115,7 +115,7 @@ class Activity extends \yii\db\ActiveRecord
      */
     public function getActivityImages()
     {
-        return $this->hasMany(ActivityImage::className(), ['activity_id' => 'id']);
+        return $this->hasMany(ActivityImage::class, ['activity_id' => 'id']);
     }
 
     /**
@@ -123,7 +123,7 @@ class Activity extends \yii\db\ActiveRecord
      */
     public function getActivityListings()
     {
-        return $this->hasMany(ActivityListing::className(), ['activity_id' => 'id']);
+        return $this->hasMany(ActivityListing::class, ['activity_id' => 'id']);
     }
 
     /**
@@ -131,7 +131,7 @@ class Activity extends \yii\db\ActiveRecord
      */
     public function getMails()
     {
-        return $this->hasMany(Mail::className(), ['activity_id' => 'id']);
+        return $this->hasMany(Mail::class, ['activity_id' => 'id']);
     }
 
     /**
@@ -139,7 +139,7 @@ class Activity extends \yii\db\ActiveRecord
      */
     public function getOccasions()
     {
-        return $this->hasMany(Occasion::className(), ['activity_id' => 'id']);
+        return $this->hasMany(Occasion::class, ['activity_id' => 'id']);
     }
 
     /**
@@ -147,7 +147,7 @@ class Activity extends \yii\db\ActiveRecord
      */
     public function getReviews()
     {
-        return $this->hasMany(Review::className(), ['activity_id' => 'id']);
+        return $this->hasMany(Review::class, ['activity_id' => 'id']);
     }
 
     /**
@@ -155,7 +155,7 @@ class Activity extends \yii\db\ActiveRecord
      */
     public function getTags()
     {
-        return $this->hasMany(Tag::className(), ['activity_id' => 'id']);
+        return $this->hasMany(Tag::class, ['activity_id' => 'id']);
     }
 
     /**
@@ -163,7 +163,7 @@ class Activity extends \yii\db\ActiveRecord
      */
     public function getTrendings()
     {
-        return $this->hasMany(Trending::className(), ['activity_id' => 'id']);
+        return $this->hasMany(Trending::class, ['activity_id' => 'id']);
     }
 
     /**
@@ -171,7 +171,7 @@ class Activity extends \yii\db\ActiveRecord
      */
     public function getWishlists()
     {
-        return $this->hasMany(Wishlist::className(), ['activity_id' => 'id']);
+        return $this->hasMany(Wishlist::class, ['activity_id' => 'id']);
     }
 
     /**

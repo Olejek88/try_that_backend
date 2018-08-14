@@ -58,7 +58,7 @@ class ExceptionTT extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return \common\models\query\ExceptionQuery the active query used by this AR class.
+     * @return \common\models\query\ExceptionTTQuery the active query used by this AR class.
      */
     public static function find()
     {

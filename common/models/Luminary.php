@@ -13,7 +13,7 @@ use Yii;
  * @property double $rating
  *
  * @property Activity[] $activities
- * @property Exception[] $exceptions
+ * @property ExceptionTT[] $exceptions
  * @property FollowList[] $followLists
  * @property News[] $news
  */
