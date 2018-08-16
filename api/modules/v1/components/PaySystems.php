@@ -37,7 +37,12 @@ class PaySystems
             }
         }
 
-        $this->classes = self::getImplementingClasses($interface);
+        $classes = self::getImplementingClasses($interface);
+        foreach ($classes as $name => $class) {
+            /* @var $ps IPaySystem */
+            $ps = new $class;
+            $this->classes[$ps->getName()] = $class;
+        }
 
         // TODO: Реализовать инициализацию маршрутов которые предоставляют модули платёжных систем
         // т.е. динамически настраеваем следующее поведение - платежной системе нельзя указать backUrl
