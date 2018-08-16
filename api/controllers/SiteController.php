@@ -9,6 +9,6 @@ class SiteController extends \yii\rest\Controller
 {
     public function actionIndex()
     {
-        return ['message' => 'home page'];
+        return $this->redirect(['/request/sign-in']);
     }
 }
