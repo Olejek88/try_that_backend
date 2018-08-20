@@ -19,12 +19,12 @@ use yii\db\ActiveRecord;
  * @property string $name
  * @property string $title
  */
-class PaySystemStatus extends ActiveRecord
+class InvoiceQueryStatus extends ActiveRecord
 {
     // появляется один раз, в момент создания заявки на оплату
     public const NEW_ID = 1;
     public const NEW = 'new';
-    // заявка на оплату зарегистрирована, оплата ещё не проводилась, платёж прошел но пока нет подтверждения
+    // заявка на оплату зарегистрирована в платёжной системе, оплата ещё не проводилась
     public const REGISTERED_ID = 2;
     public const REGISTERED = 'registered';
     // ожидание оплаты клиента

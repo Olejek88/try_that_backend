@@ -29,12 +29,145 @@ use yii\db\ActiveRecord;
  */
 class InvoiceQuery extends ActiveRecord
 {
-    public function getOrder() {
+    public const PROCEDURE_STATUS_UPDATE_NAME = 'update_invoice_status';
+    public const CHANGE = 'change';
+    public const NOT_CHANGE = 'notChange';
+
+    public function getOrder()
+    {
         // TODO: Раскоментировать как появится модель заказа
 //        return $this->hasOne(Order::class, ['id' => 'order_id']);
     }
 
-    public function getStatus() {
-        return $this->hasOne(PaySystemStatus::class, ['id' => 'status_id']);
+    public function getStatus()
+    {
+        return $this->hasOne(InvoiceQueryStatus::class, ['id' => 'status_id']);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNew()
+    {
+        return $this->status_id == InvoiceQueryStatus::NEW_ID;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRegistered()
+    {
+        return $this->status_id == InvoiceQueryStatus::REGISTERED_ID;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWaitingForPay()
+    {
+        return $this->status_id == InvoiceQueryStatus::WAITING_FOR_PAY_ID;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWaitingForConfirm()
+    {
+        return $this->status_id == InvoiceQueryStatus::WAITING_FOR_CONFIRM_ID;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWaitingForBank()
+    {
+        return $this->status_id == InvoiceQueryStatus::WAITING_FOR_BANK_ID;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPreAuth()
+    {
+        return $this->status_id == InvoiceQueryStatus::PRE_AUTH_ID;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isPayed()
+    {
+        return $this->status_id == InvoiceQueryStatus::PAYED_ID;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNotPayed()
+    {
+        return $this->status_id == InvoiceQueryStatus::NOT_PAYED_ID;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCanceled()
+    {
+        return $this->status_id == InvoiceQueryStatus::CANCELED_ID;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isWaitingPruf()
+    {
+        $statuses = [
+            InvoiceQueryStatus::WAITING_FOR_CONFIRM_ID,
+            InvoiceQueryStatus::WAITING_FOR_BANK_ID,
+            InvoiceQueryStatus::PRE_AUTH_ID,
+        ];
+
+        return in_array($this->status_id, $statuses);
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAllowNewPay()
+    {
+        $statuses = [
+            InvoiceQueryStatus::NEW_ID,
+            InvoiceQueryStatus::REGISTERED_ID,
+            InvoiceQueryStatus::WAITING_FOR_PAY_ID,
+            InvoiceQueryStatus::NOT_PAYED_ID,
+            InvoiceQueryStatus::CANCELED_ID,
+        ];
+
+        return in_array($this->status_id, $statuses);
+    }
+
+    /**
+     *
+     * @param $statusId integer
+     * @param $updateDate string
+     * @return string
+     */
+    public function updateStatus($statusId, $updateDate)
+    {
+        $sql = "CALL " . self::getProcedureUpdateStatusName() . "(:queryId, :statusId, :date)";
+        $params = [':queryId' => $this->id, ':statusId' => $statusId, ':date' => $updateDate];
+        try {
+            return \Yii::$app->db->createCommand($sql, $params)->queryOne();
+        } catch (\Exception $exception) {
+            return self::NOT_CHANGE;
+        }
+    }
+
+    /**
+     * @return string
+     */
+    public static function getProcedureUpdateStatusName()
+    {
+        return \Yii::$app->getDb()->tablePrefix . self::PROCEDURE_STATUS_UPDATE_NAME;
     }
 }

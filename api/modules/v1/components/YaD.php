@@ -8,7 +8,7 @@
 
 namespace api\modules\v1\components;
 
-use common\models\PaySystemStatus;
+use common\models\InvoiceQueryStatus;
 use yii\helpers\Html;
 
 /**
@@ -184,10 +184,10 @@ class YaD implements IPaySystem
         // проверка подлинности подтверждения
         if ($testSha1Hash == $inSha1Hash) {
             \Yii::info('Товар с ид ' . $label . ' оплачен.', 'application');
-            return PaySystemStatus::PAYED;
+            return InvoiceQueryStatus::PAYED;
         } else {
             \Yii::info('Для товара с ид ' . $label . ' подтверждение платежа не верное.', 'application');
-            return PaySystemStatus::NOT_PAYED;
+            return InvoiceQueryStatus::NOT_PAYED;
         }
     }
 
