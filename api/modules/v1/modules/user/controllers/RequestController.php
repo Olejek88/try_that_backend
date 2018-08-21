@@ -1,10 +1,10 @@
 <?php
 
-namespace api\controllers;
+namespace api\modules\v1\modules\user;
 
 /**
  * Class RequestController
- * @package api\controllers
+ * @package api\modules\v1\modules\user
  */
 class RequestController extends \yii\rest\Controller
 {
@@ -18,15 +18,8 @@ class RequestController extends \yii\rest\Controller
         return $verbs;
     }
 
-    // @todo[msdev]: Реализовать регистрацию
     public function actionSignUp()
     {
         return ['message' => 'SignUp Page'];
-    }
-
-    // @todo[msdev]: Реализовать авторизацию
-    public function actionSignIn()
-    {
-        return ['message' => 'SignIn Page'];
     }
 }

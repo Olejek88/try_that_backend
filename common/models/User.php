@@ -163,9 +163,8 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Generates password hash from password and sets it to the model
-     *
-     * @param string $password
+     * @param $password
+     * @throws \yii\base\Exception
      */
     public function setPassword($password)
     {
@@ -173,7 +172,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Generates "remember me" authentication key
+     * @throws \yii\base\Exception
      */
     public function generateAuthKey()
     {
@@ -181,7 +180,7 @@ class User extends ActiveRecord implements IdentityInterface
     }
 
     /**
-     * Generates new password reset token
+     * @throws \yii\base\Exception
      */
     public function generatePasswordResetToken()
     {
@@ -194,5 +193,44 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    /**
+     * Finds user by username or email
+     *
+     * @param string $login
+     * @return static|null
+     */
+    public static function findByLogin($login)
+    {
+        return static::find()
+            ->where([
+                'and',
+                ['or', ['username' => $login], ['email' => $login]],
+                'status' => self::STATUS_ACTIVE,
+            ])
+            ->one();
+    }
+
+    /**
+     * @param null $duration
+     * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function generateAccessToken($duration = null)
+    {
+        if ($duration === null) {
+            $duration = \Yii::$app->params['duration']['week'];
+        }
+        $token = \Yii::createObject([
+            'class' => TokenAuth::class,
+            'valid_till' => date(DATE_W3C, time() + $duration),
+            'type' => Token::AUTH_TYPE,
+        ]);
+
+        $token->link('user', $this);
+
+
+        return $token->token;
     }
 }
