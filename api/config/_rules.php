@@ -2,6 +2,6 @@
 
 return [
     'GET /' => 'site/index',
-    'GET /signup' => 'request/sign-up',
-    'GET /auth' => 'request/sign-in',
+    '/v1/signup/request' => 'v1/user/signup/request',
+    '/v1/auth/request' => 'v1/user/auth/request',
 ];

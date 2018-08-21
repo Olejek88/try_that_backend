@@ -2,16 +2,16 @@
 
 namespace api\modules\v1\modules\user\controllers;
 
+use api\components\BaseController;
 use api\models\form\SignupForm;
 use api\models\User;
 use Yii;
-use yii\rest\Controller;
 
 /**
  * Class SignupController
  * @package api\modules\v1\modules\user\controllers
  */
-class SignupController extends Controller
+class SignupController extends BaseController
 {
     /**
      * @inheritdoc

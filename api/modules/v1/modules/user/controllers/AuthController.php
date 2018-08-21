@@ -1,12 +1,12 @@
 <?php
 
-namespace api\modules\v1\modules\user;
+namespace api\modules\v1\modules\user\controllers;
 
+use api\components\BaseController;
 use api\models\form\LoginForm;
 use Yii;
-use yii\rest\Controller;
 
-class AuthController extends Controller
+class AuthController extends BaseController
 {
     /**
      * @inheritdoc
@@ -22,7 +22,7 @@ class AuthController extends Controller
      * @return LoginForm|array
      * @throws \yii\base\InvalidConfigException
      */
-    public function actionPassword()
+    public function actionRequest()
     {
         $model = new LoginForm();
         $model->load(Yii::$app->request->bodyParams, '');
