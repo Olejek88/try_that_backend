@@ -6,7 +6,7 @@
  * Time: 6:22 PM
  */
 
-namespace api\modules\v1\components;
+namespace common\components;
 
 use common\models\PayInfo;
 

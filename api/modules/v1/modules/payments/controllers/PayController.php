@@ -1,9 +1,9 @@
 <?php
 
-namespace api\modules\v1\controllers;
+namespace api\modules\v1\modules\payments\controllers;
 
-use api\modules\v1\components\IPaySystem;
-use api\modules\v1\components\PaySystems;
+use common\components\IPaySystem;
+use common\components\PaySystems;
 use common\models\InvoiceQuery;
 use common\models\Order;
 use common\models\PayInfo;
@@ -222,7 +222,7 @@ class PayController extends Controller
             ];
             $pi = new PayInfo($piOptions);
 
-            /* @var \api\modules\v1\components\IPaySystem $psObject */
+            /* @var \common\components\IPaySystem $psObject */
             $psObject = new $ps->class;
             $form = $psObject->getHtmlForPay($pi);
 

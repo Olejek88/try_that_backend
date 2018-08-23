@@ -1,6 +1,6 @@
 <?php
 
-namespace api\modules\v1\components;
+namespace api\modules\v1\modules\payments\components;
 
 use yii\base\BaseObject;
 use yii\web\Request;
@@ -23,8 +23,18 @@ class PaymentsUrlRule extends BaseObject implements UrlRuleInterface
         $pathInfo = $request->getPathInfo();
 //        var_dump($pathInfo);
         if (preg_match('%^pay/index$%', $pathInfo, $matches)) {
+//            var_dump($matches);
+//            die(0);
             return ['v1/controllers/pay/index', []];
         }
+
+//        if (preg_match('%^pay/ps-pay-form/(\d+)$%', $pathInfo, $matches)) {
+//            var_dump($matches);
+//            die(0);
+//            return ['v1/controllers/pay/index', []];
+//        }
+
+//        die(0);
 
         return false;
     }

@@ -6,15 +6,16 @@
  * Time: 6:25 PM
  */
 
-namespace api\modules\v1\components;
+namespace api\modules\v1\modules\payments\components;
 
 use common\models\InvoiceQueryStatus;
+use common\components\IPaySystem;
 use yii\helpers\Html;
 
 /**
  * Class YaD
  * Класс реализует интерфейс взаимодействия с Яндекс.Деньги в режими p2p платежей.
- * @package api\modules\v1\components
+ * @package api\modules\v1\modules\payments\components
  */
 class YaD implements IPaySystem
 {
@@ -49,7 +50,7 @@ class YaD implements IPaySystem
     public function __construct()
     {
         $params = \Yii::$app->params;
-        $className = 'api\modules\v1\components\YaD';
+        $className = YaD::class;
 
         if (isset($params['paySystems']['classes'][$className])) {
             $yadParams = $params['paySystems']['classes'][$className];
@@ -120,7 +121,7 @@ class YaD implements IPaySystem
             'PC' => 'Яндекс.Деньгами',
             'AC' => 'Банковской картой',
 //            'MC' => 'Мобильный телефон',
-            ];
+        ];
         $form .= "\n" . Html::radioList('paymentType', 'PC', $items);
         $form .= "\n" . Html::submitButton('Оплатить');
         $form .= "\n" . html::a('Отмена', $payInfo->getCancelUrl());

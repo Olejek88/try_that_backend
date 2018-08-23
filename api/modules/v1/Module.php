@@ -8,7 +8,7 @@
 
 namespace api\modules\v1;
 
-use api\modules\v1\components\PaySystems;
+use common\components\PaySystems;
 
 class Module extends \yii\base\Module
 {

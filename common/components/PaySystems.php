@@ -6,8 +6,7 @@
  * Time: 3:23 PM
  */
 
-namespace api\modules\v1\components;
-
+namespace common\components;
 
 use yii\base\UnknownClassException;
 
@@ -21,7 +20,7 @@ class PaySystems
      * @param $classes
      * @param $interface
      */
-    private function __construct($classes, $interface = 'api\modules\v1\components\IPaySystem')
+    private function __construct($classes, $interface = IPaySystem::class)
     {
         $this->classes = [];
 
