@@ -8,8 +8,6 @@
 
 namespace api\modules\v1;
 
-use common\components\PaySystems;
-
 class Module extends \yii\base\Module
 {
     /**
@@ -22,8 +20,5 @@ class Module extends \yii\base\Module
     public function init()
     {
         parent::init();
-        // TODO: Переписать без всяких синглтонов.
-        // Создание экземпляра, вызов метода getAllUrlRules, динамическая установка полученых правил.
-        $ps = PaySystems::getInstance();
     }
 }

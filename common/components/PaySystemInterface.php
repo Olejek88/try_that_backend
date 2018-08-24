@@ -9,8 +9,9 @@
 namespace common\components;
 
 use common\models\PayInfo;
+use yii\web\Request;
 
-interface IPaySystem
+interface PaySystemInterface
 {
     /**
      * Признак того что перед оплатой нужно зарегистрировать платёжн в платёжной системе.
@@ -124,4 +125,29 @@ interface IPaySystem
      * @return string
      */
     public function getName();
+
+    /**
+     * Возвращает true если при уведомлении нас платёжной системой, invoiceId передаётся в другом параметре.
+     * Соответсвенно это сигнал к тому чтобы вызвать метод parseOrderId() для его вычленения из уведомления.
+     *
+     * @return boolean
+     */
+    public function isOddInvoiceId();
+
+    /**
+     * Разбирает запрос с уведомлением от платёжной системы и возвращает invoiceId.
+     * в случае когда он содержится в другом передаваемом нам параметре запроса.
+     * Если invoiceId не удалось получить(запрос от другой платёжной системы) возвращает false.
+     *
+     * @param $request Request
+     * @return boolean|integer
+     */
+    public function parseInvoiceId($request);
+
+    /**
+     * Возвращает массив правил для создания маршрутов для urlManager.
+     *
+     * @return array
+     */
+    public function getRoutes();
 }

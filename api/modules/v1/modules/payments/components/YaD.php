@@ -9,15 +9,16 @@
 namespace api\modules\v1\modules\payments\components;
 
 use common\models\InvoiceQueryStatus;
-use common\components\IPaySystem;
+use common\components\PaySystemInterface;
 use yii\helpers\Html;
+use yii\web\Request;
 
 /**
  * Class YaD
  * Класс реализует интерфейс взаимодействия с Яндекс.Деньги в режими p2p платежей.
  * @package api\modules\v1\modules\payments\components
  */
-class YaD implements IPaySystem
+class YaD implements PaySystemInterface
 {
     // номер "счёта" на который будут перечисленны деньги
     private $account = '';
@@ -43,6 +44,10 @@ class YaD implements IPaySystem
     // максимальное время жизни заявки до того как она "протухнет" в секундах
     private $maxLifeTime = 7200;
     private const MAX_LIFE_TIME_CONFIG = 'maxLifeTime';
+
+    // список правил для маршрутов urlManager
+    private const ROUTES_CONFIG = 'routes';
+    private $routes = [];
 
     /**
      * YaD constructor.
@@ -145,51 +150,78 @@ class YaD implements IPaySystem
 
         // параметры запроса
         $request = \Yii::$app->request;
-        $notification_type = $request->post('notification_type', null);
-        $operation_id = $request->post('operation_id', null);
-        $amount = $request->post('amount', null);
-        $currency = $request->post('currency', null);
-        $datetime = $request->post('datetime', null);
-        $sender = $request->post('sender', null);
-        $codePro = $request->post('codepro', null);
-        $label = $request->post('label', null);
-        $inSha1Hash = $request->post('sha1_hash', null);
+        $params = self::getRequestParams($request);
 
         // строка для расчёта хеша
-        $val = $notification_type . '&' .
-            $operation_id . '&' .
-            $amount . '&' .
-            $currency . '&' .
-            $datetime . '&' .
-            $sender . '&' .
-            $codePro . '&' .
-            $this->secret . '&' .
-            $label;
+        $val = $this->stringForCalculateHash($params);
 
         // расчитываем хеш
         $testSha1Hash = sha1($val);
 
         // строка для отправки в лог
-        $req_p = 'notification_type=' . $notification_type . ',' .
-            'operation_id=' . $operation_id . ',' .
-            'amount=' . $amount . ',' .
-            'currency=' . $currency . ',' .
-            'datetime=' . $datetime . ',' .
-            'sender=' . $sender . ',' .
-            'codepro=' . $codePro . ',' .
-            'label=' . $label;
+        $req_p = 'notification_type=' . $params['notification_type'] . ',' .
+            'operation_id=' . $params['operation_id'] . ',' .
+            'amount=' . $params['amount'] . ',' .
+            'currency=' . $params['currency'] . ',' .
+            'datetime=' . $params['datetime'] . ',' .
+            'sender=' . $params['sender'] . ',' .
+            'codePro=' . $params['codePro'] . ',' .
+            'label=' . $params['label'];
 
         // отправляем в лог информацию о платеже
         \Yii::info($req_p, 'application');
 
         // проверка подлинности подтверждения
-        if ($testSha1Hash == $inSha1Hash) {
-            \Yii::info('Товар с ид ' . $label . ' оплачен.', 'application');
+        if ($testSha1Hash == $params['sha1_hash']) {
+            \Yii::info('Товар с ид ' . $params['label'] . ' оплачен.', 'application');
             return InvoiceQueryStatus::PAYED;
         } else {
-            \Yii::info('Для товара с ид ' . $label . ' подтверждение платежа не верное.', 'application');
+            \Yii::info('Для товара с ид ' . $params['label'] . ' подтверждение платежа не верное.', 'application');
             return InvoiceQueryStatus::NOT_PAYED;
         }
+    }
+
+    /**
+     * Возвращает массив параметров переданных YaD
+     *
+     * @param $request Request
+     * @return array
+     */
+    private function getRequestParams($request)
+    {
+        $params = [
+            'notification_type' => $request->post('notification_type', null),
+            'operation_id' => $request->post('operation_id', null),
+            'amount' => $request->post('amount', null),
+            'currency' => $request->post('currency', null),
+            'datetime' => $request->post('datetime', null),
+            'sender' => $request->post('sender', null),
+            'codePro' => $request->post('codepro', null),
+            'label' => $request->post('label', null),
+            'sha1_hash' => $request->post('sha1_hash', null),
+        ];
+
+        return $params;
+    }
+
+    /**
+     * Формирует строку для расчёта хеша.
+     *
+     * @param $params array
+     * @return string
+     */
+    private function stringForCalculateHash($params)
+    {
+        $val = $params['notification_type'] . '&' .
+            $params['operation_id'] . '&' .
+            $params['amount'] . '&' .
+            $params['currency'] . '&' .
+            $params['datetime'] . '&' .
+            $params['sender'] . '&' .
+            $params['codePro'] . '&' .
+            $this->secret . '&' .
+            $params['label'];
+        return $val;
     }
 
     public function getMaxInvoiceLifeTime()
@@ -219,6 +251,10 @@ class YaD implements IPaySystem
         if (isset($params[self::MAX_LIFE_TIME_CONFIG]) && $params[self::MAX_LIFE_TIME_CONFIG] !== '') {
             $this->maxLifeTime = $params[self::MAX_LIFE_TIME_CONFIG];
         }
+
+        if (isset($params[self::ROUTES_CONFIG]) && is_array($params[self::ROUTES_CONFIG])) {
+            $this->routes = $params[self::ROUTES_CONFIG];
+        }
     }
 
     public function getName()
@@ -229,5 +265,27 @@ class YaD implements IPaySystem
     public function isParseBackUrl()
     {
         return false;
+    }
+
+    public function isOddInvoiceId()
+    {
+        return true;
+    }
+
+    public function parseInvoiceId($request)
+    {
+        $params = self::getRequestParams($request);
+        $val = self::stringForCalculateHash($params);
+        $testHash = sha1($val);
+        if ($testHash == $params['sha1_hash']) {
+            return $params['label'];
+        } else {
+            return false;
+        }
+    }
+
+    public function getRoutes()
+    {
+        return $this->routes;
     }
 }

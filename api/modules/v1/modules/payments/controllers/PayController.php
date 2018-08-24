@@ -2,17 +2,15 @@
 
 namespace api\modules\v1\modules\payments\controllers;
 
-use common\components\IPaySystem;
+use common\components\PaySystemInterface;
 use common\components\PaySystems;
 use common\models\InvoiceQuery;
 use common\models\Order;
 use common\models\PayInfo;
 use common\models\PaySystem;
-use yii\base\InvalidConfigException;
 use yii\base\Module;
 use yii\helpers\Url;
 use yii\rest\Controller;
-use yii\web\Request;
 use yii\web\Response;
 
 /**
@@ -42,16 +40,17 @@ class PayController extends Controller
 //        $order = Order::getUserOrder($orderId);
 
         // TODO: вместо этого, поучать список платёжных систем из таблицы pay_systems, т.к. какая-то может быть отключена
-        $paySystems = PaySystems::getInstance()->getPaySystems();
-        $psarray = [];
+        $ps = new PaySystems();
+        $paySystems = $ps->getPaySystems();
+        $psList = [];
         foreach ($paySystems as $name => $value) {
-            $psarray[$value] = $name;
+            $psList[$value] = $name;
         }
 
         // TODO: нужно решить что возвращать если ни одной платёжной системы нет
         return $this->renderPartial('select-ps',
             [
-                'psList' => $psarray,
+                'psList' => $psList,
                 'orderId' => $orderId,
             ]
         );
@@ -59,22 +58,29 @@ class PayController extends Controller
 
     /**
      * Метод разбирающий уведомления от платёжных систем которые сами нас уведомляют о состоянии платежей.
-     * Из запроса пытаемся получить параметр iid. В этом параметре мы указываем платёжной системе вернуть нам
+     * Из запроса пытаемся получить параметр invoiceId. В этом параметре мы указываем платёжной системе вернуть нам
      * id заявки на платёж в нашей локальной базе. id передаётся в момент проведения платежа.
-     * Если платёжная система не позволяет это сделать, и передаёт необходимое нам значение в параметре
-     * с другим именем, необходимо сделать обёртку для выделения этого параметра и приведения его к необходимой
-     * нам форме. Url обёртки передавать платёжной системе как адрес для уведомления по платежу.
-     *
-     * // TODO: возможно ли динамически на этапе создания экземляра класса контроллера получить из всех доступных
-     * // классов платёжных систем методы для обработки уведомлений?
-     * // Т.е. при обращении к /hue-moe-notification, находим метод из списка доступных платёжных систем
-     * // и вызываем его для обработки уведомления.
-     * // В таком случае не придётся дописывать для каждой новой странной системы обработчик в этом классе.
      */
     public function actionNotification()
     {
-        $invoiceId = \Yii::$app->request->getBodyParam('iid', null);
+        $request = \Yii::$app->request;
+        $invoiceId = $request->getBodyParam('invoiceId', null);
         if ($invoiceId === null || !is_numeric($invoiceId)) {
+            // пытаемся получит invoiceId путём перебора платёжных систем, которые "узнают" свой ответ
+            $ps = new PaySystems();
+            foreach ($ps->getPaySystems() as $name => $class) {
+                /* @var $psi PaySystemInterface */
+                $psi = new $class;
+                if ($psi->isOddInvoiceId()) {
+                    $invoiceId = $psi->parseInvoiceId($request);
+                    if ($invoiceId !== false) {
+                        break;
+                    }
+                }
+            }
+        }
+
+        if ($invoiceId === false) {
             $msg = 'В запросе не верно указан идентификатор заявки на оплату: (' . $invoiceId . ')';
             \Yii::info($msg);
             // пустой ответ яндексу
@@ -83,7 +89,7 @@ class PayController extends Controller
 
         $invoice = InvoiceQuery::findOne($invoiceId);
         if ($invoice !== null) {
-            /* @var $ps IPaySystem */
+            /* @var $ps PaySystemInterface */
             try {
                 $ps = new $invoice->pay_system_class;
                 $status = $ps->parseNotification();
@@ -100,35 +106,6 @@ class PayController extends Controller
             \Yii::info('Нет заявки на оплату c идентификатором: (' . $invoiceId . ')');
             return [];
         }
-    }
-
-    /**
-     * Обработчик уведомления от Yandex.Money
-     * Так как нет возможности указать платёжной системе какие параметры нужно передать нам в уведомлении,
-     * "создаём" нужный нам получив значение из параметра в котором мы передаём системе id заявки на оплату.
-     * Далее обрабатываем уведомление "штатным" методом.
-     * @return string Статус платежа.
-     */
-    public function actionNotificationYad()
-    {
-        $invoiceId = \Yii::$app->request->getBodyParam('label', null);
-        if ($invoiceId !== null && is_numeric($invoiceId)) {
-            $_POST['iid'] = $invoiceId;
-            try {
-                \Yii::$app->set('request', new Request());
-            } catch (InvalidConfigException $exception) {
-
-            }
-        }
-
-        return $this->actionNotification();
-    }
-
-    public function actionBackUrl()
-    {
-//        Url::to(['v1/controllers/pay/index', 'id' => 666]);
-//        \Yii::warning($_POST, 'application');
-        return ['message' => \Yii::t('app', 'back url page')];
     }
 
     /**
@@ -222,7 +199,7 @@ class PayController extends Controller
             ];
             $pi = new PayInfo($piOptions);
 
-            /* @var \common\components\IPaySystem $psObject */
+            /* @var \common\components\PaySystemInterface $psObject */
             $psObject = new $ps->class;
             $form = $psObject->getHtmlForPay($pi);
 
