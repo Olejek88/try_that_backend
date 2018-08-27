@@ -16,7 +16,7 @@ namespace common\models;
  * @property string $description описание товара
  * @property float $cost цена товара
  * @property string $paySystemNumber номер платежа в рамках платёжной системы
- * @property string $invoiceQueryId id заявки на оплату в локальной очереди
+ * @property integer $invoiceQueryId id заявки на оплату в локальной очереди
  * @property string $target назначение платежа
  * @property string $successUrl Url на который платёжная система отправит пользователя после оплаты в случае успеха
  * @property string $failUrl Url на который платёжная система отправит пользователя после оплаты в случае неуспеха
@@ -28,7 +28,7 @@ class PayInfo
     private $description = '';
     private $cost = 0.0;
     private $paySystemNumber = '';
-    private $invoiceQueryId = '';
+    private $invoiceQueryId = 0;
     private $target = '';
     private $successUrl = '';
     private $failUrl = '';
@@ -138,17 +138,17 @@ class PayInfo
     }
 
     /**
-     * @return string
+     * @return int
      */
-    public function getInvoiceQueryId(): string
+    public function getInvoiceQueryId(): int
     {
         return $this->invoiceQueryId;
     }
 
     /**
-     * @param string $invoiceQueryId
+     * @param int $invoiceQueryId
      */
-    public function setInvoiceQueryId(string $invoiceQueryId): void
+    public function setInvoiceQueryId(int $invoiceQueryId): void
     {
         $this->invoiceQueryId = $invoiceQueryId;
     }

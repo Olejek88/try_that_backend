@@ -170,4 +170,36 @@ class InvoiceQuery extends ActiveRecord
     {
         return \Yii::$app->getDb()->tablePrefix . self::PROCEDURE_STATUS_UPDATE_NAME;
     }
+
+    /**
+     * Возвращает текстовое соответсвие коду статуса.
+     *
+     * @param $id integer
+     * @return string
+     */
+    public static function getStatusString($id)
+    {
+        switch ($id) {
+            case 1 :
+                return InvoiceQueryStatus::NEW;
+            case 2 :
+                return InvoiceQueryStatus::REGISTERED;
+            case 3 :
+                return InvoiceQueryStatus::WAITING_FOR_PAY;
+            case 4 :
+                return InvoiceQueryStatus::WAITING_FOR_CONFIRM;
+            case 5 :
+                return InvoiceQueryStatus::WAITING_FOR_BANK;
+            case 6 :
+                return InvoiceQueryStatus::PRE_AUTH;
+            case 7 :
+                return InvoiceQueryStatus::PAYED;
+            case 8 :
+                return InvoiceQueryStatus::NOT_PAYED;
+            case 9 :
+                return InvoiceQueryStatus::CANCELED;
+            default:
+                return 'unknown';
+        }
+    }
 }

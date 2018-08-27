@@ -21,7 +21,7 @@ class m180809_084435_paysystem extends Migration
         $this->createTable(self::PAY_SYSTEM, [
             'id' => $this->primaryKey(),
             'name' => $this->string()->notNull(),
-            'class' => $this->string()->notNull(),
+            'class' => $this->string()->notNull()->unique(),
             'enable' => $this->tinyInteger(1)->defaultValue(0),
         ]);
 

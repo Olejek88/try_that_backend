@@ -117,7 +117,7 @@ class YaD implements PaySystemInterface
         $form .= "\n" . Html::hiddenInput('receiver', $this->account);
         $form .= "\n" . Html::hiddenInput('formcomment', $payInfo->getDescription());
         $form .= "\n" . Html::hiddenInput('short-dest', $payInfo->getDescription());
-        $form .= "\n" . Html::hiddenInput('label', json_encode($payInfo->getInvoiceQueryId()));
+        $form .= "\n" . Html::hiddenInput('label', $payInfo->getInvoiceQueryId());
         $form .= "\n" . Html::hiddenInput('quickpay-form', $this->quickPayForm);
         $form .= "\n" . Html::hiddenInput('targets', $payInfo->getTarget());
         $form .= "\n" . Html::hiddenInput('sum', $payInfo->getCost());
@@ -174,10 +174,10 @@ class YaD implements PaySystemInterface
         // проверка подлинности подтверждения
         if ($testSha1Hash == $params['sha1_hash']) {
             \Yii::info('Товар с ид ' . $params['label'] . ' оплачен.', 'application');
-            return InvoiceQueryStatus::PAYED;
+            return InvoiceQueryStatus::PAYED_ID;
         } else {
             \Yii::info('Для товара с ид ' . $params['label'] . ' подтверждение платежа не верное.', 'application');
-            return InvoiceQueryStatus::NOT_PAYED;
+            return InvoiceQueryStatus::NOT_PAYED_ID;
         }
     }
 

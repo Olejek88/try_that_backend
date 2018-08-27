@@ -5,9 +5,9 @@ namespace api\modules\v1\modules\payments\controllers;
 use common\components\PaySystemInterface;
 use common\components\PaySystems;
 use common\models\InvoiceQuery;
+use common\models\InvoiceQueryStatus;
 use common\models\Order;
 use common\models\PayInfo;
-use common\models\PaySystem;
 use yii\base\Module;
 use yii\helpers\Url;
 use yii\rest\Controller;
@@ -39,9 +39,11 @@ class PayController extends Controller
         $order = null;
 //        $order = Order::getUserOrder($orderId);
 
-        // TODO: вместо этого, поучать список платёжных систем из таблицы pay_systems, т.к. какая-то может быть отключена
+        // TODO: реализовать логику проверки существования заявки на оплату по указанному заказу
+
+        // строим список для показа radiobutton с доступными платёжными системами
         $ps = new PaySystems();
-        $paySystems = $ps->getPaySystems();
+        $paySystems = $ps->getEnabledPaySystems();
         $psList = [];
         foreach ($paySystems as $name => $value) {
             $psList[$value] = $name;
@@ -80,7 +82,7 @@ class PayController extends Controller
             }
         }
 
-        if ($invoiceId === false) {
+        if ($invoiceId === false || $invoiceId === null) {
             $msg = 'В запросе не верно указан идентификатор заявки на оплату: (' . $invoiceId . ')';
             \Yii::info($msg);
             // пустой ответ яндексу
@@ -93,9 +95,12 @@ class PayController extends Controller
             try {
                 $ps = new $invoice->pay_system_class;
                 $status = $ps->parseNotification();
-                $msg = 'Ответ после разбора уведомления платёжной системы: ' . $status;
+                $statusString = InvoiceQuery::getStatusString($status);
+                $msg = 'Ответ после разбора уведомления платёжной системы: ' . $statusString;
                 \Yii::info($msg);
-                // TODO: реализовать установку статуса
+                $result = $invoice->updateStatus($status, date('c', time()));
+                $msg = 'Результат изменения статуса заявки на оплату id: ' . $invoiceId . ', результат: ' . $result . ')';
+                \Yii::info($msg);
                 // пустой ответ яндексу
                 return [];
             } catch (\Exception $exception) {
@@ -118,24 +123,18 @@ class PayController extends Controller
      */
     public function actionPsPayForm($id)
     {
+        // проверяем id заказа
         if (!is_numeric($id)) {
             // сообщаем о не верном заказе
             return ['message' => \Yii::t('app', 'Такого заказа нет.')];
         }
 
-        $order = Order::findOne($id);
+        // TODO: исправить когда будет реализована связь (возможно через join)
+        // пытаемся найти заказ по id и пользователю
+        $order = Order::findOne(['id' => $id, /*'userId' => \Yii::$app->user->id*/]);
         if ($order == null) {
             // сообщаем о не верном заказе
 //            return ['message' =>  \Yii::t('app','Такого заказа нет.')];
-        }
-
-        $user = \Yii::$app->user;
-        // TODO: исправить когда будет реализована связь
-//        $orderUserId = $order->user_id;
-        $orderUserId = $user->id;
-        if ($orderUserId != $user->id) {
-            // сообщаем о не верном заказе
-            return ['message' => \Yii::t('app', 'Такого заказа нет.')];
         }
 
         $request = \Yii::$app->request;
@@ -150,8 +149,7 @@ class PayController extends Controller
         // иначе, показываем при необходимости форму оплаты платёжной системы
         if ($referrerHost == $request->serverName) {
             $psClass = $request->getBodyParam('ps', null);
-            $ps = PaySystem::findOne(['class' => $psClass]);
-            if ($ps == null || $ps->enable == false) {
+            if (!PaySystems::isEnabled($psClass)) {
                 return ['message' => \Yii::t('app', 'Платёжная система не доступна.')];
             }
 
@@ -167,15 +165,17 @@ class PayController extends Controller
 
             if ($invoice == null) {
                 // создаём новую заявку на оплату
-                $invoice = new InvoiceQuery(['order_id' => $id]);
+                \Yii::info('Создаём новую заявку на оплату для заказа с id: ' . $id);
+                $invoice = new InvoiceQuery(['order_id' => $id, 'status_id' => InvoiceQueryStatus::NEW_ID]);
             } else {
+                \Yii::info('Заявка на оплату для заказа с id: ' . $id . ' уже есть.');
                 // в зависимости от статуса заявки, выполняем действия
                 if ($invoice->isPayed()) {
                     // заявка оплачена, отправляем пользователя смотреть заказ
-                    return $this->redirect(Url::to('/order/view?id=' . $id));
+                    return $this->redirect(Url::to('/order/view/' . $id));
                 } elseif ($invoice->isWaitingPruf()) {
                     // ожидаем подтверждения оплаты, т.е. по новой платить не даём, заставляем ждать
-                    return $this->redirect(Url::to('/order/view?id=' . $id));
+                    return $this->redirect(Url::to('/order/view/' . $id));
                 } elseif ($invoice->isAllowNewPay()) {
                     // если только зарегистрирована, заявка не оплачена, ожидает оплаты,
                     // отменена - показываем форму для оплаты
@@ -185,13 +185,16 @@ class PayController extends Controller
                 }
             }
 
+            // TODO: здесь нужно заполнить поля запроса на оплату
+            // либо напрямую меняем данные в заявке на данные из заказа, либо делаем какие-то проверки
+
             // TODO: параметры должны заполняться из данных в $order
             $piOptions = [
                 'deposit' => false,
                 'description' => 'test description',
                 'cost' => '2.0',
                 'paySystemNumber' => 'fuck you',
-                'invoiceQueryId' => '777',
+                'invoiceQueryId' => 1,
                 'target' => 'подаяние',
                 'successUrl' => '/pay/success',
                 'failUrl' => '/pay/fail',
@@ -200,14 +203,19 @@ class PayController extends Controller
             $pi = new PayInfo($piOptions);
 
             /* @var \common\components\PaySystemInterface $psObject */
-            $psObject = new $ps->class;
+            $psObject = new $psClass;
             $form = $psObject->getHtmlForPay($pi);
 
             \Yii::$app->response->format = Response::FORMAT_HTML;
             return $this->renderPartial('ps-pay-form', ['formHtml' => $form]);
         } else {
             // видимо вернулись с платёжной системы
-            return $this->redirect(Url::to('/order/view?id=' . $id));
+            return $this->redirect(Url::to('/order/view/' . $id));
         }
+    }
+
+    public function actionOrderView($id)
+    {
+        return ['message' => 'Просмотр заказа: ' . $id];
     }
 }

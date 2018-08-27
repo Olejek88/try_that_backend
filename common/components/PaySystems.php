@@ -8,6 +8,8 @@
 
 namespace common\components;
 
+use common\models\PaySystem;
+
 class PaySystems
 {
     private $classes;
@@ -28,12 +30,50 @@ class PaySystems
         }
     }
 
+    /**
+     * Возвращает все доступные классы которые реализуют интерфейс PaySystemInterface.
+     *
+     * @return array
+     */
     public function getPaySystems()
     {
         return $this->classes;
     }
 
-    public static function getImplementingClasses($interfaceName)
+    /**
+     * Возвращает все доступные для пользователя классы платёжных систем которые прямо не запрещены.
+     *
+     * @return array
+     */
+    public function getEnabledPaySystems()
+    {
+        $result = [];
+        foreach ($this->classes as $name => $class) {
+            if (self::isEnabled($class)) {
+                $result[$name] = $class;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Проверяет "отключена" ли платёжная система для использования.
+     *
+     * @param $class string
+     * @return boolean
+     */
+    public static function isEnabled($class)
+    {
+        $classes = self::getImplementingClasses();
+        if (in_array($class, $classes)) {
+            return PaySystem::findOne(['class' => $class, 'enable' => 0]) == null;
+        } else {
+            return false;
+        }
+    }
+
+    public static function getImplementingClasses($interfaceName = PaySystemInterface::class)
     {
         return array_filter(
             get_declared_classes(),
