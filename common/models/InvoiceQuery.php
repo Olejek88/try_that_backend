@@ -47,6 +47,49 @@ class InvoiceQuery extends ActiveRecord
     }
 
     /**
+     * @param integer $status
+     */
+    public function setStatus($status) {
+        $this->status_id = $status;
+    }
+
+    public function setStatusNew() {
+        $this->status_id = InvoiceQueryStatus::NEW_ID;
+    }
+
+    public function setStatusRegistered() {
+        $this->status_id = InvoiceQueryStatus::REGISTERED_ID;
+    }
+
+    public function setStatusWaitingForPay() {
+        $this->status_id = InvoiceQueryStatus::WAITING_FOR_PAY_ID;
+    }
+
+    public function setStatusWaitingForConfirm() {
+        $this->status_id = InvoiceQueryStatus::WAITING_FOR_CONFIRM_ID;
+    }
+
+    public function setStatusWaitingForBank() {
+        $this->status_id = InvoiceQueryStatus::WAITING_FOR_BANK_ID;
+    }
+
+    public function setStatusPreAuth() {
+        $this->status_id = InvoiceQueryStatus::PRE_AUTH_ID;
+    }
+
+    public function setStatusPayed() {
+        $this->status_id = InvoiceQueryStatus::PAYED_ID;
+    }
+
+    public function setStatusNotPayed() {
+        $this->status_id = InvoiceQueryStatus::NOT_PAYED_ID;
+    }
+
+    public function setStatusCanceled() {
+        $this->status_id = InvoiceQueryStatus::CANCELED_ID;
+    }
+
+    /**
      * @return bool
      */
     public function isNew()

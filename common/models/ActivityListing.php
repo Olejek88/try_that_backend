@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\ActivityListingQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%activity_listing}}".
@@ -19,7 +21,7 @@ use Yii;
  * @property GroupExperience[] $groupExperiences
  * @property Order[] $orders
  */
-class ActivityListing extends \yii\db\ActiveRecord
+class ActivityListing extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -96,6 +98,6 @@ class ActivityListing extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\ActivityListingQuery(get_called_class());
+        return new ActivityListingQuery(get_called_class());
     }
 }

@@ -16,7 +16,7 @@ namespace common\models;
  * @property string $description описание товара
  * @property float $cost цена товара
  * @property string $paySystemNumber номер платежа в рамках платёжной системы
- * @property integer $invoiceQueryId id заявки на оплату в локальной очереди
+ * @property integer $orderId id заказа
  * @property string $target назначение платежа
  * @property string $successUrl Url на который платёжная система отправит пользователя после оплаты в случае успеха
  * @property string $failUrl Url на который платёжная система отправит пользователя после оплаты в случае неуспеха
@@ -28,7 +28,7 @@ class PayInfo
     private $description = '';
     private $cost = 0.0;
     private $paySystemNumber = '';
-    private $invoiceQueryId = 0;
+    private $orderId = 0;
     private $target = '';
     private $successUrl = '';
     private $failUrl = '';
@@ -52,8 +52,8 @@ class PayInfo
             $this->paySystemNumber = $options['paySystemNumber'];
         }
 
-        if (isset($options['invoiceQueryId'])) {
-            $this->invoiceQueryId = $options['invoiceQueryId'];
+        if (isset($options['orderId'])) {
+            $this->orderId = $options['orderId'];
         }
 
         if (isset($options['target'])) {
@@ -140,17 +140,17 @@ class PayInfo
     /**
      * @return int
      */
-    public function getInvoiceQueryId(): int
+    public function getOrderId(): int
     {
-        return $this->invoiceQueryId;
+        return $this->orderId;
     }
 
     /**
-     * @param int $invoiceQueryId
+     * @param int $orderId
      */
-    public function setInvoiceQueryId(int $invoiceQueryId): void
+    public function setOrderId(int $orderId): void
     {
-        $this->invoiceQueryId = $invoiceQueryId;
+        $this->orderId = $orderId;
     }
 
     /**

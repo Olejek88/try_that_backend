@@ -140,7 +140,7 @@ class YaD implements PaySystemInterface
         return null;
     }
 
-    public function parseNotification()
+    public function parseNotification($cost)
     {
         if ($this->secret == '') {
             // не указан секрет для работы с яндексом
@@ -173,6 +173,31 @@ class YaD implements PaySystemInterface
 
         // проверка подлинности подтверждения
         if ($testSha1Hash == $params['sha1_hash']) {
+            $unaccepted = $request->getBodyParam('unaccepted', false);
+            if ($unaccepted) {
+                // TODO: необходимо уведомить администратора что моненты не зачислены на счёт
+                if ($params['codePro'] === null) {
+                    // закончилось место для денег
+                } else {
+                    // нужно ввести код протекции
+                }
+
+                // !!! статус не верный для этой ситуации, нужно решить как сделать !!!
+                return InvoiceQueryStatus::WAITING_FOR_CONFIRM;
+            }
+
+            // проверяем сумму платежа которую пользователь "отправил" нам
+            switch ($params['notification_type']) {
+                case 'p2p-incoming' :
+                    // TODO: реализовать проверку суммы за вычетом 0.5%
+                    break;
+                case 'card-incoming' :
+                    // TODO: реализовать проверку суммы за вычетом 2%
+                    break;
+                default :
+                    // TODO: этого не достаточно, нужно как-то уведомлять о том что денег меньше или больше.
+                    return InvoiceQueryStatus::NOT_PAYED_ID;
+            }
             \Yii::info('Товар с ид ' . $params['label'] . ' оплачен.', 'application');
             return InvoiceQueryStatus::PAYED_ID;
         } else {
@@ -272,7 +297,7 @@ class YaD implements PaySystemInterface
         return true;
     }
 
-    public function parseInvoiceId($request)
+    public function parseOrderId($request)
     {
         $params = self::getRequestParams($request);
         $val = self::stringForCalculateHash($params);
