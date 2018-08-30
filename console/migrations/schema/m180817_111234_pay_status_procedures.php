@@ -14,7 +14,7 @@ class m180817_111234_pay_status_procedures extends Migration
     {
         $db = $this->getDb();
         $sql = "
-        CREATE PROCEDURE " . \common\models\InvoiceQuery::getProcedureUpdateStatusName() . " (
+        CREATE PROCEDURE " . \common\models\InvoiceQuery::PROCEDURE_STATUS_UPDATE_NAME . " (
           IN queryId int,
           IN status_new int,
           IN status_date_new datetime
@@ -40,7 +40,7 @@ class m180817_111234_pay_status_procedures extends Migration
         echo "m180817_111234_pay_status_procedures cannot be reverted.\n";
         $db = $this->getDb();
         $db->createCommand('DROP PROCEDURE IF EXISTS '
-            . \common\models\InvoiceQuery::getProcedureUpdateStatusName())->execute();
+            . \common\models\InvoiceQuery::PROCEDURE_STATUS_UPDATE_NAME)->execute();
         return true;
     }
 }

@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\OrderQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%order}}".
@@ -14,13 +16,15 @@ use Yii;
  * @property string $start_date
  * @property int $created_at
  * @property int $updated_at
+ * @property int $customer_id
  *
  * @property Mail[] $mails
  * @property ActivityListing $activityListing
  * @property Duration $duration
  * @property OrderStatus $orderStatus
+ * @property Customer $customer
  */
-class Order extends \yii\db\ActiveRecord
+class Order extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -39,9 +43,27 @@ class Order extends \yii\db\ActiveRecord
             [['activity_listing_id', 'order_status_id', 'duration_id', 'created_at', 'updated_at'], 'required'],
             [['activity_listing_id', 'order_status_id', 'duration_id', 'created_at', 'updated_at'], 'integer'],
             [['start_date'], 'safe'],
-            [['activity_listing_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActivityListing::class, 'targetAttribute' => ['activity_listing_id' => 'id']],
-            [['duration_id'], 'exist', 'skipOnError' => true, 'targetClass' => Duration::class, 'targetAttribute' => ['duration_id' => 'id']],
-            [['order_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => OrderStatus::class, 'targetAttribute' => ['order_status_id' => 'id']],
+            [
+                ['activity_listing_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => ActivityListing::class,
+                'targetAttribute' => ['activity_listing_id' => 'id']
+            ],
+            [
+                ['duration_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Duration::class,
+                'targetAttribute' => ['duration_id' => 'id']
+            ],
+            [
+                ['order_status_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => OrderStatus::class,
+                'targetAttribute' => ['order_status_id' => 'id']
+            ],
         ];
     }
 
@@ -94,11 +116,19 @@ class Order extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCustomer()
+    {
+        return $this->hasOne(Customer::class, ['id' => 'user_id']);
+    }
+
+    /**
      * {@inheritdoc}
      * @return \common\models\query\OrderQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \common\models\query\OrderQuery(get_called_class());
+        return new OrderQuery(get_called_class());
     }
 }

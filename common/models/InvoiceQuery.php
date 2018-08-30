@@ -26,10 +26,12 @@ use yii\db\ActiveRecord;
  * @property string $status_date
  * @property string $create_date
  * @property string $last_check
+ *
+ * @property Order $order
  */
 class InvoiceQuery extends ActiveRecord
 {
-    public const PROCEDURE_STATUS_UPDATE_NAME = 'update_invoice_status';
+    public const PROCEDURE_STATUS_UPDATE_NAME = '{{%update_invoice_status}}';
     public const CHANGE = 'change';
     public const NOT_CHANGE = 'notChange';
 
@@ -154,21 +156,13 @@ class InvoiceQuery extends ActiveRecord
      */
     public function updateStatus($statusId, $updateDate)
     {
-        $sql = "CALL " . self::getProcedureUpdateStatusName() . "(:queryId, :statusId, :date)";
+        $sql = "CALL " . self::PROCEDURE_STATUS_UPDATE_NAME . "(:queryId, :statusId, :date)";
         $params = [':queryId' => $this->id, ':statusId' => $statusId, ':date' => $updateDate];
         try {
             return \Yii::$app->db->createCommand($sql, $params)->queryOne();
         } catch (\Exception $exception) {
             return self::NOT_CHANGE;
         }
-    }
-
-    /**
-     * @return string
-     */
-    public static function getProcedureUpdateStatusName()
-    {
-        return \Yii::$app->getDb()->tablePrefix . self::PROCEDURE_STATUS_UPDATE_NAME;
     }
 
     /**

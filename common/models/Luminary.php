@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\LuminaryQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%luminary}}".
@@ -11,13 +13,15 @@ use Yii;
  * @property int $verified
  * @property string $verified_date
  * @property double $rating
+ * @property int $user_id
  *
  * @property Activity[] $activities
  * @property ExceptionTT[] $exceptions
  * @property FollowList[] $followLists
  * @property News[] $news
+ * @property User $user
  */
-class Luminary extends \yii\db\ActiveRecord
+class Luminary extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -85,11 +89,19 @@ class Luminary extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    /**
      * {@inheritdoc}
      * @return \common\models\query\LuminaryQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \common\models\query\LuminaryQuery(get_called_class());
+        return new LuminaryQuery(get_called_class());
     }
 }
