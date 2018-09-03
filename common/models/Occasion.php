@@ -70,7 +70,7 @@ class Occasion extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return \common\models\query\UQuery the active query used by this AR class.
+     * @return \common\models\query\OccasionQuery the active query used by this AR class.
      */
     public static function find()
     {

@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\ActivityQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%activity}}".
@@ -13,7 +15,6 @@ use Yii;
  * @property int $luminary_id
  * @property int $category_id
  * @property int $activity_category_id
- * @property int $duration_id
  * @property int $min_customers
  * @property int $max_customers
  * @property int $start_date
@@ -21,7 +22,7 @@ use Yii;
  *
  * @property ActivityCategory $activityCategory
  * @property Category $category
- * @property Duration $duration
+ * @property ActivityDuration[] $activityDurations
  * @property Luminary $luminary
  * @property ActivityImage[] $activityImages
  * @property ActivityListing[] $activityListings
@@ -32,7 +33,7 @@ use Yii;
  * @property Trending[] $trendings
  * @property Wishlist[] $wishlists
  */
-class Activity extends \yii\db\ActiveRecord
+class Activity extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -49,11 +50,10 @@ class Activity extends \yii\db\ActiveRecord
     {
         return [
             [['luminary_id', 'category_id', 'activity_category_id', 'start_date', 'end_date'], 'required'],
-            [['luminary_id', 'category_id', 'activity_category_id', 'duration_id', 'min_customers', 'max_customers', 'start_date', 'end_date'], 'integer'],
+            [['luminary_id', 'category_id', 'activity_category_id', 'min_customers', 'max_customers', 'start_date', 'end_date'], 'integer'],
             [['title', 'description'], 'string', 'max' => 255],
             [['activity_category_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActivityCategory::class, 'targetAttribute' => ['activity_category_id' => 'id']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
-            [['duration_id'], 'exist', 'skipOnError' => true, 'targetClass' => Duration::class, 'targetAttribute' => ['duration_id' => 'id']],
             [['luminary_id'], 'exist', 'skipOnError' => true, 'targetClass' => Luminary::class, 'targetAttribute' => ['luminary_id' => 'id']],
         ];
     }
@@ -70,7 +70,6 @@ class Activity extends \yii\db\ActiveRecord
             'luminary_id' => Yii::t('app', 'Luminary ID'),
             'category_id' => Yii::t('app', 'Category ID'),
             'activity_category_id' => Yii::t('app', 'Activity Category ID'),
-            'duration_id' => Yii::t('app', 'Duration ID'),
             'min_customers' => Yii::t('app', 'Min Customers'),
             'max_customers' => Yii::t('app', 'Max Customers'),
             'start_date' => Yii::t('app', 'Start Date'),
@@ -92,14 +91,6 @@ class Activity extends \yii\db\ActiveRecord
     public function getCategory()
     {
         return $this->hasOne(Category::class, ['id' => 'category_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getDuration()
-    {
-        return $this->hasOne(Duration::class, ['id' => 'duration_id']);
     }
 
     /**
@@ -176,10 +167,17 @@ class Activity extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return \common\models\query\ActivityQuery the active query used by this AR class.
+     * @return ActivityQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \common\models\query\ActivityQuery(get_called_class());
+        return new ActivityQuery(get_called_class());
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getActivityDurations() {
+        return $this->hasMany(ActivityDuration::class, ['activity_id' => 'id']);
     }
 }

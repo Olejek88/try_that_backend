@@ -12,7 +12,6 @@ use yii\db\ActiveRecord;
  * @property int $id
  * @property int $activity_listing_id
  * @property int $order_status_id
- * @property int $duration_id
  * @property string $start_date
  * @property int $created_at
  * @property int $updated_at
@@ -20,7 +19,6 @@ use yii\db\ActiveRecord;
  *
  * @property Mail[] $mails
  * @property ActivityListing $activityListing
- * @property Duration $duration
  * @property OrderStatus $orderStatus
  * @property Customer $customer
  */
@@ -40,8 +38,8 @@ class Order extends ActiveRecord
     public function rules()
     {
         return [
-            [['activity_listing_id', 'order_status_id', 'duration_id', 'created_at', 'updated_at'], 'required'],
-            [['activity_listing_id', 'order_status_id', 'duration_id', 'created_at', 'updated_at'], 'integer'],
+            [['activity_listing_id', 'order_status_id', 'created_at', 'updated_at'], 'required'],
+            [['activity_listing_id', 'order_status_id', 'created_at', 'updated_at'], 'integer'],
             [['start_date'], 'safe'],
             [
                 ['activity_listing_id'],
@@ -49,13 +47,6 @@ class Order extends ActiveRecord
                 'skipOnError' => true,
                 'targetClass' => ActivityListing::class,
                 'targetAttribute' => ['activity_listing_id' => 'id']
-            ],
-            [
-                ['duration_id'],
-                'exist',
-                'skipOnError' => true,
-                'targetClass' => Duration::class,
-                'targetAttribute' => ['duration_id' => 'id']
             ],
             [
                 ['order_status_id'],
@@ -76,7 +67,6 @@ class Order extends ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'activity_listing_id' => Yii::t('app', 'Activity Listing ID'),
             'order_status_id' => Yii::t('app', 'Order Status ID'),
-            'duration_id' => Yii::t('app', 'Duration ID'),
             'start_date' => Yii::t('app', 'Start Date'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
@@ -97,14 +87,6 @@ class Order extends ActiveRecord
     public function getActivityListing()
     {
         return $this->hasOne(ActivityListing::class, ['id' => 'activity_listing_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getDuration()
-    {
-        return $this->hasOne(Duration::class, ['id' => 'duration_id']);
     }
 
     /**

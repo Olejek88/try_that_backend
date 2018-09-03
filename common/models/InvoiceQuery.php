@@ -27,6 +27,7 @@ use yii\db\ActiveRecord;
  * @property string $create_date
  * @property string $last_check
  *
+ * @property InvoiceQueryStatus $status
  * @property Order $order
  */
 class InvoiceQuery extends ActiveRecord
@@ -35,22 +36,22 @@ class InvoiceQuery extends ActiveRecord
     public const CHANGE = 'change';
     public const NOT_CHANGE = 'notChange';
 
+    public static function tableName()
+    {
+        return '{{%invoice_query}}';
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getOrder()
     {
-        // TODO: Раскоментировать как появится модель заказа
-//        return $this->hasOne(Order::class, ['id' => 'order_id']);
+        return $this->hasOne(Order::class, ['id' => 'order_id']);
     }
 
     public function getStatus()
     {
         return $this->hasOne(InvoiceQueryStatus::class, ['id' => 'status_id']);
-    }
-
-    /**
-     * @param integer $status
-     */
-    public function setStatus($status) {
-        $this->status_id = $status;
     }
 
     public function setStatusNew() {

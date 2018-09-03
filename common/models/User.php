@@ -21,7 +21,16 @@ use yii\web\IdentityInterface;
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
+ * @property string $authKey
  * @property string $password write-only password
+ * @property string $firstName
+ * @property string $lastName
+ * @property string $birthDate
+ * @property int $location_id
+ * @property int $country_id
+ * @property string $phone
+ * @property int $image_id
+ * @property string $registeredDate
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -166,6 +175,8 @@ class User extends ActiveRecord implements IdentityInterface
      * Generates password hash from password and sets it to the model
      *
      * @param string $password
+     *
+     * @throws \yii\base\Exception
      */
     public function setPassword($password)
     {
@@ -174,6 +185,8 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * Generates "remember me" authentication key
+     *
+     * @throws \yii\base\Exception
      */
     public function generateAuthKey()
     {
@@ -182,6 +195,8 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * Generates new password reset token
+     *
+     * @throws \yii\base\Exception
      */
     public function generatePasswordResetToken()
     {
