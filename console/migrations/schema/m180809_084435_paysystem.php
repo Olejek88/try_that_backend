@@ -1,7 +1,6 @@
 <?php
 
 use console\yii2\Migration;
-use \common\models\InvoiceQueryStatus;
 
 /**
  * Class m180809_084435_paysystem
@@ -30,20 +29,6 @@ class m180809_084435_paysystem extends Migration
             'name' => $this->string()->notNull(),
             'title' => $this->string()->notNull(),
         ]);
-
-        $this->batchInsert(self::INVOICE_QUERY_STATUS,
-            ['id', 'name', 'title'],
-            [
-                [InvoiceQueryStatus::NEW_ID, 'new', 'Новый'],
-                [InvoiceQueryStatus::REGISTERED_ID, 'registered', 'Зарегестрирован'],
-                [InvoiceQueryStatus::WAITING_FOR_PAY_ID, 'waiting_for_pay', 'Ожидает оплаты'],
-                [InvoiceQueryStatus::WAITING_FOR_CONFIRM_ID, 'waiting_for_confirm', 'Ожидает подтверждения'],
-                [InvoiceQueryStatus::WAITING_FOR_BANK_ID, 'waiting_for_bank', 'Ожидает подтверждения банка'],
-                [InvoiceQueryStatus::PRE_AUTH_ID, 'preauth', 'Средства заблокированы'],
-                [InvoiceQueryStatus::PAYED_ID, 'payed', 'Олачен'],
-                [InvoiceQueryStatus::NOT_PAYED_ID, 'notpayed', 'Не оплачен'],
-                [InvoiceQueryStatus::CANCELED_ID, 'canceled', 'Отменён'],
-            ]);
 
         $this->createTable(self::INVOICE_QUERY, [
             'id' => $this->primaryKey(),
