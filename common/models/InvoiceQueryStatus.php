@@ -1,23 +1,19 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: koputo
- * Date: 8/10/18
- * Time: 1:12 PM
- */
 
 namespace common\models;
 
-
+use common\models\query\InvoiceQueryStatusQuery;
 use yii\db\ActiveRecord;
 
 /**
- * Class PaySystemStatus
+ * This is the model class for table "{{%invoice_query_status}}".
  * @package common\models
  *
  * @property integer $id
  * @property string $name
  * @property string $title
+ *
+ * @property \yii\db\ActiveQuery $invoiceQueries
  */
 class InvoiceQueryStatus extends ActiveRecord
 {
@@ -50,4 +46,51 @@ class InvoiceQueryStatus extends ActiveRecord
     public const CANCELED_ID = 9;
     public const CANCELED = 'canceled';
 
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
+        return '{{%invoice_query_status}}';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['name', 'title'], 'required'],
+            [['name', 'title'], 'string', 'max' => 255],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => \Yii::t('app', 'ID'),
+            'name' => \Yii::t('app', 'Name'),
+            'title' => \Yii::t('app', 'Title'),
+        ];
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getInvoiceQueries()
+    {
+        return $this->hasMany(InvoiceQuery::class, ['status_id' => 'id']);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return InvoiceQueryStatusQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new InvoiceQueryStatusQuery(get_called_class());
+    }
 }

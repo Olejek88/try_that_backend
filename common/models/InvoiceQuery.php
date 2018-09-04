@@ -1,14 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: koputo
- * Date: 8/10/18
- * Time: 1:12 PM
- */
 
 namespace common\models;
 
-
+use common\models\query\InvoiceQueryQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -36,9 +30,63 @@ class InvoiceQuery extends ActiveRecord
     public const CHANGE = 'change';
     public const NOT_CHANGE = 'notChange';
 
+    /**
+     * {@inheritdoc}
+     */
     public static function tableName()
     {
         return '{{%invoice_query}}';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['pay_system_class', 'pay_system_name', 'order_id', 'extra_info'], 'required'],
+            [['order_id', 'status_id'], 'integer'],
+            [['cost'], 'number'],
+            [['extra_info'], 'string'],
+            [['status_date', 'create_date', 'last_check'], 'safe'],
+            [['pay_system_class', 'pay_system_name'], 'string', 'max' => 255],
+            [['description'], 'string', 'max' => 256],
+            [['order_id'], 'unique'],
+            [
+                ['order_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Order::class,
+                'targetAttribute' => ['order_id' => 'id']
+            ],
+            [
+                ['status_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => InvoiceQueryStatus::class,
+                'targetAttribute' => ['status_id' => 'id']
+            ],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => \Yii::t('app', 'ID'),
+            'pay_system_class' => \Yii::t('app', 'Pay System Class'),
+            'pay_system_name' => \Yii::t('app', 'Pay System Name'),
+            'order_id' => \Yii::t('app', 'Order ID'),
+            'description' => \Yii::t('app', 'Description'),
+            'cost' => \Yii::t('app', 'Cost'),
+            'extra_info' => \Yii::t('app', 'Extra Info'),
+            'status_id' => \Yii::t('app', 'Status ID'),
+            'status_date' => \Yii::t('app', 'Status Date'),
+            'create_date' => \Yii::t('app', 'Create Date'),
+            'last_check' => \Yii::t('app', 'Last Check'),
+        ];
     }
 
     /**
@@ -54,39 +102,48 @@ class InvoiceQuery extends ActiveRecord
         return $this->hasOne(InvoiceQueryStatus::class, ['id' => 'status_id']);
     }
 
-    public function setStatusNew() {
+    public function setStatusNew()
+    {
         $this->status_id = InvoiceQueryStatus::NEW_ID;
     }
 
-    public function setStatusRegistered() {
+    public function setStatusRegistered()
+    {
         $this->status_id = InvoiceQueryStatus::REGISTERED_ID;
     }
 
-    public function setStatusWaitingForPay() {
+    public function setStatusWaitingForPay()
+    {
         $this->status_id = InvoiceQueryStatus::WAITING_FOR_PAY_ID;
     }
 
-    public function setStatusWaitingForConfirm() {
+    public function setStatusWaitingForConfirm()
+    {
         $this->status_id = InvoiceQueryStatus::WAITING_FOR_CONFIRM_ID;
     }
 
-    public function setStatusWaitingForBank() {
+    public function setStatusWaitingForBank()
+    {
         $this->status_id = InvoiceQueryStatus::WAITING_FOR_BANK_ID;
     }
 
-    public function setStatusPreAuth() {
+    public function setStatusPreAuth()
+    {
         $this->status_id = InvoiceQueryStatus::PRE_AUTH_ID;
     }
 
-    public function setStatusPayed() {
+    public function setStatusPayed()
+    {
         $this->status_id = InvoiceQueryStatus::PAYED_ID;
     }
 
-    public function setStatusNotPayed() {
+    public function setStatusNotPayed()
+    {
         $this->status_id = InvoiceQueryStatus::NOT_PAYED_ID;
     }
 
-    public function setStatusCanceled() {
+    public function setStatusCanceled()
+    {
         $this->status_id = InvoiceQueryStatus::CANCELED_ID;
     }
 
@@ -239,5 +296,14 @@ class InvoiceQuery extends ActiveRecord
             default:
                 return 'unknown';
         }
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return \common\models\query\InvoiceQueryQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new InvoiceQueryQuery(get_called_class());
     }
 }

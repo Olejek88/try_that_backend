@@ -1,14 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: koputo
- * Date: 8/10/18
- * Time: 1:12 PM
- */
 
 namespace common\models;
 
-
+use common\models\models\query\PaySystemQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -22,5 +16,46 @@ use yii\db\ActiveRecord;
  */
 class PaySystem extends ActiveRecord
 {
+    /**
+     * {@inheritdoc}
+     */
+    public static function tableName()
+    {
+        return '{{%pay_system}}';
+    }
 
+    /**
+     * {@inheritdoc}
+     */
+    public function rules()
+    {
+        return [
+            [['name', 'class'], 'required'],
+            [['enable'], 'integer'],
+            [['name', 'class'], 'string', 'max' => 255],
+            [['class'], 'unique'],
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function attributeLabels()
+    {
+        return [
+            'id' => \Yii::t('app', 'ID'),
+            'name' => \Yii::t('app', 'Name'),
+            'class' => \Yii::t('app', 'Class'),
+            'enable' => \Yii::t('app', 'Enable'),
+        ];
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return PaySystemQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new PaySystemQuery(get_called_class());
+    }
 }
