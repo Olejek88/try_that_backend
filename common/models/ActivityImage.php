@@ -2,19 +2,21 @@
 
 namespace common\models;
 
+use common\models\query\ActivityImageQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%activity_image}}".
  *
  * @property int $id
  * @property int $activity_id
- * @property int $image_id
+ * @property int $user_image_id
  *
  * @property Activity $activity
  * @property Image $image
  */
-class ActivityImage extends \yii\db\ActiveRecord
+class ActivityImage extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -30,10 +32,22 @@ class ActivityImage extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['activity_id', 'image_id'], 'required'],
-            [['activity_id', 'image_id'], 'integer'],
-            [['activity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::class, 'targetAttribute' => ['activity_id' => 'id']],
-            [['image_id'], 'exist', 'skipOnError' => true, 'targetClass' => Image::class, 'targetAttribute' => ['image_id' => 'id']],
+            [['activity_id', 'user_image_id'], 'required'],
+            [['activity_id', 'user_image_id'], 'integer'],
+            [
+                ['activity_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Activity::class,
+                'targetAttribute' => ['activity_id' => 'id']
+            ],
+            [
+                ['user_image_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => UserImage::class,
+                'targetAttribute' => ['user_image_id' => 'id']
+            ],
         ];
     }
 
@@ -67,10 +81,10 @@ class ActivityImage extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return \common\models\query\ActivityImageQuery the active query used by this AR class.
+     * @return ActivityImageQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \common\models\query\ActivityImageQuery(get_called_class());
+        return new ActivityImageQuery(get_called_class());
     }
 }

@@ -29,7 +29,7 @@ use yii\web\IdentityInterface;
  * @property int $location_id
  * @property int $country_id
  * @property string $phone
- * @property int $image_id
+ * @property int $user_image_id
  * @property string $registeredDate
  */
 class User extends ActiveRecord implements IdentityInterface
