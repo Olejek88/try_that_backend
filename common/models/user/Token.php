@@ -2,8 +2,11 @@
 
 namespace common\models\user;
 
+use common\models\query\TokenQuery;
 use common\models\User;
 use Yii;
+use yii\db\ActiveRecord;
+use yii\db\Expression;
 
 /**
  * This is the model class for table "{{%user_token}}".
@@ -13,11 +16,11 @@ use Yii;
  * @property string $created_at
  * @property string $valid_till
  * @property string $last_access
- * @property int $status
+ * @property int $token_type
  *
  * @property User $user
  */
-class Token extends \yii\db\ActiveRecord
+class Token extends ActiveRecord
 {
     const AUTH_TYPE = 1;
     const PASSWORD_RESET_TYPE = 2;
@@ -37,7 +40,7 @@ class Token extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'token'], 'required'],
-            [['user_id', 'status'], 'integer'],
+            [['user_id', 'token_type'], 'integer'],
             [['created_at', 'valid_till', 'last_access'], 'safe'],
             [['token'], 'string', 'max' => 32],
             [
@@ -61,7 +64,7 @@ class Token extends \yii\db\ActiveRecord
             'created_at' => Yii::t('app', 'Created At'),
             'valid_till' => Yii::t('app', 'Valid Till'),
             'last_access' => Yii::t('app', 'Last Access'),
-            'status' => Yii::t('app', 'Status'),
+            'token_type' => Yii::t('app', 'Type'),
         ];
     }
 
@@ -79,7 +82,7 @@ class Token extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\TokenQuery(get_called_class());
+        return new TokenQuery(get_called_class());
     }
 
     /**
@@ -87,8 +90,17 @@ class Token extends \yii\db\ActiveRecord
      */
     public function touchLastAccess()
     {
-        $this->last_access = new \yii\db\Expression('CURRENT_TIMESTAMP');
+        $this->last_access = new Expression('CURRENT_TIMESTAMP');
         $this->save(false, ['last_access']);
+    }
+
+    /**
+     * Продляем действие токена
+     */
+    public function extensionValidTill()
+    {
+        $this->valid_till = date(DATE_W3C, strtotime('+1 week'));
+        $this->save(false, ['valid_till']);
     }
 
     /**

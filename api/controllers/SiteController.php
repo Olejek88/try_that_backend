@@ -2,13 +2,11 @@
 
 namespace api\controllers;
 
+use api\components\BaseController;
+
 /**
  * Site controller
  */
-class SiteController extends \yii\rest\Controller
+class SiteController extends BaseController
 {
-    public function actionIndex()
-    {
-        return $this->redirect(['/request/sign-in']);
-    }
 }

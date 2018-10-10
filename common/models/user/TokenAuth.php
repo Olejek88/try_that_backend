@@ -25,7 +25,7 @@ class TokenAuth extends Token
                 'targetAttribute' => ['user_id', 'token'],
                 'message' => 'The combination of User ID and Token has already been taken.'
             ],
-            [['type'], 'default', 'value' => self::AUTH_TYPE],
+            [['token_type'], 'default', 'value' => self::AUTH_TYPE],
         ]);
     }
 
@@ -38,8 +38,10 @@ class TokenAuth extends Token
             if ($insert) {
                 $this->setAttribute('token', \Yii::$app->security->generateRandomString());
             }
+
             return true;
         }
+
         return false;
     }
 
@@ -51,5 +53,6 @@ class TokenAuth extends Token
         parent::afterFind();
 
         $this->touchLastAccess();
+        $this->extensionValidTill();
     }
 }

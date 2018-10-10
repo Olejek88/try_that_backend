@@ -18,7 +18,7 @@ class m180821_125020_create_user_token extends Migration
             'created_at' => $this->dateTime()->notNull()->defaultExpression('NOW()'),
             'valid_till' => $this->dateTime()->notNull()->defaultValue(0),
             'last_access' => $this->dateTime()->notNull()->defaultExpression('NOW()'),
-            'status' => $this->smallInteger(),
+            'token_type' => $this->smallInteger(),
         ]);
 
         $this->addForeignKey(

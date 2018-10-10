@@ -2,11 +2,10 @@
 
 namespace api\modules\v1\modules\user\controllers;
 
-use api\components\BaseController;
 use api\models\form\LoginForm;
-use Yii;
+use yii\rest\Controller;
 
-class AuthController extends BaseController
+class AuthController extends Controller
 {
     /**
      * @inheritdoc
@@ -14,7 +13,7 @@ class AuthController extends BaseController
     public function verbs()
     {
         $verbs = parent::verbs();
-        $verbs['password'] = ['POST', 'OPTIONS'];
+        $verbs['request'] = ['POST', 'OPTIONS'];
         return $verbs;
     }
 
@@ -25,14 +24,12 @@ class AuthController extends BaseController
     public function actionRequest()
     {
         $model = new LoginForm();
-        $model->load(Yii::$app->request->bodyParams, '');
+        $model->load(\Yii::$app->request->bodyParams, '');
         if ($model->validate()) {
             $user = $model->getUser();
-            $token = $user->generateAccessToken();
+            $token = $user->generateAccessToken(60 * 60 * 24 * 7);
             $user->save();
-
             return [
-                'user_id' => $user->id,
                 'token' => $token,
             ];
         } else {

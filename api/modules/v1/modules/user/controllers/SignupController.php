@@ -2,16 +2,16 @@
 
 namespace api\modules\v1\modules\user\controllers;
 
-use api\components\BaseController;
 use api\models\form\SignupForm;
 use api\models\User;
 use Yii;
+use yii\rest\Controller;
 
 /**
  * Class SignupController
  * @package api\modules\v1\modules\user\controllers
  */
-class SignupController extends BaseController
+class SignupController extends Controller
 {
     /**
      * @inheritdoc
@@ -34,7 +34,7 @@ class SignupController extends BaseController
         $request = \Yii::$app->getRequest()->getBodyParams();
         if ($form->load($request, '') && $form->validate()) {
             try {
-                return User::requestSignup($form->email, $form->password);
+                return User::requestSignup($form->email, $form->password, $form->country_id, $form->location_id);
             } catch (\DomainException $e) {
                 Yii::$app->errorHandler->logException($e);
                 $form->addError('ALL', 'DomainException: Unknown error');
