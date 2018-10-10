@@ -11,7 +11,7 @@ return [
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'api\controllers',
     'bootstrap' => ['log'],
-    'modules' => [],
+    'modules' => require __DIR__ . DIRECTORY_SEPARATOR . '_modules.php',
     'components' => [
         'request' => [
             'parsers' => [

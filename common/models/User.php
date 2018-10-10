@@ -2,8 +2,9 @@
 
 namespace common\models;
 
+use common\models\user\Token;
+use common\models\user\TokenAuth;
 use Yii;
-use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
@@ -21,16 +22,18 @@ use yii\web\IdentityInterface;
  * @property integer $status
  * @property integer $created_at
  * @property integer $updated_at
- * @property string $authKey
  * @property string $password write-only password
+ *
  * @property string $firstName
  * @property string $lastName
  * @property string $birthDate
  * @property int $location_id
  * @property int $country_id
  * @property string $phone
- * @property int $user_image_id
  * @property string $registeredDate
+ * @property int $user_image_id
+ *
+ * @property string $authKey
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -87,7 +90,12 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        $userToken = Token::findOne(['token' => $token]);
+        if ($userToken != null && $userToken->isValid()) {
+            return User::findOne($userToken->user_id);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -209,5 +217,44 @@ class User extends ActiveRecord implements IdentityInterface
     public function removePasswordResetToken()
     {
         $this->password_reset_token = null;
+    }
+
+    /**
+     * Finds user by username or email
+     *
+     * @param string $login
+     * @return static|null
+     */
+    public static function findByLogin($login)
+    {
+        return static::find()
+            ->where([
+                'and',
+                ['or', ['username' => $login], ['email' => $login]],
+                'status' => self::STATUS_ACTIVE,
+            ])
+            ->one();
+    }
+
+    /**
+     * @param null $duration
+     * @return mixed
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function generateAccessToken($duration = null)
+    {
+        if ($duration === null) {
+            $duration = \Yii::$app->params['duration']['week'];
+        }
+
+        $token = \Yii::createObject([
+            'class' => TokenAuth::class,
+            'valid_till' => date(DATE_W3C, time() + $duration),
+            'token_type' => Token::AUTH_TYPE,
+        ]);
+
+        $token->link('user', $this);
+
+        return $token->token;
     }
 }
