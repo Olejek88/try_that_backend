@@ -2,7 +2,7 @@
 
 namespace common\models;
 
-use common\models\models\query\PaySystemQuery;
+use common\models\query\PaySystemQuery;
 use yii\db\ActiveRecord;
 
 /**

@@ -2,6 +2,7 @@
 
 namespace api\modules\v1\modules\payments\controllers;
 
+use api\components\BaseController;
 use common\components\PaySystemInterface;
 use common\components\PaySystems;
 use common\models\InvoiceQuery;
@@ -10,13 +11,12 @@ use common\models\Order;
 use common\models\PayInfo;
 use yii\base\Module;
 use yii\helpers\Url;
-use yii\rest\Controller;
 use yii\web\Response;
 
 /**
  * Site controller
  */
-class PayController extends Controller
+class PayController extends BaseController
 {
 
     public function __construct(string $id, Module $module, array $config = [])
@@ -25,10 +25,11 @@ class PayController extends Controller
 
     }
 
-    public function actionIndex()
+    protected function verbs()
     {
-//        Url::to(['v1/controllers/pay/index', 'id' => 666]);
-        return ['message' => \Yii::t('app', 'index pay page')];
+        $verbs = parent::verbs();
+//        $verbs['pay-systems-list'] = ['GET'];
+        return $verbs;
     }
 
     /**
@@ -232,5 +233,17 @@ class PayController extends Controller
     {
         return $this->renderPartial('order-view', ['orderId' => $orderId, 'message' => $message]);
 //        return ['message' => 'Просмотр заказа: ' . $id];
+    }
+
+    public function actionPaySystemsList() {
+        // строим список для показа radiobutton с доступными платёжными системами
+        $ps = new PaySystems();
+        $paySystems = $ps->getEnabledPaySystems();
+        $psList = [];
+        foreach ($paySystems as $name => $value) {
+            $psList[] = ['name' => $name, 'value' => $value];
+        }
+
+        return $psList;
     }
 }

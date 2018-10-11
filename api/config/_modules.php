@@ -7,6 +7,9 @@ return [
             'user' => [
                 'class' => api\modules\v1\modules\user\Module::class,
             ],
+            'payments' => [
+                'class' => api\modules\v1\modules\payments\Module::class,
+            ],
         ],
     ],
 ];

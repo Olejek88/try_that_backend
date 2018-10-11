@@ -1,6 +1,6 @@
 <?php
 
-namespace common\models\models\query;
+namespace common\models\query;
 
 use common\models\PaySystem;
 use yii\db\ActiveQuery;

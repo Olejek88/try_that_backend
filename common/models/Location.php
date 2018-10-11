@@ -17,6 +17,8 @@ use Yii;
  */
 class Location extends \yii\db\ActiveRecord
 {
+    public const NOT_SPECIFIED = 1;
+
     /**
      * {@inheritdoc}
      */

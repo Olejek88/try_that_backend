@@ -34,7 +34,7 @@ class SignupController extends Controller
         $request = \Yii::$app->getRequest()->getBodyParams();
         if ($form->load($request, '') && $form->validate()) {
             try {
-                return User::requestSignup($form->email, $form->password, $form->country_id, $form->location_id);
+                return User::requestSignup($form->email, $form->password);
             } catch (\DomainException $e) {
                 Yii::$app->errorHandler->logException($e);
                 $form->addError('ALL', 'DomainException: Unknown error');
