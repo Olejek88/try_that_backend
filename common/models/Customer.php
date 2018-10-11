@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\CustomerQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%customer}}".
@@ -11,13 +13,15 @@ use Yii;
  * @property int $positive
  * @property int $negative
  * @property int $active
+ * @property int $user_id
  *
  * @property FollowList[] $followLists
  * @property GroupExperience[] $groupExperiences
  * @property Review[] $reviews
  * @property Wishlist[] $wishlists
+ * @property User $user
  */
-class Customer extends \yii\db\ActiveRecord
+class Customer extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -83,11 +87,19 @@ class Customer extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    /**
      * {@inheritdoc}
      * @return \common\models\query\CustomerQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \common\models\query\CustomerQuery(get_called_class());
+        return new CustomerQuery(get_called_class());
     }
 }

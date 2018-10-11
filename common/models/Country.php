@@ -15,6 +15,8 @@ use Yii;
  */
 class Country extends \yii\db\ActiveRecord
 {
+    public const NOT_SPECIFIED = 1;
+
     /**
      * {@inheritdoc}
      */

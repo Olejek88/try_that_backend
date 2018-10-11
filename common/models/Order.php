@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\OrderQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%order}}".
@@ -10,17 +12,17 @@ use Yii;
  * @property int $id
  * @property int $activity_listing_id
  * @property int $order_status_id
- * @property int $duration_id
  * @property string $start_date
  * @property int $created_at
  * @property int $updated_at
+ * @property int $customer_id
  *
  * @property Mail[] $mails
  * @property ActivityListing $activityListing
- * @property Duration $duration
  * @property OrderStatus $orderStatus
+ * @property Customer $customer
  */
-class Order extends \yii\db\ActiveRecord
+class Order extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -36,12 +38,23 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['activity_listing_id', 'order_status_id', 'duration_id', 'created_at', 'updated_at'], 'required'],
-            [['activity_listing_id', 'order_status_id', 'duration_id', 'created_at', 'updated_at'], 'integer'],
+            [['activity_listing_id', 'order_status_id', 'created_at', 'updated_at'], 'required'],
+            [['activity_listing_id', 'order_status_id', 'created_at', 'updated_at'], 'integer'],
             [['start_date'], 'safe'],
-            [['activity_listing_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActivityListing::class, 'targetAttribute' => ['activity_listing_id' => 'id']],
-            [['duration_id'], 'exist', 'skipOnError' => true, 'targetClass' => Duration::class, 'targetAttribute' => ['duration_id' => 'id']],
-            [['order_status_id'], 'exist', 'skipOnError' => true, 'targetClass' => OrderStatus::class, 'targetAttribute' => ['order_status_id' => 'id']],
+            [
+                ['activity_listing_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => ActivityListing::class,
+                'targetAttribute' => ['activity_listing_id' => 'id']
+            ],
+            [
+                ['order_status_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => OrderStatus::class,
+                'targetAttribute' => ['order_status_id' => 'id']
+            ],
         ];
     }
 
@@ -54,7 +67,6 @@ class Order extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'activity_listing_id' => Yii::t('app', 'Activity Listing ID'),
             'order_status_id' => Yii::t('app', 'Order Status ID'),
-            'duration_id' => Yii::t('app', 'Duration ID'),
             'start_date' => Yii::t('app', 'Start Date'),
             'created_at' => Yii::t('app', 'Created At'),
             'updated_at' => Yii::t('app', 'Updated At'),
@@ -80,17 +92,17 @@ class Order extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getDuration()
+    public function getOrderStatus()
     {
-        return $this->hasOne(Duration::class, ['id' => 'duration_id']);
+        return $this->hasOne(OrderStatus::class, ['id' => 'order_status_id']);
     }
 
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getOrderStatus()
+    public function getCustomer()
     {
-        return $this->hasOne(OrderStatus::class, ['id' => 'order_status_id']);
+        return $this->hasOne(Customer::class, ['id' => 'user_id']);
     }
 
     /**
@@ -99,6 +111,6 @@ class Order extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\OrderQuery(get_called_class());
+        return new OrderQuery(get_called_class());
     }
 }
