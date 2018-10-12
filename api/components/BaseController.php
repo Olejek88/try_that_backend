@@ -3,12 +3,12 @@
 namespace api\components;
 
 use yii\filters\auth\HttpBearerAuth;
-use yii\rest\Controller;
+use yii\rest\ActiveController;
 
 /**
  * Базовый класс с авторизацией для "простых" контроллеров проекта.
  */
-class BaseController extends Controller
+class BaseController extends ActiveController
 {
     /**
      * @inheritdoc

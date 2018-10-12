@@ -1,0 +1,11 @@
+<?php
+
+namespace api\modules\v1\controllers;
+
+use api\components\BaseController;
+use common\models\InvoiceQueryStatus;
+
+class InvoiceQueryStatusController extends BaseController
+{
+    public $modelClass = InvoiceQueryStatus::class;
+}
