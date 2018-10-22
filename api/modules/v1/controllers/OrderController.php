@@ -8,4 +8,11 @@ use common\models\Order;
 class OrderController extends BaseController
 {
     public $modelClass = Order::class;
+
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['authenticator']['except'] = [];
+        return $behaviors;
+    }
 }

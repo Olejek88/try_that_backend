@@ -2,10 +2,10 @@
 
 namespace api\modules\v1\controllers;
 
+use api\components\BaseController;
 use common\models\Country;
-use yii\rest\ActiveController;
 
-class CountryController extends ActiveController
+class CountryController extends BaseController
 {
     public $modelClass = Country::class;
 }

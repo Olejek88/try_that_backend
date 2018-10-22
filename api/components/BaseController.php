@@ -17,7 +17,9 @@ class BaseController extends ActiveController
     {
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['class'] = HttpBearerAuth::class;
-
+        $behaviors['authenticator']['except'] = [
+            'index', 'view',
+        ];
         return $behaviors;
     }
 }

@@ -2,10 +2,10 @@
 
 namespace api\modules\v1\controllers;
 
+use api\components\BaseController;
 use common\models\ActivityCategory;
-use yii\rest\ActiveController;
 
-class ActivityCategoryController extends ActiveController
+class ActivityCategoryController extends BaseController
 {
     public $modelClass = ActivityCategory::class;
 }

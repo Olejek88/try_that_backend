@@ -8,4 +8,11 @@ use common\models\MailStatus;
 class MailStatusController extends BaseController
 {
     public $modelClass = MailStatus::class;
+
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['authenticator']['except'] = [];
+        return $behaviors;
+    }
 }

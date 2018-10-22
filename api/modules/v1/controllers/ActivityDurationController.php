@@ -2,10 +2,10 @@
 
 namespace api\modules\v1\controllers;
 
+use api\components\BaseController;
 use common\models\ActivityDuration;
-use yii\rest\ActiveController;
 
-class ActivityDurationController extends ActiveController
+class ActivityDurationController extends BaseController
 {
     public $modelClass = ActivityDuration::class;
 }

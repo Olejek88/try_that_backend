@@ -8,4 +8,11 @@ use common\models\OrderStatus;
 class OrderStatusController extends BaseController
 {
     public $modelClass = OrderStatus::class;
+
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['authenticator']['except'] = [];
+        return $behaviors;
+    }
 }
