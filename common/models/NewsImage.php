@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\NewsImageQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%news_image}}".
@@ -14,7 +16,7 @@ use Yii;
  * @property Image $image
  * @property News $news
  */
-class NewsImage extends \yii\db\ActiveRecord
+class NewsImage extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -71,6 +73,14 @@ class NewsImage extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\NewsImageQuery(get_called_class());
+        return new NewsImageQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'image';
+        $fields[] = 'news';
+        return $fields;
     }
 }

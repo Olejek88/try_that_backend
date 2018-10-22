@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\LocationQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%location}}".
@@ -15,7 +17,7 @@ use Yii;
  *
  * @property Image $image
  */
-class Location extends \yii\db\ActiveRecord
+class Location extends ActiveRecord
 {
     public const NOT_SPECIFIED = 1;
 
@@ -68,6 +70,13 @@ class Location extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\LocationQuery(get_called_class());
+        return new LocationQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'image';
+        return $fields;
     }
 }

@@ -180,4 +180,23 @@ class Activity extends ActiveRecord
     public function getActivityDurations() {
         return $this->hasMany(ActivityDuration::class, ['activity_id' => 'id']);
     }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activityCategory';
+        $fields[] = 'category';
+        $fields[] = 'activityDurations';
+        $fields[] = 'luminary';
+        $fields[] = 'activityImages';
+        $fields[] = 'activityListings';
+        $fields[] = 'mails';
+        $fields[] = 'occasions';
+        $fields[] = 'reviews';
+        $fields[] = 'tags';
+        $fields[] = 'trendings';
+        $fields[] = 'wishlists';
+        return $fields;
+    }
+
 }

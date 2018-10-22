@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\ExceptionTTQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%exception}}".
@@ -13,7 +15,7 @@ use Yii;
  *
  * @property Luminary $luminary
  */
-class ExceptionTT extends \yii\db\ActiveRecord
+class ExceptionTT extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -62,6 +64,13 @@ class ExceptionTT extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\ExceptionTTQuery(get_called_class());
+        return new ExceptionTTQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'luminary';
+        return $fields;
     }
 }

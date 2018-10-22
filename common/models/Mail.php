@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\MailQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%mail}}".
@@ -24,7 +26,7 @@ use Yii;
  * @property Order $order
  * @property User $toUser
  */
-class Mail extends \yii\db\ActiveRecord
+class Mail extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -117,6 +119,17 @@ class Mail extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\MailQuery(get_called_class());
+        return new MailQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activity';
+        $fields[] = 'fromUser';
+        $fields[] = 'status';
+        $fields[] = 'order';
+        $fields[] = 'toUser';
+        return $fields;
     }
 }

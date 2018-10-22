@@ -104,4 +104,13 @@ class Luminary extends ActiveRecord
     {
         return new LuminaryQuery(get_called_class());
     }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'user';
+        return $fields;
+    }
+
+
 }

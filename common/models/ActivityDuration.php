@@ -3,6 +3,7 @@
 namespace common\models;
 
 
+use common\models\query\ActivityDurationQuery;
 use yii\db\ActiveRecord;
 
 /**
@@ -86,4 +87,19 @@ class ActivityDuration extends ActiveRecord
     {
         return $this->hasOne(Duration::class, ['id' => 'duration_id']);
     }
+
+    public static function find()
+    {
+        return new ActivityDurationQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'luminary';
+        $fields[] = 'activity';
+        $fields[] = 'duration';
+        return $fields;
+    }
+
 }

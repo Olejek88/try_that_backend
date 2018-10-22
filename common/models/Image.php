@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\ImageQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%image}}".
@@ -20,7 +22,7 @@ use Yii;
  * @property Occasion[] $occasions
  * @property Trending[] $trendings
  */
-class Image extends \yii\db\ActiveRecord
+class Image extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -123,6 +125,20 @@ class Image extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\ImageQuery(get_called_class());
+        return new ImageQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activityCategories';
+        $fields[] = 'activityImages';
+        $fields[] = 'categories';
+        $fields[] = 'countries';
+        $fields[] = 'locations';
+        $fields[] = 'newsImages';
+        $fields[] = 'occasions';
+        $fields[] = 'trendings';
+        return $fields;
     }
 }

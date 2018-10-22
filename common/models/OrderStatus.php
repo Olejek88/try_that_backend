@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\OrderStatusQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%order_status}}".
@@ -12,7 +14,7 @@ use Yii;
  *
  * @property Order[] $orders
  */
-class OrderStatus extends \yii\db\ActiveRecord
+class OrderStatus extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -58,6 +60,13 @@ class OrderStatus extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\OrderStatusQuery(get_called_class());
+        return new OrderStatusQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'orders';
+        return $fields;
     }
 }

@@ -96,10 +96,22 @@ class Customer extends ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return \common\models\query\CustomerQuery the active query used by this AR class.
+     * @return CustomerQuery the active query used by this AR class.
      */
     public static function find()
     {
         return new CustomerQuery(get_called_class());
     }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'user';
+        $fields[] = 'followLists';
+        $fields[] = 'groupExperiences';
+        $fields[] = 'reviews';
+        $fields[] = 'wishlists';
+        return $fields;
+    }
+
 }

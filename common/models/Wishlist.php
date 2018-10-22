@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\WishlistQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%wishlist}}".
@@ -15,7 +17,7 @@ use Yii;
  * @property Activity $activity
  * @property Customer $customer
  */
-class Wishlist extends \yii\db\ActiveRecord
+class Wishlist extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -74,6 +76,14 @@ class Wishlist extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\WishlistQuery(get_called_class());
+        return new WishlistQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activity';
+        $fields[] = 'customer';
+        return $fields;
     }
 }

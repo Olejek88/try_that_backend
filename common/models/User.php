@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use common\models\query\UserQuery;
 use common\models\user\Token;
 use common\models\user\TokenAuth;
 use Yii;
@@ -32,8 +33,12 @@ use yii\web\IdentityInterface;
  * @property string $phone
  * @property string $registeredDate
  * @property int $user_image_id
- *
  * @property string $authKey
+ *
+ * @property Location $location
+ * @property UserImage $userImage
+ * @property Image $image
+ * @property Country $country
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -258,5 +263,76 @@ class User extends ActiveRecord implements IdentityInterface
         $token->link('user', $this);
 
         return $token->token;
+    }
+
+    /**
+     * @return array
+     * @throws \yii\base\InvalidConfigException
+     */
+    public function fields()
+    {
+        // TODO: решить - нужно ли это вообще
+        $fields = parent::fields();
+        // Add multi-level expanded fields
+        $expandFields = explode(',', Yii::$app->request->getQueryParam('expand'));
+        foreach ($expandFields as $field) {
+            $formName = $this->formName();
+            if (strpos($field, strtolower($formName) . '.') === 0) {
+                $fields[] = substr($field, strlen($formName) + 1);
+            }
+        }
+
+        return $fields;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCountry()
+    {
+        return $this->hasOne(Country::class, ['id' => 'country_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLocation()
+    {
+        return $this->hasOne(Location::class, ['id' => 'location_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserImage()
+    {
+        return $this->hasOne(UserImage::class, ['id' => 'user_image_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getImage()
+    {
+        return $this->hasOne(Image::class, ['id' => 'image_id'])->via('userImage');
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return \common\models\query\UserQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new UserQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'image';
+        $fields[] = 'location';
+        $fields[] = 'userImage';
+        $fields[] = 'country';
+         return $fields;
     }
 }

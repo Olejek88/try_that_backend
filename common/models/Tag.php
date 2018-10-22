@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\TagQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%tag}}".
@@ -15,7 +17,7 @@ use Yii;
  * @property Activity $activity
  * @property Category $category
  */
-class Tag extends \yii\db\ActiveRecord
+class Tag extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -74,6 +76,14 @@ class Tag extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\TagQuery(get_called_class());
+        return new TagQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activity';
+        $fields[] = 'category';
+        return $fields;
     }
 }

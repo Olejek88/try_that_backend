@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\NewsQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%news}}".
@@ -16,7 +18,7 @@ use Yii;
  * @property Luminary $luminary
  * @property NewsImage[] $newsImages
  */
-class News extends \yii\db\ActiveRecord
+class News extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -76,6 +78,14 @@ class News extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\NewsQuery(get_called_class());
+        return new NewsQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'luminary';
+        $fields[] = 'newsImages';
+        return $fields;
     }
 }

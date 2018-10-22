@@ -105,4 +105,14 @@ class UserImage extends ActiveRecord
     {
         return new UserImageQuery(get_called_class());
     }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activityImages';
+        $fields[] = 'users';
+        $fields[] = 'image';
+        $fields[] = 'user';
+        return $fields;
+    }
 }

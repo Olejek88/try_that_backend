@@ -100,4 +100,14 @@ class ActivityListing extends ActiveRecord
     {
         return new ActivityListingQuery(get_called_class());
     }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activity';
+        $fields[] = 'duration';
+        $fields[] = 'groupExperiences';
+        $fields[] = 'orders';
+        return $fields;
+    }
 }

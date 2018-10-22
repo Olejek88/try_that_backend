@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\MailStatusQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%mail_status}}".
@@ -12,7 +14,7 @@ use Yii;
  *
  * @property Mail[] $mails
  */
-class MailStatus extends \yii\db\ActiveRecord
+class MailStatus extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -58,6 +60,13 @@ class MailStatus extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\MailStatusQuery(get_called_class());
+        return new MailStatusQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'mails';
+        return $fields;
     }
 }

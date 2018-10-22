@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\DurationQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%duration}}".
@@ -14,7 +16,7 @@ use Yii;
  * @property ActivityListing[] $activityListings
  * @property Order[] $orders
  */
-class Duration extends \yii\db\ActiveRecord
+class Duration extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -75,6 +77,15 @@ class Duration extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\DurationQuery(get_called_class());
+        return new DurationQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activities';
+        $fields[] = 'activityListings';
+        $fields[] = 'orders';
+        return $fields;
     }
 }

@@ -87,4 +87,13 @@ class ActivityImage extends ActiveRecord
     {
         return new ActivityImageQuery(get_called_class());
     }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activity';
+        $fields[] = 'image';
+        return $fields;
+    }
+
 }

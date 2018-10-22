@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\ActivityCategoryQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%activity_category}}".
@@ -14,7 +16,7 @@ use Yii;
  * @property Activity[] $activities
  * @property Image $image
  */
-class ActivityCategory extends \yii\db\ActiveRecord
+class ActivityCategory extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -67,10 +69,19 @@ class ActivityCategory extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return \common\models\query\ActivityCategoryQuery the active query used by this AR class.
+     * @return ActivityCategoryQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \common\models\query\ActivityCategoryQuery(get_called_class());
+        return new ActivityCategoryQuery(get_called_class());
     }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activities';
+        $fields[] = 'image';
+        return $fields;
+    }
+
 }

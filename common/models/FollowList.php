@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\FollowListQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%follow_list}}".
@@ -14,7 +16,7 @@ use Yii;
  * @property Customer $customer
  * @property Luminary $luminary
  */
-class FollowList extends \yii\db\ActiveRecord
+class FollowList extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -71,6 +73,14 @@ class FollowList extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\FollowListQuery(get_called_class());
+        return new FollowListQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'customer';
+        $fields[] = 'luminary';
+        return $fields;
     }
 }

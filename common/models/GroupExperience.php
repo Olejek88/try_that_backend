@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\GroupExperienceQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%group_experience}}".
@@ -14,7 +16,7 @@ use Yii;
  * @property ActivityListing $activityListing
  * @property Customer $customer
  */
-class GroupExperience extends \yii\db\ActiveRecord
+class GroupExperience extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -71,6 +73,14 @@ class GroupExperience extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\GroupExperienceQuery(get_called_class());
+        return new GroupExperienceQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'customer';
+        $fields[] = 'activityListing';
+        return $fields;
     }
 }

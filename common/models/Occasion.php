@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\OccasionQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%occasion}}".
@@ -15,7 +17,7 @@ use Yii;
  * @property Activity $activity
  * @property Image $image
  */
-class Occasion extends \yii\db\ActiveRecord
+class Occasion extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -74,6 +76,14 @@ class Occasion extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\OccasionQuery(get_called_class());
+        return new OccasionQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activity';
+        $fields[] = 'image';
+        return $fields;
     }
 }

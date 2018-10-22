@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\CategoryQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%category}}".
@@ -15,7 +17,7 @@ use Yii;
  * @property Image $image
  * @property Tag[] $tags
  */
-class Category extends \yii\db\ActiveRecord
+class Category extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -80,6 +82,15 @@ class Category extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\CategoryQuery(get_called_class());
+        return new CategoryQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activities';
+        $fields[] = 'tags';
+        $fields[] = 'image';
+        return $fields;
     }
 }

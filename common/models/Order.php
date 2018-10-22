@@ -113,4 +113,14 @@ class Order extends ActiveRecord
     {
         return new OrderQuery(get_called_class());
     }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'mails';
+        $fields[] = 'activityListing';
+        $fields[] = 'orderStatus';
+        $fields[] = 'customer';
+        return $fields;
+    }
 }

@@ -2,7 +2,9 @@
 
 namespace common\models;
 
+use common\models\query\ReviewQuery;
 use Yii;
+use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%review}}".
@@ -16,7 +18,7 @@ use Yii;
  * @property Activity $activity
  * @property Customer $customer
  */
-class Review extends \yii\db\ActiveRecord
+class Review extends ActiveRecord
 {
     /**
      * {@inheritdoc}
@@ -76,6 +78,14 @@ class Review extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\ReviewQuery(get_called_class());
+        return new ReviewQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activity';
+        $fields[] = 'customer';
+        return $fields;
     }
 }
