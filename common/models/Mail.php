@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\MailQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%mail}}".
@@ -26,7 +26,7 @@ use yii\db\ActiveRecord;
  * @property Order $order
  * @property User $toUser
  */
-class Mail extends ActiveRecord
+class Mail extends BaseRecord
 {
     /**
      * {@inheritdoc}

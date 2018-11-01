@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\WishlistQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%wishlist}}".
@@ -17,7 +17,7 @@ use yii\db\ActiveRecord;
  * @property Activity $activity
  * @property Customer $customer
  */
-class Wishlist extends ActiveRecord
+class Wishlist extends BaseRecord
 {
     /**
      * {@inheritdoc}

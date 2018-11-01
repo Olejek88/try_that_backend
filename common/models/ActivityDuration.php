@@ -3,8 +3,8 @@
 namespace common\models;
 
 
+use common\components\BaseRecord;
 use common\models\query\ActivityDurationQuery;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%activity_duration}}".
@@ -18,7 +18,7 @@ use yii\db\ActiveRecord;
  * @property Activity $activity
  * @property Duration $duration
  */
-class ActivityDuration extends ActiveRecord
+class ActivityDuration extends BaseRecord
 {
     /**
      * {@inheritdoc}

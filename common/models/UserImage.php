@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\UserImageQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%user_image}}".
@@ -18,7 +18,7 @@ use yii\db\ActiveRecord;
  * @property Image $image
  * @property User $user
  */
-class UserImage extends ActiveRecord
+class UserImage extends BaseRecord
 {
     /**
      * {@inheritdoc}

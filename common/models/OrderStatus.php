@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\OrderStatusQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%order_status}}".
@@ -14,7 +14,7 @@ use yii\db\ActiveRecord;
  *
  * @property Order[] $orders
  */
-class OrderStatus extends ActiveRecord
+class OrderStatus extends BaseRecord
 {
     /**
      * {@inheritdoc}

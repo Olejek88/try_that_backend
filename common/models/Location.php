@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\LocationQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%location}}".
@@ -17,7 +17,7 @@ use yii\db\ActiveRecord;
  *
  * @property Image $image
  */
-class Location extends ActiveRecord
+class Location extends BaseRecord
 {
     public const NOT_SPECIFIED = 1;
 

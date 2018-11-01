@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\MailStatusQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%mail_status}}".
@@ -14,7 +14,7 @@ use yii\db\ActiveRecord;
  *
  * @property Mail[] $mails
  */
-class MailStatus extends ActiveRecord
+class MailStatus extends BaseRecord
 {
     /**
      * {@inheritdoc}

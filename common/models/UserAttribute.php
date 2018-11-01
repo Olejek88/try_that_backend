@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\UserAttributeQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%user_attribute}}".
@@ -16,7 +16,7 @@ use yii\db\ActiveRecord;
  *
  * @property User $user
  */
-class UserAttribute extends ActiveRecord
+class UserAttribute extends BaseRecord
 {
     /**
      * {@inheritdoc}

@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\TagQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%tag}}".
@@ -17,7 +17,7 @@ use yii\db\ActiveRecord;
  * @property Activity $activity
  * @property Category $category
  */
-class Tag extends ActiveRecord
+class Tag extends BaseRecord
 {
     /**
      * {@inheritdoc}

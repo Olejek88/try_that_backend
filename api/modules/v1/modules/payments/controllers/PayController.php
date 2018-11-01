@@ -2,7 +2,6 @@
 
 namespace api\modules\v1\modules\payments\controllers;
 
-use api\components\BaseController;
 use common\components\PaySystemInterface;
 use common\components\PaySystems;
 use common\models\InvoiceQuery;
@@ -10,13 +9,15 @@ use common\models\InvoiceQueryStatus;
 use common\models\Order;
 use common\models\PayInfo;
 use yii\base\Module;
+use yii\filters\auth\HttpBearerAuth;
 use yii\helpers\Url;
+use yii\rest\Controller;
 use yii\web\Response;
 
 /**
  * Site controller
  */
-class PayController extends BaseController
+class PayController extends Controller
 {
 
     public function __construct(string $id, Module $module, array $config = [])
@@ -30,6 +31,20 @@ class PayController extends BaseController
         $verbs = parent::verbs();
 //        $verbs['pay-systems-list'] = ['GET'];
         return $verbs;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['authenticator']['class'] = HttpBearerAuth::class;
+        // TODO: указать действия для которых не требуется аутентификация
+//        $behaviors['authenticator']['except'] = [
+//            'index', 'view',
+//        ];
+        return $behaviors;
     }
 
     /**

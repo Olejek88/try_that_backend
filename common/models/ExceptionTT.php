@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\ExceptionTTQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%exception}}".
@@ -15,7 +15,7 @@ use yii\db\ActiveRecord;
  *
  * @property Luminary $luminary
  */
-class ExceptionTT extends ActiveRecord
+class ExceptionTT extends BaseRecord
 {
     /**
      * {@inheritdoc}

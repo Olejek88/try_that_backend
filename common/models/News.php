@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\NewsQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%news}}".
@@ -18,7 +18,7 @@ use yii\db\ActiveRecord;
  * @property Luminary $luminary
  * @property NewsImage[] $newsImages
  */
-class News extends ActiveRecord
+class News extends BaseRecord
 {
     /**
      * {@inheritdoc}

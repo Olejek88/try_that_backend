@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\OccasionQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%occasion}}".
@@ -17,7 +17,7 @@ use yii\db\ActiveRecord;
  * @property Activity $activity
  * @property Image $image
  */
-class Occasion extends ActiveRecord
+class Occasion extends BaseRecord
 {
     /**
      * {@inheritdoc}

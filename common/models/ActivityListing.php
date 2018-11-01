@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\ActivityListingQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%activity_listing}}".
@@ -21,7 +21,7 @@ use yii\db\ActiveRecord;
  * @property GroupExperience[] $groupExperiences
  * @property Order[] $orders
  */
-class ActivityListing extends ActiveRecord
+class ActivityListing extends BaseRecord
 {
     /**
      * {@inheritdoc}

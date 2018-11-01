@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\FollowListQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%follow_list}}".
@@ -16,7 +16,7 @@ use yii\db\ActiveRecord;
  * @property Customer $customer
  * @property Luminary $luminary
  */
-class FollowList extends ActiveRecord
+class FollowList extends BaseRecord
 {
     /**
      * {@inheritdoc}

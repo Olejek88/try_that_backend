@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\NewsImageQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%news_image}}".
@@ -16,7 +16,7 @@ use yii\db\ActiveRecord;
  * @property Image $image
  * @property News $news
  */
-class NewsImage extends ActiveRecord
+class NewsImage extends BaseRecord
 {
     /**
      * {@inheritdoc}

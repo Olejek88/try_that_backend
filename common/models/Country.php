@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\CountryQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%country}}".
@@ -15,7 +15,7 @@ use yii\db\ActiveRecord;
  *
  * @property Image $image
  */
-class Country extends ActiveRecord
+class Country extends BaseRecord
 {
     public const NOT_SPECIFIED = 1;
 

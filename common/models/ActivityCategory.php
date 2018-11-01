@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\ActivityCategoryQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%activity_category}}".
@@ -16,7 +16,7 @@ use yii\db\ActiveRecord;
  * @property Activity[] $activities
  * @property Image $image
  */
-class ActivityCategory extends ActiveRecord
+class ActivityCategory extends BaseRecord
 {
     /**
      * {@inheritdoc}

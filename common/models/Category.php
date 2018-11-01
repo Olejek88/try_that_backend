@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\CategoryQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%category}}".
@@ -17,7 +17,7 @@ use yii\db\ActiveRecord;
  * @property Image $image
  * @property Tag[] $tags
  */
-class Category extends ActiveRecord
+class Category extends BaseRecord
 {
     /**
      * {@inheritdoc}

@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\ActivityQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%activity}}".
@@ -33,7 +33,7 @@ use yii\db\ActiveRecord;
  * @property Trending[] $trendings
  * @property Wishlist[] $wishlists
  */
-class Activity extends ActiveRecord
+class Activity extends BaseRecord
 {
     /**
      * {@inheritdoc}
@@ -198,5 +198,4 @@ class Activity extends ActiveRecord
         $fields[] = 'wishlists';
         return $fields;
     }
-
 }

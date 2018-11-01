@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\ReviewQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%review}}".
@@ -18,7 +18,7 @@ use yii\db\ActiveRecord;
  * @property Activity $activity
  * @property Customer $customer
  */
-class Review extends ActiveRecord
+class Review extends BaseRecord
 {
     /**
      * {@inheritdoc}

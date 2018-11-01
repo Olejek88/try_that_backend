@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\GroupExperienceQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%group_experience}}".
@@ -16,7 +16,7 @@ use yii\db\ActiveRecord;
  * @property ActivityListing $activityListing
  * @property Customer $customer
  */
-class GroupExperience extends ActiveRecord
+class GroupExperience extends BaseRecord
 {
     /**
      * {@inheritdoc}

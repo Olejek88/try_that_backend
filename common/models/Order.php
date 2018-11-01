@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\OrderQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%order}}".
@@ -22,7 +22,7 @@ use yii\db\ActiveRecord;
  * @property OrderStatus $orderStatus
  * @property Customer $customer
  */
-class Order extends ActiveRecord
+class Order extends BaseRecord
 {
     /**
      * {@inheritdoc}

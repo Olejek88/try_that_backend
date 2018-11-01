@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\ActivityImageQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%activity_image}}".
@@ -16,7 +16,7 @@ use yii\db\ActiveRecord;
  * @property Activity $activity
  * @property Image $image
  */
-class ActivityImage extends ActiveRecord
+class ActivityImage extends BaseRecord
 {
     /**
      * {@inheritdoc}

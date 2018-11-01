@@ -2,12 +2,12 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\UserQuery;
 use common\models\user\Token;
 use common\models\user\TokenAuth;
 use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
 /**
@@ -40,7 +40,7 @@ use yii\web\IdentityInterface;
  * @property Image $image
  * @property Country $country
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends BaseRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
@@ -49,8 +49,8 @@ class User extends ActiveRecord implements IdentityInterface
      * User roles.
      */
     public const ROLE_CLIENT = 'client';
-    public const ROLE_MANAGER = 'manager';
-    public const ROLE_PROVIDER = 'provider';
+    public const ROLE_LUMINARY = 'luminary';
+    public const ROLE_CUSTOMER = 'customer';
     public const ROLE_ADMIN = 'admin';
 
     /**
@@ -97,7 +97,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        $userToken = Token::findOne(['token' => $token]);
+        $userToken = TokenAuth::findOne(['token' => $token]);
         if ($userToken != null && $userToken->isValid()) {
             return User::findOne($userToken->user_id);
         } else {
@@ -267,12 +267,16 @@ class User extends ActiveRecord implements IdentityInterface
 
     /**
      * @return array
-     * @throws \yii\base\InvalidConfigException
      */
     public function fields()
     {
-        // TODO: решить - нужно ли это вообще
         $fields = parent::fields();
+
+        // remove fields that contain sensitive information
+        unset($fields['auth_key'], $fields['password_hash'], $fields['password_reset_token']);
+
+        // TODO: решить - нужно ли это вообще
+        /*
         // Add multi-level expanded fields
         $expandFields = explode(',', Yii::$app->request->getQueryParam('expand'));
         foreach ($expandFields as $field) {
@@ -281,6 +285,7 @@ class User extends ActiveRecord implements IdentityInterface
                 $fields[] = substr($field, strlen($formName) + 1);
             }
         }
+        */
 
         return $fields;
     }
@@ -333,6 +338,6 @@ class User extends ActiveRecord implements IdentityInterface
         $fields[] = 'location';
         $fields[] = 'userImage';
         $fields[] = 'country';
-         return $fields;
+        return $fields;
     }
 }

@@ -2,8 +2,8 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\InvoiceQueryQuery;
-use yii\db\ActiveRecord;
 
 /**
  * Class InvoiceQuery
@@ -24,7 +24,7 @@ use yii\db\ActiveRecord;
  * @property InvoiceQueryStatus $status
  * @property Order $order
  */
-class InvoiceQuery extends ActiveRecord
+class InvoiceQuery extends BaseRecord
 {
     public const PROCEDURE_STATUS_UPDATE_NAME = '{{%update_invoice_status}}';
     public const CHANGE = 'change';
@@ -305,5 +305,13 @@ class InvoiceQuery extends ActiveRecord
     public static function find()
     {
         return new InvoiceQueryQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'status';
+        $fields[] = 'order';
+        return $fields;
     }
 }

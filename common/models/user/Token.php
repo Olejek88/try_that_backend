@@ -109,4 +109,9 @@ class Token extends ActiveRecord
     public function isValid() {
         return time() < strtotime($this->valid_till);
     }
+
+    public static function primaryKey()
+    {
+        return ['token'];
+    }
 }

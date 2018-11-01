@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\ImageQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%image}}".
@@ -22,7 +22,7 @@ use yii\db\ActiveRecord;
  * @property Occasion[] $occasions
  * @property Trending[] $trendings
  */
-class Image extends ActiveRecord
+class Image extends BaseRecord
 {
     /**
      * {@inheritdoc}

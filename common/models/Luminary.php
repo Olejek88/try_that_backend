@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\LuminaryQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%luminary}}".
@@ -21,7 +21,7 @@ use yii\db\ActiveRecord;
  * @property News[] $news
  * @property User $user
  */
-class Luminary extends ActiveRecord
+class Luminary extends BaseRecord
 {
     /**
      * {@inheritdoc}
