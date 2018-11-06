@@ -102,7 +102,7 @@ class Order extends BaseRecord
      */
     public function getCustomer()
     {
-        return $this->hasOne(Customer::class, ['id' => 'user_id']);
+        return $this->hasOne(Customer::class, ['id' => 'customer_id']);
     }
 
     /**

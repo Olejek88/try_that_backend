@@ -14,6 +14,7 @@ use Yii;
  * @property int $user_image_id
  *
  * @property Activity $activity
+ * @property UserImage $userImage
  * @property Image $image
  */
 class ActivityImage extends BaseRecord
@@ -76,7 +77,15 @@ class ActivityImage extends BaseRecord
      */
     public function getImage()
     {
-        return $this->hasOne(Image::class, ['id' => 'image_id']);
+        return $this->hasOne(Image::class, ['id' => 'image_id'])->via('userImage');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUserImage()
+    {
+        return $this->hasOne(UserImage::class, ['id' => 'user_image_id']);
     }
 
     /**
@@ -93,6 +102,7 @@ class ActivityImage extends BaseRecord
         $fields = parent::extraFields();
         $fields[] = 'activity';
         $fields[] = 'image';
+        $fields[] = 'userImage';
         return $fields;
     }
 

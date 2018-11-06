@@ -48,6 +48,9 @@ return [
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/user-attribute',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/user-image',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/wishlist',],
+    ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/activity-duration',],
+    ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/activity-tag',],
+    ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/image',],
 
     // правила для работы с контроллерами которые не представляют самостоятельных объектов
     '<module:[\w|-]+>/<controller:[\w|-]+>/<action:[\w|-]+>' => '<module>/<controller>/<action>',

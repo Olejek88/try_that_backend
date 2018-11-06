@@ -30,6 +30,7 @@ use Yii;
  * @property Occasion[] $occasions
  * @property Review[] $reviews
  * @property Tag[] $tags
+ * @property ActivityTag[] $activityTags
  * @property Trending[] $trendings
  * @property Wishlist[] $wishlists
  */
@@ -146,7 +147,15 @@ class Activity extends BaseRecord
      */
     public function getTags()
     {
-        return $this->hasMany(Tag::class, ['activity_id' => 'id']);
+        return $this->hasMany(Tag::class, ['id' => 'tag_id'])->via('activityTags');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getActivityTags()
+    {
+        return $this->hasMany(ActivityTag::class, ['activity_id' => 'id']);
     }
 
     /**
@@ -194,6 +203,7 @@ class Activity extends BaseRecord
         $fields[] = 'occasions';
         $fields[] = 'reviews';
         $fields[] = 'tags';
+        $fields[] = 'activityTags';
         $fields[] = 'trendings';
         $fields[] = 'wishlists';
         return $fields;

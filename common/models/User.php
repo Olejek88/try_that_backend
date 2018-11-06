@@ -275,18 +275,6 @@ class User extends BaseRecord implements IdentityInterface
         // remove fields that contain sensitive information
         unset($fields['auth_key'], $fields['password_hash'], $fields['password_reset_token']);
 
-        // TODO: решить - нужно ли это вообще
-        /*
-        // Add multi-level expanded fields
-        $expandFields = explode(',', Yii::$app->request->getQueryParam('expand'));
-        foreach ($expandFields as $field) {
-            $formName = $this->formName();
-            if (strpos($field, strtolower($formName) . '.') === 0) {
-                $fields[] = substr($field, strlen($formName) + 1);
-            }
-        }
-        */
-
         return $fields;
     }
 
