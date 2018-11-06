@@ -19,6 +19,7 @@ use Yii;
  * @property Activity $activity
  * @property Duration $duration
  * @property GroupExperience[] $groupExperiences
+ * @property Currency $currency
  * @property Order[] $orders
  */
 class ActivityListing extends BaseRecord
@@ -93,6 +94,14 @@ class ActivityListing extends BaseRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCurrency()
+    {
+        return $this->hasOne(Currency::class, ['id' => 'currency_id']);
+    }
+
+    /**
      * {@inheritdoc}
      * @return \common\models\query\ActivityListingQuery the active query used by this AR class.
      */
@@ -108,6 +117,7 @@ class ActivityListing extends BaseRecord
         $fields[] = 'duration';
         $fields[] = 'groupExperiences';
         $fields[] = 'orders';
+        $fields[] = 'currency';
         return $fields;
     }
 }
