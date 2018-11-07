@@ -19,8 +19,7 @@ class LocationOwnerRule extends Rule
         /* @var \common\models\Location $obj */
         $obj = isset($params['Location']) ? $params['Location'] : null;
         if ($obj != null) {
-            // TODO: добавить поле luminary_id в модель Location, либо реализовать один справочник для всех
-            return false;
+            return $obj->user_id == $user;
         } else {
             return false;
         }

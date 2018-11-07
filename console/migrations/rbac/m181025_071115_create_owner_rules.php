@@ -30,7 +30,6 @@ class m181025_071115_create_owner_rules extends Migration
         'common\components\rbac\TagOwnerRule',
         'common\components\rbac\TrendingOwnerRule',
         'common\components\rbac\UserAttributeOwnerRule',
-        'common\components\rbac\UserImageOwnerRule',
         'common\components\rbac\UserOwnerRule',
         'common\components\rbac\WishlistOwnerRule',
     ];

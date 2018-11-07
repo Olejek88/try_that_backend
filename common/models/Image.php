@@ -12,6 +12,7 @@ use Yii;
  * @property int $id
  * @property string $title
  * @property string $path
+ * @property int $user_id
  *
  * @property ActivityCategory[] $activityCategories
  * @property ActivityImage[] $activityImages
@@ -38,8 +39,16 @@ class Image extends BaseRecord
     public function rules()
     {
         return [
-            [['title'], 'required'],
+            [['title', 'user_id'], 'required'],
             [['title', 'path'], 'string', 'max' => 255],
+            [['user_id'], 'integer'],
+            [
+                ['user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::class,
+                'targetAttribute' => ['user_id' => 'id']
+            ],
         ];
     }
 
@@ -52,6 +61,7 @@ class Image extends BaseRecord
             'id' => Yii::t('app', 'ID'),
             'title' => Yii::t('app', 'Title'),
             'path' => Yii::t('app', 'Path'),
+            'user_id' => Yii::t('app', 'user ID'),
         ];
     }
 

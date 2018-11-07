@@ -46,7 +46,6 @@ return [
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/review',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/trending',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/user-attribute',],
-    ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/user-image',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/wishlist',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/activity-duration',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/activity-tag',],

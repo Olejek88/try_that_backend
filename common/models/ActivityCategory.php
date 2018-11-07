@@ -35,7 +35,13 @@ class ActivityCategory extends BaseRecord
             [['title'], 'required'],
             [['image_id'], 'integer'],
             [['title'], 'string', 'max' => 255],
-            [['image_id'], 'exist', 'skipOnError' => true, 'targetClass' => Image::class, 'targetAttribute' => ['image_id' => 'id']],
+            [
+                ['image_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Image::class,
+                'targetAttribute' => ['image_id' => 'id']
+            ],
         ];
     }
 

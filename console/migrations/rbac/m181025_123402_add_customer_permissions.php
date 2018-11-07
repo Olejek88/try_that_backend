@@ -37,7 +37,6 @@ class m181025_123402_add_customer_permissions extends Migration
         'common\models\Tag' => ['read',],
         'common\models\Trending' => ['create', 'read',],
         'common\models\UserAttribute' => ['create', 'read', 'update', 'delete'],
-        'common\models\UserImage' => ['create', 'read', 'update', 'delete'],
         'common\models\User' => ['create', 'read',],
         'common\models\Wishlist' => ['create', 'read', 'update', 'delete'],
     ];

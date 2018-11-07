@@ -30,7 +30,6 @@ class m181025_073929_create_permissions_owner extends Migration
         'common\models\Tag' => 'common\components\rbac\TagOwnerRule',
         'common\models\Trending' => 'common\components\rbac\TrendingOwnerRule',
         'common\models\UserAttribute' => 'common\components\rbac\UserAttributeOwnerRule',
-        'common\models\UserImage' => 'common\components\rbac\UserImageOwnerRule',
         'common\models\User' => 'common\components\rbac\UserOwnerRule',
         'common\models\Wishlist' => 'common\components\rbac\WishlistOwnerRule',
     ];

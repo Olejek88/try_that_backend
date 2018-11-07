@@ -37,7 +37,6 @@ class m181025_065018_create_permissions extends Migration
         'common\models\Tag',
         'common\models\Trending',
         'common\models\UserAttribute',
-        'common\models\UserImage',
         'common\models\User',
         'common\models\Wishlist',
     ];

@@ -3,9 +3,9 @@
 namespace api\modules\v1\controllers;
 
 use api\components\BaseController;
-use common\models\UserImage;
+use common\models\Image;
 
 class ImageController extends BaseController
 {
-    public $modelClass = UserImage::class;
+    public $modelClass = Image::class;
 }

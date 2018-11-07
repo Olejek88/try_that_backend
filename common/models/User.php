@@ -32,11 +32,10 @@ use yii\web\IdentityInterface;
  * @property int $country_id
  * @property string $phone
  * @property string $registeredDate
- * @property int $user_image_id
+ * @property int $image_id
  * @property string $authKey
  *
  * @property Location $location
- * @property UserImage $userImage
  * @property Image $image
  * @property Country $country
  */
@@ -297,17 +296,9 @@ class User extends BaseRecord implements IdentityInterface
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getUserImage()
-    {
-        return $this->hasOne(UserImage::class, ['id' => 'user_image_id']);
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
     public function getImage()
     {
-        return $this->hasOne(Image::class, ['id' => 'image_id'])->via('userImage');
+        return $this->hasOne(Image::class, ['id' => 'image_id']);
     }
 
     /**
@@ -324,7 +315,6 @@ class User extends BaseRecord implements IdentityInterface
         $fields = parent::extraFields();
         $fields[] = 'image';
         $fields[] = 'location';
-        $fields[] = 'userImage';
         $fields[] = 'country';
         return $fields;
     }

@@ -16,8 +16,12 @@ class ImageOwnerRule extends Rule
      */
     public function execute($user, $item, $params)
     {
-        // прямой связи между пользователем и изображением нет, по этому,
-        // всегда говорим что он не является владельцем изображения
-        return false;
+        /* @var \common\models\Image $obj */
+        $obj = isset($params['Image']) ? $params['Image'] : null;
+        if ($obj != null) {
+            return $obj->user_id == $user;
+        } else {
+            return false;
+        }
     }
 }

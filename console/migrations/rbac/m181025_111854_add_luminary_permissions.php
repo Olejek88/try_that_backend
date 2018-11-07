@@ -37,7 +37,6 @@ class m181025_111854_add_luminary_permissions extends Migration
         'common\models\Tag' => ['create', 'read',],
         'common\models\Trending' => ['create', 'read'],
         'common\models\UserAttribute' => ['create', 'read', 'update', 'delete'],
-        'common\models\UserImage' => ['create', 'read', 'update', 'delete'],
         'common\models\User' => ['read', 'update'],
         'common\models\Wishlist' => [],
     ];

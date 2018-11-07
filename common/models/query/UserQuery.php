@@ -6,9 +6,9 @@ use common\models\User;
 use yii\db\ActiveQuery;
 
 /**
- * This is the ActiveQuery class for [[UserImage]].
+ * This is the ActiveQuery class for [[User]].
  *
- * @see \common\models\UserImage
+ * @see \common\models\User
  */
 class UserQuery extends ActiveQuery
 {

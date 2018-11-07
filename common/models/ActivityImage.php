@@ -11,10 +11,9 @@ use Yii;
  *
  * @property int $id
  * @property int $activity_id
- * @property int $user_image_id
+ * @property int $image_id
  *
  * @property Activity $activity
- * @property UserImage $userImage
  * @property Image $image
  */
 class ActivityImage extends BaseRecord
@@ -33,8 +32,8 @@ class ActivityImage extends BaseRecord
     public function rules()
     {
         return [
-            [['activity_id', 'user_image_id'], 'required'],
-            [['activity_id', 'user_image_id'], 'integer'],
+            [['activity_id', 'image_id'], 'required'],
+            [['activity_id', 'image_id'], 'integer'],
             [
                 ['activity_id'],
                 'exist',
@@ -43,11 +42,11 @@ class ActivityImage extends BaseRecord
                 'targetAttribute' => ['activity_id' => 'id']
             ],
             [
-                ['user_image_id'],
+                ['image_id'],
                 'exist',
                 'skipOnError' => true,
-                'targetClass' => UserImage::class,
-                'targetAttribute' => ['user_image_id' => 'id']
+                'targetClass' => Image::class,
+                'targetAttribute' => ['image_id' => 'id']
             ],
         ];
     }
@@ -77,15 +76,7 @@ class ActivityImage extends BaseRecord
      */
     public function getImage()
     {
-        return $this->hasOne(Image::class, ['id' => 'image_id'])->via('userImage');
-    }
-
-    /**
-     * @return \yii\db\ActiveQuery
-     */
-    public function getUserImage()
-    {
-        return $this->hasOne(UserImage::class, ['id' => 'user_image_id']);
+        return $this->hasOne(Image::class, ['id' => 'image_id']);
     }
 
     /**
@@ -102,7 +93,6 @@ class ActivityImage extends BaseRecord
         $fields = parent::extraFields();
         $fields[] = 'activity';
         $fields[] = 'image';
-        $fields[] = 'userImage';
         return $fields;
     }
 

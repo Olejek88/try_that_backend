@@ -36,8 +36,20 @@ class Occasion extends BaseRecord
             [['title', 'activity_id'], 'required'],
             [['activity_id', 'image_id'], 'integer'],
             [['title'], 'string', 'max' => 255],
-            [['activity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::class, 'targetAttribute' => ['activity_id' => 'id']],
-            [['image_id'], 'exist', 'skipOnError' => true, 'targetClass' => Image::class, 'targetAttribute' => ['image_id' => 'id']],
+            [
+                ['activity_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Activity::class,
+                'targetAttribute' => ['activity_id' => 'id']
+            ],
+            [
+                ['image_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Image::class,
+                'targetAttribute' => ['image_id' => 'id']
+            ],
         ];
     }
 

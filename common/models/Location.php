@@ -14,8 +14,10 @@ use Yii;
  * @property int $latitude
  * @property int $longitude
  * @property int $image_id
+ * @property int $user_id
  *
  * @property Image $image
+ * @property User $user
  */
 class Location extends BaseRecord
 {
@@ -38,7 +40,13 @@ class Location extends BaseRecord
             [['title'], 'required'],
             [['latitude', 'longitude', 'image_id'], 'integer'],
             [['title'], 'string', 'max' => 255],
-            [['image_id'], 'exist', 'skipOnError' => true, 'targetClass' => Image::class, 'targetAttribute' => ['image_id' => 'id']],
+            [
+                ['image_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Image::class,
+                'targetAttribute' => ['image_id' => 'id']
+            ],
         ];
     }
 
@@ -62,6 +70,14 @@ class Location extends BaseRecord
     public function getImage()
     {
         return $this->hasOne(Image::class, ['id' => 'image_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
     }
 
     /**
