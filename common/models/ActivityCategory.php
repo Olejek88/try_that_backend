@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
+use common\models\query\ActivityCategoryQuery;
 use Yii;
 
 /**
@@ -14,7 +16,7 @@ use Yii;
  * @property Activity[] $activities
  * @property Image $image
  */
-class ActivityCategory extends \yii\db\ActiveRecord
+class ActivityCategory extends BaseRecord
 {
     /**
      * {@inheritdoc}
@@ -33,7 +35,13 @@ class ActivityCategory extends \yii\db\ActiveRecord
             [['title'], 'required'],
             [['image_id'], 'integer'],
             [['title'], 'string', 'max' => 255],
-            [['image_id'], 'exist', 'skipOnError' => true, 'targetClass' => Image::class, 'targetAttribute' => ['image_id' => 'id']],
+            [
+                ['image_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Image::class,
+                'targetAttribute' => ['image_id' => 'id']
+            ],
         ];
     }
 
@@ -67,10 +75,19 @@ class ActivityCategory extends \yii\db\ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return \common\models\query\ActivityCategoryQuery the active query used by this AR class.
+     * @return ActivityCategoryQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \common\models\query\ActivityCategoryQuery(get_called_class());
+        return new ActivityCategoryQuery(get_called_class());
     }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activities';
+        $fields[] = 'image';
+        return $fields;
+    }
+
 }

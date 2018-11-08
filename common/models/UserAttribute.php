@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
+use common\models\query\UserAttributeQuery;
 use Yii;
 
 /**
@@ -14,7 +16,7 @@ use Yii;
  *
  * @property User $user
  */
-class UserAttribute extends \yii\db\ActiveRecord
+class UserAttribute extends BaseRecord
 {
     /**
      * {@inheritdoc}
@@ -70,6 +72,13 @@ class UserAttribute extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\UserAttributeQuery(get_called_class());
+        return new UserAttributeQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'user';
+        return $fields;
     }
 }

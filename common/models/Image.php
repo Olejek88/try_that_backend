@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
+use common\models\query\ImageQuery;
 use Yii;
 
 /**
@@ -10,6 +12,7 @@ use Yii;
  * @property int $id
  * @property string $title
  * @property string $path
+ * @property int $user_id
  *
  * @property ActivityCategory[] $activityCategories
  * @property ActivityImage[] $activityImages
@@ -20,7 +23,7 @@ use Yii;
  * @property Occasion[] $occasions
  * @property Trending[] $trendings
  */
-class Image extends \yii\db\ActiveRecord
+class Image extends BaseRecord
 {
     /**
      * {@inheritdoc}
@@ -36,8 +39,16 @@ class Image extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['title'], 'required'],
+            [['title', 'user_id'], 'required'],
             [['title', 'path'], 'string', 'max' => 255],
+            [['user_id'], 'integer'],
+            [
+                ['user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::class,
+                'targetAttribute' => ['user_id' => 'id']
+            ],
         ];
     }
 
@@ -50,6 +61,7 @@ class Image extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'title' => Yii::t('app', 'Title'),
             'path' => Yii::t('app', 'Path'),
+            'user_id' => Yii::t('app', 'user ID'),
         ];
     }
 
@@ -123,6 +135,20 @@ class Image extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\ImageQuery(get_called_class());
+        return new ImageQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activityCategories';
+        $fields[] = 'activityImages';
+        $fields[] = 'categories';
+        $fields[] = 'countries';
+        $fields[] = 'locations';
+        $fields[] = 'newsImages';
+        $fields[] = 'occasions';
+        $fields[] = 'trendings';
+        return $fields;
     }
 }

@@ -2,21 +2,21 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\ActivityImageQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%activity_image}}".
  *
  * @property int $id
  * @property int $activity_id
- * @property int $user_image_id
+ * @property int $image_id
  *
  * @property Activity $activity
  * @property Image $image
  */
-class ActivityImage extends ActiveRecord
+class ActivityImage extends BaseRecord
 {
     /**
      * {@inheritdoc}
@@ -32,8 +32,8 @@ class ActivityImage extends ActiveRecord
     public function rules()
     {
         return [
-            [['activity_id', 'user_image_id'], 'required'],
-            [['activity_id', 'user_image_id'], 'integer'],
+            [['activity_id', 'image_id'], 'required'],
+            [['activity_id', 'image_id'], 'integer'],
             [
                 ['activity_id'],
                 'exist',
@@ -42,11 +42,11 @@ class ActivityImage extends ActiveRecord
                 'targetAttribute' => ['activity_id' => 'id']
             ],
             [
-                ['user_image_id'],
+                ['image_id'],
                 'exist',
                 'skipOnError' => true,
-                'targetClass' => UserImage::class,
-                'targetAttribute' => ['user_image_id' => 'id']
+                'targetClass' => Image::class,
+                'targetAttribute' => ['image_id' => 'id']
             ],
         ];
     }
@@ -87,4 +87,13 @@ class ActivityImage extends ActiveRecord
     {
         return new ActivityImageQuery(get_called_class());
     }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activity';
+        $fields[] = 'image';
+        return $fields;
+    }
+
 }

@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
+use common\models\query\MailStatusQuery;
 use Yii;
 
 /**
@@ -12,7 +14,7 @@ use Yii;
  *
  * @property Mail[] $mails
  */
-class MailStatus extends \yii\db\ActiveRecord
+class MailStatus extends BaseRecord
 {
     /**
      * {@inheritdoc}
@@ -58,6 +60,13 @@ class MailStatus extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\MailStatusQuery(get_called_class());
+        return new MailStatusQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'mails';
+        return $fields;
     }
 }

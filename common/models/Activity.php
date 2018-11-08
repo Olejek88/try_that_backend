@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\ActivityQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%activity}}".
@@ -30,10 +30,11 @@ use yii\db\ActiveRecord;
  * @property Occasion[] $occasions
  * @property Review[] $reviews
  * @property Tag[] $tags
+ * @property ActivityTag[] $activityTags
  * @property Trending[] $trendings
  * @property Wishlist[] $wishlists
  */
-class Activity extends ActiveRecord
+class Activity extends BaseRecord
 {
     /**
      * {@inheritdoc}
@@ -146,7 +147,15 @@ class Activity extends ActiveRecord
      */
     public function getTags()
     {
-        return $this->hasMany(Tag::class, ['activity_id' => 'id']);
+        return $this->hasMany(Tag::class, ['id' => 'tag_id'])->via('activityTags');
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getActivityTags()
+    {
+        return $this->hasMany(ActivityTag::class, ['activity_id' => 'id']);
     }
 
     /**
@@ -179,5 +188,24 @@ class Activity extends ActiveRecord
      */
     public function getActivityDurations() {
         return $this->hasMany(ActivityDuration::class, ['activity_id' => 'id']);
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activityCategory';
+        $fields[] = 'category';
+        $fields[] = 'activityDurations';
+        $fields[] = 'luminary';
+        $fields[] = 'activityImages';
+        $fields[] = 'activityListings';
+        $fields[] = 'mails';
+        $fields[] = 'occasions';
+        $fields[] = 'reviews';
+        $fields[] = 'tags';
+        $fields[] = 'activityTags';
+        $fields[] = 'trendings';
+        $fields[] = 'wishlists';
+        return $fields;
     }
 }
