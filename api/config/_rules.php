@@ -6,6 +6,7 @@ return [
 
     // пока действий мало, оставим так
     '/v1/signup/request' => 'v1/user/signup/request',
+    '/v1/signup/options' => 'v1/user/signup/options',
     '/v1/auth/request' => 'v1/user/auth/request',
 
     // в качестве примера, т.к. модуль не про объекты а сервисный

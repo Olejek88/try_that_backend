@@ -1,10 +1,12 @@
 <?php
-
 namespace api\modules\v1\modules\user\controllers;
 
 use api\models\form\SignupForm;
 use api\models\User;
 use Yii;
+use yii\filters\AccessControl;
+use yii\filters\auth\HttpBearerAuth;
+use yii\filters\Cors;
 use yii\rest\Controller;
 
 /**
@@ -13,13 +15,55 @@ use yii\rest\Controller;
  */
 class SignupController extends Controller
 {
+    //public $enableCsrfValidation = false;
+/*    public function actions()
+    {
+        return [
+            'options' => [
+                'class' => 'yii\rest\OptionsAction',
+            ],
+        ];
+    }*/
+    
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+
+        // add CORS filter
+        $behaviors['corsFilter'] = [
+            'class' => Cors::className(),
+            'cors' => [
+                'Origin' => ['*'],
+                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+            ],
+              
+        ];
+
+/*        unset($behaviors['authenticator']);
+        $behaviors['authenticator'] = [
+            'class' =>  HttpBearerAuth::className(),
+        ];*/
+
+/*        $behaviors['access'] = [
+            'class' => AccessControl::className(),
+            'rules' => [                
+                [
+                    'allow' => true,
+                    'roles' => ['@'],
+                ],
+            ],
+        ];*/
+
+        return $behaviors;
+    }
+    
     /**
      * @inheritdoc
      */
     public function verbs()
     {
         $verbs = parent::verbs();
-        $verbs['request'] = ['post'];
+        $verbs['request'] = ['POST', 'OPTIONS'];
         return $verbs;
     }
 
