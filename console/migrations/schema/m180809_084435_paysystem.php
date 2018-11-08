@@ -40,7 +40,7 @@ class m180809_084435_paysystem extends Migration
             'extra_info' => $this->text()->notNull()->defaultValue(''),
             'status_id' => $this->integer()->notNull()->defaultValue(1),
             'status_date' => $this->dateTime()->null(),
-            'create_date' => $this->dateTime()->notNull()->defaultExpression('CURRENT_TIMESTAMP'),
+            'create_date' => $this->dateTime()->notNull()->defaultExpression('NOW()'),
             'last_check' => $this->dateTime()->null()->defaultValue(null),
         ]);
 
