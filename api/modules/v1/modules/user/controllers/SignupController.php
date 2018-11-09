@@ -1,10 +1,10 @@
 <?php
-
 namespace api\modules\v1\modules\user\controllers;
 
 use api\models\form\SignupForm;
 use api\models\User;
 use Yii;
+use yii\filters\Cors;
 use yii\rest\Controller;
 
 /**
@@ -13,13 +13,30 @@ use yii\rest\Controller;
  */
 class SignupController extends Controller
 {
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+
+        // add CORS filter
+        $behaviors['corsFilter'] = [
+            'class' => Cors::class,
+            'cors' => [
+                'Origin' => ['*'],
+                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+            ],
+              
+        ];
+
+        return $behaviors;
+    }
+    
     /**
      * @inheritdoc
      */
     public function verbs()
     {
         $verbs = parent::verbs();
-        $verbs['request'] = ['post'];
+        $verbs['request'] = ['POST', 'OPTIONS'];
         return $verbs;
     }
 
