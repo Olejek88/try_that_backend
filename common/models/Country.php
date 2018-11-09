@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
+use common\models\query\CountryQuery;
 use Yii;
 
 /**
@@ -13,7 +15,7 @@ use Yii;
  *
  * @property Image $image
  */
-class Country extends \yii\db\ActiveRecord
+class Country extends BaseRecord
 {
     public const NOT_SPECIFIED = 1;
 
@@ -34,7 +36,13 @@ class Country extends \yii\db\ActiveRecord
             [['title'], 'required'],
             [['image_id'], 'integer'],
             [['title'], 'string', 'max' => 255],
-            [['image_id'], 'exist', 'skipOnError' => true, 'targetClass' => Image::class, 'targetAttribute' => ['image_id' => 'id']],
+            [
+                ['image_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Image::class,
+                'targetAttribute' => ['image_id' => 'id']
+            ],
         ];
     }
 
@@ -64,6 +72,13 @@ class Country extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\CountryQuery(get_called_class());
+        return new CountryQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'image';
+        return $fields;
     }
 }

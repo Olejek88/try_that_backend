@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\ActivityListingQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%activity_listing}}".
@@ -19,9 +19,10 @@ use yii\db\ActiveRecord;
  * @property Activity $activity
  * @property Duration $duration
  * @property GroupExperience[] $groupExperiences
+ * @property Currency $currency
  * @property Order[] $orders
  */
-class ActivityListing extends ActiveRecord
+class ActivityListing extends BaseRecord
 {
     /**
      * {@inheritdoc}
@@ -93,11 +94,30 @@ class ActivityListing extends ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCurrency()
+    {
+        return $this->hasOne(Currency::class, ['id' => 'currency_id']);
+    }
+
+    /**
      * {@inheritdoc}
      * @return \common\models\query\ActivityListingQuery the active query used by this AR class.
      */
     public static function find()
     {
         return new ActivityListingQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activity';
+        $fields[] = 'duration';
+        $fields[] = 'groupExperiences';
+        $fields[] = 'orders';
+        $fields[] = 'currency';
+        return $fields;
     }
 }

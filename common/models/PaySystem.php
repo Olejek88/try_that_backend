@@ -2,8 +2,8 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\PaySystemQuery;
-use yii\db\ActiveRecord;
 
 /**
  * Class PaySystem
@@ -14,7 +14,7 @@ use yii\db\ActiveRecord;
  * @property string $class
  * @property integer $enable
  */
-class PaySystem extends ActiveRecord
+class PaySystem extends BaseRecord
 {
     /**
      * {@inheritdoc}

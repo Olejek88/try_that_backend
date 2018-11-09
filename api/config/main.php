@@ -10,7 +10,11 @@ return [
     'id' => 'app-api',
     'basePath' => dirname(__DIR__),
     'controllerNamespace' => 'api\controllers',
-    'bootstrap' => ['log'],
+    'bootstrap' => [
+        \common\components\PaySystemRoute::class,
+        \common\components\PaySystemAutoload::class,
+        'log'
+    ],
     'modules' => require __DIR__ . DIRECTORY_SEPARATOR . '_modules.php',
     'components' => [
         'request' => [

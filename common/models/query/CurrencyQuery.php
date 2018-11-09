@@ -2,15 +2,14 @@
 
 namespace common\models\query;
 
-use common\models\UserImage;
 use yii\db\ActiveQuery;
 
 /**
- * This is the ActiveQuery class for [[UserImage]].
+ * This is the ActiveQuery class for [[\common\models\Currency]].
  *
- * @see \common\models\UserImage
+ * @see \common\models\Currency
  */
-class UserImageQuery extends ActiveQuery
+class CurrencyQuery extends ActiveQuery
 {
     /*public function active()
     {
@@ -19,7 +18,7 @@ class UserImageQuery extends ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return UserImage[]|array
+     * @return \common\models\Currency[]|array
      */
     public function all($db = null)
     {
@@ -28,7 +27,7 @@ class UserImageQuery extends ActiveQuery
 
     /**
      * {@inheritdoc}
-     * @return UserImage|array|null
+     * @return \common\models\Currency|array|null
      */
     public function one($db = null)
     {

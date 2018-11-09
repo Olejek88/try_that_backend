@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\OrderQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%order}}".
@@ -22,7 +22,7 @@ use yii\db\ActiveRecord;
  * @property OrderStatus $orderStatus
  * @property Customer $customer
  */
-class Order extends ActiveRecord
+class Order extends BaseRecord
 {
     /**
      * {@inheritdoc}
@@ -102,7 +102,7 @@ class Order extends ActiveRecord
      */
     public function getCustomer()
     {
-        return $this->hasOne(Customer::class, ['id' => 'user_id']);
+        return $this->hasOne(Customer::class, ['id' => 'customer_id']);
     }
 
     /**
@@ -112,5 +112,15 @@ class Order extends ActiveRecord
     public static function find()
     {
         return new OrderQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'mails';
+        $fields[] = 'activityListing';
+        $fields[] = 'orderStatus';
+        $fields[] = 'customer';
+        return $fields;
     }
 }

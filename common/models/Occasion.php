@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
+use common\models\query\OccasionQuery;
 use Yii;
 
 /**
@@ -15,7 +17,7 @@ use Yii;
  * @property Activity $activity
  * @property Image $image
  */
-class Occasion extends \yii\db\ActiveRecord
+class Occasion extends BaseRecord
 {
     /**
      * {@inheritdoc}
@@ -34,8 +36,20 @@ class Occasion extends \yii\db\ActiveRecord
             [['title', 'activity_id'], 'required'],
             [['activity_id', 'image_id'], 'integer'],
             [['title'], 'string', 'max' => 255],
-            [['activity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::class, 'targetAttribute' => ['activity_id' => 'id']],
-            [['image_id'], 'exist', 'skipOnError' => true, 'targetClass' => Image::class, 'targetAttribute' => ['image_id' => 'id']],
+            [
+                ['activity_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Activity::class,
+                'targetAttribute' => ['activity_id' => 'id']
+            ],
+            [
+                ['image_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Image::class,
+                'targetAttribute' => ['image_id' => 'id']
+            ],
         ];
     }
 
@@ -74,6 +88,14 @@ class Occasion extends \yii\db\ActiveRecord
      */
     public static function find()
     {
-        return new \common\models\query\OccasionQuery(get_called_class());
+        return new OccasionQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'activity';
+        $fields[] = 'image';
+        return $fields;
     }
 }

@@ -2,8 +2,8 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\InvoiceQueryStatusQuery;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%invoice_query_status}}".
@@ -15,7 +15,7 @@ use yii\db\ActiveRecord;
  *
  * @property \yii\db\ActiveQuery $invoiceQueries
  */
-class InvoiceQueryStatus extends ActiveRecord
+class InvoiceQueryStatus extends BaseRecord
 {
     // появляется один раз, в момент создания заявки на оплату
     public const NEW_ID = 1;

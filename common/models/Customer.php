@@ -2,9 +2,9 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
 use common\models\query\CustomerQuery;
 use Yii;
-use yii\db\ActiveRecord;
 
 /**
  * This is the model class for table "{{%customer}}".
@@ -21,7 +21,7 @@ use yii\db\ActiveRecord;
  * @property Wishlist[] $wishlists
  * @property User $user
  */
-class Customer extends ActiveRecord
+class Customer extends BaseRecord
 {
     /**
      * {@inheritdoc}
@@ -96,10 +96,22 @@ class Customer extends ActiveRecord
 
     /**
      * {@inheritdoc}
-     * @return \common\models\query\CustomerQuery the active query used by this AR class.
+     * @return CustomerQuery the active query used by this AR class.
      */
     public static function find()
     {
         return new CustomerQuery(get_called_class());
     }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'user';
+        $fields[] = 'followLists';
+        $fields[] = 'groupExperiences';
+        $fields[] = 'reviews';
+        $fields[] = 'wishlists';
+        return $fields;
+    }
+
 }

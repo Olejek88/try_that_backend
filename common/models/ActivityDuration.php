@@ -3,13 +3,13 @@
 namespace common\models;
 
 
-use yii\db\ActiveRecord;
+use common\components\BaseRecord;
+use common\models\query\ActivityDurationQuery;
 
 /**
  * This is the model class for table "{{%activity_duration}}".
  *
  * @property int $id
- * @property int $luminary_id
  * @property int $activity_id
  * @property int $duration_id
  *
@@ -17,7 +17,7 @@ use yii\db\ActiveRecord;
  * @property Activity $activity
  * @property Duration $duration
  */
-class ActivityDuration extends ActiveRecord
+class ActivityDuration extends BaseRecord
 {
     /**
      * {@inheritdoc}
@@ -33,15 +33,8 @@ class ActivityDuration extends ActiveRecord
     public function rules()
     {
         return [
-            [['luminary_id', 'activity_id', 'duration_id'], 'required'],
-            [['luminary_id', 'activity_id', 'duration_id'], 'integer'],
-            [
-                ['luminary_id'],
-                'exist',
-                'skipOnError' => true,
-                'targetClass' => Luminary::class,
-                'targetAttribute' => ['luminary_id' => 'id']
-            ],
+            [['activity_id', 'duration_id'], 'required'],
+            [['activity_id', 'duration_id'], 'integer'],
             [
                 ['activity_id'],
                 'exist',
@@ -66,15 +59,17 @@ class ActivityDuration extends ActiveRecord
     {
         return [
             'id' => \Yii::t('app', 'ID'),
-            'luminary_id' => \Yii::t('app', 'Luminary ID'),
             'activity_id' => \Yii::t('app', 'Activity ID'),
             'duration_id' => \Yii::t('app', 'Duration ID'),
         ];
     }
 
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getLuminary()
     {
-        return $this->hasOne(Luminary::class, ['id' => 'luminary_id']);
+        return $this->hasOne(Luminary::class, ['id' => 'luminary_id'])->via('duration');
     }
 
     public function getActivity()
@@ -86,4 +81,19 @@ class ActivityDuration extends ActiveRecord
     {
         return $this->hasOne(Duration::class, ['id' => 'duration_id']);
     }
+
+    public static function find()
+    {
+        return new ActivityDurationQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'luminary';
+        $fields[] = 'activity';
+        $fields[] = 'duration';
+        return $fields;
+    }
+
 }

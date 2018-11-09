@@ -2,11 +2,12 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
+use common\models\query\UserQuery;
 use common\models\user\Token;
 use common\models\user\TokenAuth;
 use Yii;
 use yii\behaviors\TimestampBehavior;
-use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
 
 /**
@@ -31,11 +32,14 @@ use yii\web\IdentityInterface;
  * @property int $country_id
  * @property string $phone
  * @property string $registeredDate
- * @property int $user_image_id
- *
+ * @property int $image_id
  * @property string $authKey
+ *
+ * @property Location $location
+ * @property Image $image
+ * @property Country $country
  */
-class User extends ActiveRecord implements IdentityInterface
+class User extends BaseRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 10;
@@ -44,8 +48,8 @@ class User extends ActiveRecord implements IdentityInterface
      * User roles.
      */
     public const ROLE_CLIENT = 'client';
-    public const ROLE_MANAGER = 'manager';
-    public const ROLE_PROVIDER = 'provider';
+    public const ROLE_LUMINARY = 'luminary';
+    public const ROLE_CUSTOMER = 'customer';
     public const ROLE_ADMIN = 'admin';
 
     /**
@@ -92,7 +96,7 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        $userToken = Token::findOne(['token' => $token]);
+        $userToken = TokenAuth::findOne(['token' => $token]);
         if ($userToken != null && $userToken->isValid()) {
             return User::findOne($userToken->user_id);
         } else {
@@ -258,5 +262,60 @@ class User extends ActiveRecord implements IdentityInterface
         $token->link('user', $this);
 
         return $token->token;
+    }
+
+    /**
+     * @return array
+     */
+    public function fields()
+    {
+        $fields = parent::fields();
+
+        // remove fields that contain sensitive information
+        unset($fields['auth_key'], $fields['password_hash'], $fields['password_reset_token']);
+
+        return $fields;
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getCountry()
+    {
+        return $this->hasOne(Country::class, ['id' => 'country_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLocation()
+    {
+        return $this->hasOne(Location::class, ['id' => 'location_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getImage()
+    {
+        return $this->hasOne(Image::class, ['id' => 'image_id']);
+    }
+
+    /**
+     * {@inheritdoc}
+     * @return \common\models\query\UserQuery the active query used by this AR class.
+     */
+    public static function find()
+    {
+        return new UserQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'image';
+        $fields[] = 'location';
+        $fields[] = 'country';
+        return $fields;
     }
 }

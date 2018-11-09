@@ -2,6 +2,8 @@
 
 namespace common\models;
 
+use common\components\BaseRecord;
+use common\models\query\LocationQuery;
 use Yii;
 
 /**
@@ -12,10 +14,12 @@ use Yii;
  * @property int $latitude
  * @property int $longitude
  * @property int $image_id
+ * @property int $user_id
  *
  * @property Image $image
+ * @property User $user
  */
-class Location extends \yii\db\ActiveRecord
+class Location extends BaseRecord
 {
     public const NOT_SPECIFIED = 1;
 
@@ -36,7 +40,13 @@ class Location extends \yii\db\ActiveRecord
             [['title'], 'required'],
             [['latitude', 'longitude', 'image_id'], 'integer'],
             [['title'], 'string', 'max' => 255],
-            [['image_id'], 'exist', 'skipOnError' => true, 'targetClass' => Image::class, 'targetAttribute' => ['image_id' => 'id']],
+            [
+                ['image_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Image::class,
+                'targetAttribute' => ['image_id' => 'id']
+            ],
         ];
     }
 
@@ -63,11 +73,26 @@ class Location extends \yii\db\ActiveRecord
     }
 
     /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getUser()
+    {
+        return $this->hasOne(User::class, ['id' => 'user_id']);
+    }
+
+    /**
      * {@inheritdoc}
      * @return \common\models\query\LocationQuery the active query used by this AR class.
      */
     public static function find()
     {
-        return new \common\models\query\LocationQuery(get_called_class());
+        return new LocationQuery(get_called_class());
+    }
+
+    public function extraFields()
+    {
+        $fields = parent::extraFields();
+        $fields[] = 'image';
+        return $fields;
     }
 }
