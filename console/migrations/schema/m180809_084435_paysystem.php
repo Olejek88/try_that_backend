@@ -37,7 +37,7 @@ class m180809_084435_paysystem extends Migration
             'order_id' => $this->integer()->notNull()->unique(),
             'description' => $this->string(256)->notNull()->defaultValue(''),
             'cost' => $this->decimal(11, 2)->defaultValue(0.0),
-            'extra_info' => $this->text()->notNull()->defaultValue(''),
+            'extra_info' => $this->text()->notNull(),
             'status_id' => $this->integer()->notNull()->defaultValue(1),
             'status_date' => $this->dateTime()->null(),
             'create_date' => $this->dateTime()->notNull()->defaultExpression('NOW()'),
