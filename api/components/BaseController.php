@@ -4,6 +4,7 @@ namespace api\components;
 
 use common\components\BaseRecord;
 use yii\filters\auth\HttpBearerAuth;
+use yii\filters\Cors;
 use yii\rest\ActiveController;
 use yii\web\ForbiddenHttpException;
 
@@ -18,11 +19,30 @@ class BaseController extends ActiveController
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['authenticator']['class'] = HttpBearerAuth::class;
+/*        $behaviors['authenticator']['class'] = HttpBearerAuth::class;
         $behaviors['authenticator']['except'] = [
             'index', 'view',
+        ];*/
+        // add CORS filter
+        $behaviors['corsFilter'] = [
+            'class' => Cors::class,
+            'cors' => [
+                'Origin' => ['*'],
+                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+            ],
+
         ];
         return $behaviors;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function verbs()
+    {
+        $verbs = parent::verbs();
+        $verbs['request'] = ['GET', 'POST', 'OPTIONS'];
+        return $verbs;
     }
 
     /**

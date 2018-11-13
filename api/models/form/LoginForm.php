@@ -13,9 +13,9 @@ use yii\base\Model;
 class LoginForm extends Model
 {
     /**
-     * @var string $login
+     * @var string $email
      */
-    public $login;
+    public $email;
     /**
      * @var string $password
      */
@@ -32,7 +32,7 @@ class LoginForm extends Model
     public function rules()
     {
         return [
-            [['login', 'password'], 'required'],
+            [['email', 'password'], 'required'],
             ['password', 'validatePassword'],
         ];
     }
@@ -62,7 +62,7 @@ class LoginForm extends Model
     public function getUser()
     {
         if ($this->user === null) {
-            $this->user = User::findByLogin($this->login);
+            $this->user = User::findByLogin($this->email);
         }
 
         return $this->user;

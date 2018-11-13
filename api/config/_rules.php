@@ -27,6 +27,7 @@ return [
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/activity',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/category',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/country',],
+    ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/city',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/customer',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/duration',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/exception-t-t',],

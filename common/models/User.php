@@ -28,14 +28,14 @@ use yii\web\IdentityInterface;
  * @property string $firstName
  * @property string $lastName
  * @property string $birthDate
- * @property int $location_id
+ * @property int $city_id
  * @property int $country_id
  * @property string $phone
  * @property string $registeredDate
  * @property int $image_id
  * @property string $authKey
  *
- * @property Location $location
+ * @property City $city
  * @property Image $image
  * @property Country $country
  */
@@ -79,7 +79,7 @@ class User extends BaseRecord implements IdentityInterface
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
             ['country_id', 'default', 'value' => Country::NOT_SPECIFIED],
-            ['location_id', 'default', 'value' => Location::NOT_SPECIFIED],
+            ['city_id', 'default', 'value' => CITY::NOT_SPECIFIED],
         ];
     }
 
@@ -288,9 +288,9 @@ class User extends BaseRecord implements IdentityInterface
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getLocation()
+    public function getCity()
     {
-        return $this->hasOne(Location::class, ['id' => 'location_id']);
+        return $this->hasOne(City::class, ['id' => 'city_id']);
     }
 
     /**
@@ -314,7 +314,7 @@ class User extends BaseRecord implements IdentityInterface
     {
         $fields = parent::extraFields();
         $fields[] = 'image';
-        $fields[] = 'location';
+        $fields[] = 'city';
         $fields[] = 'country';
         return $fields;
     }

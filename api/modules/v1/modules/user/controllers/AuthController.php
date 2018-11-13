@@ -3,10 +3,27 @@
 namespace api\modules\v1\modules\user\controllers;
 
 use api\models\form\LoginForm;
+use yii\filters\Cors;
 use yii\rest\Controller;
 
 class AuthController extends Controller
 {
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+
+        // add CORS filter
+        $behaviors['corsFilter'] = [
+            'class' => Cors::class,
+            'cors' => [
+                'Origin' => ['*'],
+                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+            ],
+
+        ];
+        return $behaviors;
+    }
+
     /**
      * @inheritdoc
      */
