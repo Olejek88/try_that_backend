@@ -88,6 +88,7 @@ class User extends BaseRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
+        error_log('find w');
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
 
@@ -112,6 +113,7 @@ class User extends BaseRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
+        error_log('find w');
         return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
     }
 
@@ -307,6 +309,7 @@ class User extends BaseRecord implements IdentityInterface
      */
     public static function find()
     {
+        error_log('find');
         return new UserQuery(get_called_class());
     }
 

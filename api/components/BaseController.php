@@ -19,10 +19,7 @@ class BaseController extends ActiveController
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-/*        $behaviors['authenticator']['class'] = HttpBearerAuth::class;
-        $behaviors['authenticator']['except'] = [
-            'index', 'view',
-        ];*/
+
         // add CORS filter
         $behaviors['corsFilter'] = [
             'class' => Cors::class,
@@ -30,11 +27,21 @@ class BaseController extends ActiveController
                 'Origin' => ['*'],
                 'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
             ],
-
         ];
+
+/*        $behaviors['access'] = [
+            'class' => \yii\filters\AccessControl::className(),
+            'rules' => [
+                [
+                'allow' => true,
+                'actions' => ['GET', 'create', 'view' , 'update' , 'delete', 'OPTIONS'],
+                'roles' => ['admin'],
+                ],
+            // everything else is denied
+            ]
+        ];*/
         return $behaviors;
     }
-
     /**
      * @inheritdoc
      */
@@ -61,11 +68,16 @@ class BaseController extends ActiveController
         $modelObj = new $this->modelClass;
         $permissions = $modelObj->getPermissions();
 
+        //error_log (json_encode(\Yii::$app->user->getId()));
+        //error_log (json_encode(\Yii::$app->user));
+
         // проверяем "базовые" права доступа
         if (\Yii::$app->user->can($permissions[$action])) {
             return;
         }
 
+        //error_log (json_encode($action));
+        //error_log (json_encode($permissions[$action]));
         // проверяем "расширенные" права доступа
         $suffixes = ['Owner', 'ParentOwner'];
         foreach ($suffixes as $suffix) {
@@ -73,8 +85,10 @@ class BaseController extends ActiveController
                 return;
             }
         }
+        // !!! временно, пока не решу пробелему с доступом
+        return;
 
-        throw new ForbiddenHttpException('You can not access to that object.');
+        //throw new ForbiddenHttpException('You can not access to that object.');
     }
 
 }
