@@ -2,14 +2,14 @@
 
 namespace common\models\search;
 
-use common\models\User;
+use common\models\GroupExperience;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * UserSearch represents the model behind the search form about `common\models\User`.
+ * GroupExperienceSearch represents the model behind the search form about `common\models\GroupExperience`.
  */
-class UserSearch extends User
+class GroupExperienceSearch extends GroupExperience
 {
     /**
      * @inheritdoc
@@ -17,8 +17,7 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'status', 'location_id', 'country_id'], 'integer'],
-            [['username', 'email', 'firstName', 'lastName'], 'string'],
+            [['id', 'activity_listing_id', 'customer_id'], 'integer'],
         ];
     }
 
@@ -40,7 +39,7 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find();
+        $query = GroupExperience::find();
 
         // add conditions that should always apply here
 
@@ -57,15 +56,9 @@ class UserSearch extends User
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'status' => $this->status,
-            'location_id' => $this->location_id,
-            'country_id' => $this->country_id,
+            'activity_listing_id' => $this->activity_listing_id,
+            'customer_id' => $this->customer_id,
         ]);
-
-        $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'firstName', $this->firstName])
-            ->andFilterWhere(['like', 'lastName', $this->lastName]);
 
         return $dataProvider;
     }

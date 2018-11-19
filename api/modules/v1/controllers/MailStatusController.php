@@ -4,6 +4,7 @@ namespace api\modules\v1\controllers;
 
 use api\components\BaseController;
 use common\models\MailStatus;
+use common\models\search\MailStatusSearch;
 
 class MailStatusController extends BaseController
 {
@@ -14,5 +15,18 @@ class MailStatusController extends BaseController
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['except'] = [];
         return $behaviors;
+    }
+
+    public function actions()
+    {
+        $actions = parent::actions();
+        $actions['index']['prepareDataProvider'] = [$this, 'prepareDataProvider'];
+        return $actions;
+    }
+
+    public function prepareDataProvider()
+    {
+        $searchModel = new MailStatusSearch();
+        return $searchModel->search(\Yii::$app->request->queryParams);
     }
 }

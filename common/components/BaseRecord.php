@@ -29,4 +29,9 @@ class BaseRecord extends ActiveRecord
             'delete'=> 'delete' . $class,
         ];
     }
+
+    public function formName()
+    {
+        return '';
+    }
 }

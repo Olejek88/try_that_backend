@@ -321,9 +321,4 @@ class User extends BaseRecord implements IdentityInterface
         $fields[] = 'country';
         return $fields;
     }
-
-    public function formName()
-    {
-        return '';
-    }
 }

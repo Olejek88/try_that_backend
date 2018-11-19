@@ -2,14 +2,14 @@
 
 namespace common\models\search;
 
-use common\models\User;
+use common\models\Luminary;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * UserSearch represents the model behind the search form about `common\models\User`.
+ * LuminarySearch represents the model behind the search form about `common\models\Luminary`.
  */
-class UserSearch extends User
+class LuminarySearch extends Luminary
 {
     /**
      * @inheritdoc
@@ -17,8 +17,9 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'status', 'location_id', 'country_id'], 'integer'],
-            [['username', 'email', 'firstName', 'lastName'], 'string'],
+            [['id', 'verified', 'user_id'], 'integer'],
+            [['verified_date',], 'string'],
+            [['rating',], 'double'],
         ];
     }
 
@@ -40,7 +41,7 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find();
+        $query = Luminary::find();
 
         // add conditions that should always apply here
 
@@ -57,15 +58,12 @@ class UserSearch extends User
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'status' => $this->status,
-            'location_id' => $this->location_id,
-            'country_id' => $this->country_id,
+            'verified' => $this->verified,
+            'rating' => $this->rating,
+            'user_id' => $this->user_id,
         ]);
 
-        $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'firstName', $this->firstName])
-            ->andFilterWhere(['like', 'lastName', $this->lastName]);
+        $query->andFilterWhere(['like', 'verified_date', $this->verified_date]);
 
         return $dataProvider;
     }

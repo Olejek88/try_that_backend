@@ -2,14 +2,14 @@
 
 namespace common\models\search;
 
-use common\models\User;
+use common\models\Mail;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * UserSearch represents the model behind the search form about `common\models\User`.
+ * MailSearch represents the model behind the search form about `common\models\Mail`.
  */
-class UserSearch extends User
+class MailSearch extends Mail
 {
     /**
      * @inheritdoc
@@ -17,8 +17,11 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'status', 'location_id', 'country_id'], 'integer'],
-            [['username', 'email', 'firstName', 'lastName'], 'string'],
+            [
+                ['id', 'order_id', 'from_user_id', 'to_user_id', 'status_id', 'activity_id', 'send_date', 'read_date'],
+                'integer'
+            ],
+            [['title', 'text',], 'string'],
         ];
     }
 
@@ -40,7 +43,7 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find();
+        $query = Mail::find();
 
         // add conditions that should always apply here
 
@@ -57,15 +60,17 @@ class UserSearch extends User
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'status' => $this->status,
-            'location_id' => $this->location_id,
-            'country_id' => $this->country_id,
+            'order_id' => $this->order_id,
+            'from_user_id' => $this->from_user_id,
+            'to_user_id' => $this->to_user_id,
+            'status_id' => $this->status_id,
+            'activity_id' => $this->activity_id,
+            'send_date' => $this->send_date,
+            'read_date' => $this->read_date,
         ]);
 
-        $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'firstName', $this->firstName])
-            ->andFilterWhere(['like', 'lastName', $this->lastName]);
+        $query->andFilterWhere(['like', 'title', $this->title])
+            ->andFilterWhere(['like', 'text', $this->text]);
 
         return $dataProvider;
     }

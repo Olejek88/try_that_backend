@@ -2,14 +2,14 @@
 
 namespace common\models\search;
 
-use common\models\User;
+use common\models\ActivityTag;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
 /**
- * UserSearch represents the model behind the search form about `common\models\User`.
+ * ActivityTagSearch represents the model behind the search form about `common\models\ActivityTag`.
  */
-class UserSearch extends User
+class ActivityTagSearch extends ActivityTag
 {
     /**
      * @inheritdoc
@@ -17,8 +17,7 @@ class UserSearch extends User
     public function rules()
     {
         return [
-            [['id', 'status', 'location_id', 'country_id'], 'integer'],
-            [['username', 'email', 'firstName', 'lastName'], 'string'],
+            [['id', 'activity_id', 'tag_id'], 'integer'],
         ];
     }
 
@@ -40,7 +39,7 @@ class UserSearch extends User
      */
     public function search($params)
     {
-        $query = User::find();
+        $query = ActivityTag::find();
 
         // add conditions that should always apply here
 
@@ -57,15 +56,9 @@ class UserSearch extends User
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'status' => $this->status,
-            'location_id' => $this->location_id,
-            'country_id' => $this->country_id,
+            'activity_id' => $this->activity_id,
+            'tag_id' => $this->tag_id,
         ]);
-
-        $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'firstName', $this->firstName])
-            ->andFilterWhere(['like', 'lastName', $this->lastName]);
 
         return $dataProvider;
     }

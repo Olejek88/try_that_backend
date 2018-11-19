@@ -11,8 +11,8 @@ use Yii;
  *
  * @property int $id
  * @property string $title
- * @property int $latitude
- * @property int $longitude
+ * @property double $latitude
+ * @property double $longitude
  * @property int $image_id
  * @property int $user_id
  *
