@@ -38,7 +38,8 @@ class Location extends BaseRecord
     {
         return [
             [['title'], 'required'],
-            [['latitude', 'longitude', 'image_id'], 'integer'],
+            [['latitude', 'longitude'], 'double'],
+            [['image_id'], 'integer'],
             [['title'], 'string', 'max' => 255],
             [
                 ['image_id'],
