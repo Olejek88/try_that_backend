@@ -40,7 +40,7 @@ class Order extends BaseRecord
         return [
             [['activity_listing_id', 'order_status_id', 'created_at', 'updated_at'], 'required'],
             [['activity_listing_id', 'order_status_id', 'created_at', 'updated_at'], 'integer'],
-            [['start_date'], 'safe'],
+            [['start_date'], 'datetime', 'format' => 'php:Y-m-d H:s:i'],
             [
                 ['activity_listing_id'],
                 'exist',

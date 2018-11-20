@@ -17,8 +17,8 @@ use Yii;
  * @property int $to_user_id
  * @property int $status_id
  * @property int $activity_id
- * @property int $send_date
- * @property int $read_date
+ * @property string $send_date
+ * @property string $read_date
  *
  * @property Activity $activity
  * @property User $fromUser
@@ -42,15 +42,59 @@ class Mail extends BaseRecord
     public function rules()
     {
         return [
-            [['title', 'text', 'order_id', 'from_user_id', 'to_user_id', 'status_id', 'activity_id', 'send_date', 'read_date'], 'required'],
+            [
+                [
+                    'title',
+                    'text',
+                    'order_id',
+                    'from_user_id',
+                    'to_user_id',
+                    'status_id',
+                    'activity_id',
+                    'send_date',
+                    'read_date'
+                ],
+                'required'
+            ],
             [['text'], 'string'],
-            [['order_id', 'from_user_id', 'to_user_id', 'status_id', 'activity_id', 'send_date', 'read_date'], 'integer'],
+            [['order_id', 'from_user_id', 'to_user_id', 'status_id', 'activity_id'], 'integer'],
+            [['send_date', 'read_date'], 'datetime', 'format' => 'php:Y-m-d H:s:i'],
             [['title'], 'string', 'max' => 255],
-            [['activity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::class, 'targetAttribute' => ['activity_id' => 'id']],
-            [['from_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['from_user_id' => 'id']],
-            [['status_id'], 'exist', 'skipOnError' => true, 'targetClass' => MailStatus::class, 'targetAttribute' => ['status_id' => 'id']],
-            [['order_id'], 'exist', 'skipOnError' => true, 'targetClass' => Order::class, 'targetAttribute' => ['order_id' => 'id']],
-            [['to_user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::class, 'targetAttribute' => ['to_user_id' => 'id']],
+            [
+                ['activity_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Activity::class,
+                'targetAttribute' => ['activity_id' => 'id']
+            ],
+            [
+                ['from_user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::class,
+                'targetAttribute' => ['from_user_id' => 'id']
+            ],
+            [
+                ['status_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => MailStatus::class,
+                'targetAttribute' => ['status_id' => 'id']
+            ],
+            [
+                ['order_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Order::class,
+                'targetAttribute' => ['order_id' => 'id']
+            ],
+            [
+                ['to_user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::class,
+                'targetAttribute' => ['to_user_id' => 'id']
+            ],
         ];
     }
 

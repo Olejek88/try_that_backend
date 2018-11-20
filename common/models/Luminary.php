@@ -38,7 +38,7 @@ class Luminary extends BaseRecord
     {
         return [
             [['verified'], 'integer'],
-            [['verified_date'], 'safe'],
+            [['verified_date'], 'datetime', 'format' => 'php:Y-m-d H:s:i'],
             [['rating'], 'number'],
         ];
     }

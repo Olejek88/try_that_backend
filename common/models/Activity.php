@@ -17,8 +17,8 @@ use Yii;
  * @property int $activity_category_id
  * @property int $min_customers
  * @property int $max_customers
- * @property int $start_date
- * @property int $end_date
+ * @property string $start_date
+ * @property string $end_date
  *
  * @property ActivityCategory $activityCategory
  * @property Category $category
@@ -51,11 +51,41 @@ class Activity extends BaseRecord
     {
         return [
             [['luminary_id', 'category_id', 'activity_category_id', 'start_date', 'end_date'], 'required'],
-            [['luminary_id', 'category_id', 'activity_category_id', 'min_customers', 'max_customers', 'start_date', 'end_date'], 'integer'],
+            [
+                [
+                    'luminary_id',
+                    'category_id',
+                    'activity_category_id',
+                    'min_customers',
+                    'max_customers',
+                ],
+                'integer'
+            ],
+            [
+                ['start_date', 'end_date'], 'datetime', 'format' => 'php:Y-m-d H:i:s',
+            ],
             [['title', 'description'], 'string', 'max' => 255],
-            [['activity_category_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActivityCategory::class, 'targetAttribute' => ['activity_category_id' => 'id']],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
-            [['luminary_id'], 'exist', 'skipOnError' => true, 'targetClass' => Luminary::class, 'targetAttribute' => ['luminary_id' => 'id']],
+            [
+                ['activity_category_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => ActivityCategory::class,
+                'targetAttribute' => ['activity_category_id' => 'id']
+            ],
+            [
+                ['category_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Category::class,
+                'targetAttribute' => ['category_id' => 'id']
+            ],
+            [
+                ['luminary_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Luminary::class,
+                'targetAttribute' => ['luminary_id' => 'id']
+            ],
         ];
     }
 
@@ -186,7 +216,8 @@ class Activity extends BaseRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getActivityDurations() {
+    public function getActivityDurations()
+    {
         return $this->hasMany(ActivityDuration::class, ['activity_id' => 'id']);
     }
 
