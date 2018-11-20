@@ -51,7 +51,8 @@ class Activity extends BaseRecord
     {
         return [
             [['luminary_id', 'category_id', 'activity_category_id', 'start_date', 'end_date'], 'required'],
-            [['luminary_id', 'category_id', 'activity_category_id', 'min_customers', 'max_customers', 'start_date', 'end_date'], 'integer'],
+            [['start_date', 'end_date'], 'safe'],
+            [['luminary_id', 'category_id', 'activity_category_id', 'min_customers', 'max_customers'], 'integer'],
             [['title', 'description'], 'string', 'max' => 255],
             [['activity_category_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActivityCategory::class, 'targetAttribute' => ['activity_category_id' => 'id']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
@@ -100,6 +101,14 @@ class Activity extends BaseRecord
     public function getLuminary()
     {
         return $this->hasOne(Luminary::class, ['id' => 'luminary_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
+    public function getLocation()
+    {
+        return $this->hasOne(Location::class, ['id' => 'location_id']);
     }
 
     /**
@@ -197,6 +206,7 @@ class Activity extends BaseRecord
         $fields[] = 'category';
         $fields[] = 'activityDurations';
         $fields[] = 'luminary';
+        $fields[] = 'location';
         $fields[] = 'activityImages';
         $fields[] = 'activityListings';
         $fields[] = 'mails';

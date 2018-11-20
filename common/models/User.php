@@ -60,6 +60,7 @@ class User extends BaseRecord implements IdentityInterface
         return '{{%user}}';
     }
 
+
     /**
      * {@inheritdoc}
      */
@@ -80,6 +81,7 @@ class User extends BaseRecord implements IdentityInterface
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
             ['country_id', 'default', 'value' => Country::NOT_SPECIFIED],
             ['city_id', 'default', 'value' => CITY::NOT_SPECIFIED],
+            [['firstName', 'lastName', 'birthDate'],'safe']
         ];
     }
 
@@ -88,7 +90,6 @@ class User extends BaseRecord implements IdentityInterface
      */
     public static function findIdentity($id)
     {
-        error_log('find w');
         return static::findOne(['id' => $id, 'status' => self::STATUS_ACTIVE]);
     }
 
@@ -113,7 +114,6 @@ class User extends BaseRecord implements IdentityInterface
      */
     public static function findByUsername($username)
     {
-        error_log('find w');
         return static::findOne(['username' => $username, 'status' => self::STATUS_ACTIVE]);
     }
 
@@ -257,7 +257,7 @@ class User extends BaseRecord implements IdentityInterface
 
         $token = \Yii::createObject([
             'class' => TokenAuth::class,
-            'valid_till' => date(DATE_W3C, time() + $duration),
+            'valid_till' => date('Y-m-d H:i:s', time() + $duration),
             'token_type' => Token::AUTH_TYPE,
         ]);
 
@@ -309,7 +309,6 @@ class User extends BaseRecord implements IdentityInterface
      */
     public static function find()
     {
-        error_log('find');
         return new UserQuery(get_called_class());
     }
 
