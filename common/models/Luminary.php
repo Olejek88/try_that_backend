@@ -37,9 +37,12 @@ class Luminary extends BaseRecord
     public function rules()
     {
         return [
-            [['verified'], 'integer'],
-            [['verified_date'], 'safe'],
-            [['rating'], 'number'],
+            [['verified', 'user_id'], 'integer'],
+            [['verified_date'], 'datetime', 'format' => 'php:Y-m-d H:s:i'],
+            [['verified_date'], 'default', 'value' => null],
+            [['rating'], 'double'],
+            [['rating'], 'default', 'value' => 0],
+            [['user_id'], 'required'],
         ];
     }
 

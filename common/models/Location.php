@@ -11,8 +11,8 @@ use Yii;
  *
  * @property int $id
  * @property string $title
- * @property int $latitude
- * @property int $longitude
+ * @property double $latitude
+ * @property double $longitude
  * @property int $image_id
  * @property int $user_id
  *
@@ -37,9 +37,10 @@ class Location extends BaseRecord
     public function rules()
     {
         return [
-            [['title'], 'required'],
-            [['latitude', 'longitude', 'image_id'], 'integer'],
-            [['title'], 'string', 'max' => 255],
+            [['title'], 'string', 'max' => 128],
+            [['latitude', 'longitude'], 'double'],
+            [['image_id'], 'integer'],
+            [['title', 'latitude', 'longitude', 'image_id'], 'required'],
             [
                 ['image_id'],
                 'exist',

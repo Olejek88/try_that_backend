@@ -33,8 +33,14 @@ class ExceptionTT extends BaseRecord
         return [
             [['luminary_id', 'date'], 'required'],
             [['luminary_id'], 'integer'],
-            [['date'], 'safe'],
-            [['luminary_id'], 'exist', 'skipOnError' => true, 'targetClass' => Luminary::class, 'targetAttribute' => ['luminary_id' => 'id']],
+            [['date'], 'string'],
+            [
+                ['luminary_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Luminary::class,
+                'targetAttribute' => ['luminary_id' => 'id']
+            ],
         ];
     }
 
