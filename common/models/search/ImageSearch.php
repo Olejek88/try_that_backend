@@ -3,7 +3,6 @@
 namespace common\models\search;
 
 use common\models\Image;
-use common\models\User;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
 
@@ -42,9 +41,6 @@ class ImageSearch extends Image
     public function search($params)
     {
         $query = Image::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

@@ -18,7 +18,7 @@ class OccasionSearch extends Occasion
     {
         return [
             [['id', 'activity_id'], 'integer'],
-            [['title',], 'string'],
+            [['title'], 'string'],
         ];
     }
 
@@ -41,9 +41,6 @@ class OccasionSearch extends Occasion
     public function search($params)
     {
         $query = Occasion::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -59,7 +56,6 @@ class OccasionSearch extends Occasion
             'id' => $this->id,
             'activity_id' => $this->activity_id,
         ]);
-
         $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;

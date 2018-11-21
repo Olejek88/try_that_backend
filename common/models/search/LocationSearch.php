@@ -42,9 +42,6 @@ class LocationSearch extends Location
     public function search($params)
     {
         $query = Location::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -59,9 +56,13 @@ class LocationSearch extends Location
         $query->andFilterWhere([
             'id' => $this->id,
             'user_id' => $this->user_id,
-            'longitude' => $this->longitude,
-            'latitude' => $this->latitude,
         ]);
+
+        // TODO: реализовать какой-нибудь механизм поиска по координатам
+//        $query->andFilterWhere([
+//            'longitude' => $this->longitude,
+//            'latitude' => $this->latitude,
+//        ]);
 
         $query->andFilterWhere(['like', 'title', $this->title]);
 

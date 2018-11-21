@@ -25,12 +25,11 @@ class ActivitySearch extends Activity
                     'activity_category_id',
                     'min_customers',
                     'max_customers',
-                    'start_date',
-                    'end_date'
                 ],
                 'integer'
             ],
-            [['title', 'description',], 'string'],
+            [['title', 'description'], 'string'],
+            [['start_date', 'end_date'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
         ];
     }
 
@@ -60,11 +59,6 @@ class ActivitySearch extends Activity
 
         $this->load($params);
 
-        if (!$this->validate()) {
-            $query->where('0=1');
-            return $dataProvider;
-        }
-
         $query->andFilterWhere([
             'id' => $this->id,
             'luminary_id' => $this->luminary_id,
@@ -72,12 +66,11 @@ class ActivitySearch extends Activity
             'activity_category_id' => $this->activity_category_id,
             'min_customers' => $this->min_customers,
             'max_customers' => $this->max_customers,
-            'start_date' => $this->start_date,
-            'end_date' => $this->end_date,
         ]);
-
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'description', $this->description]);
+        $query->andFilterWhere(['like', 'title', $this->title]);
+        $query->andFilterWhere(['like', 'description', $this->description]);
+        $query->andFilterWhere($this->getDateTimeFilter('start_date'));
+        $query->andFilterWhere($this->getDateTimeFilter('end_date'));
 
         return $dataProvider;
     }

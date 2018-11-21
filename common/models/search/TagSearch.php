@@ -18,7 +18,7 @@ class TagSearch extends Tag
     {
         return [
             [['id', 'category_id'], 'integer'],
-            [['title',], 'string'],
+            [['title'], 'string'],
         ];
     }
 
@@ -41,9 +41,6 @@ class TagSearch extends Tag
     public function search($params)
     {
         $query = Tag::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -59,7 +56,6 @@ class TagSearch extends Tag
             'id' => $this->id,
             'category_id' => $this->category_id,
         ]);
-
         $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;

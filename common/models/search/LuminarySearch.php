@@ -48,13 +48,13 @@ class LuminarySearch extends Luminary
 
         $this->load($params);
 
-        $query->andFilterWhere($this->getNumericFilter('rating'));
         $query->andFilterWhere([
             'id' => $this->id,
             'verified' => $this->verified,
             'user_id' => $this->user_id,
         ]);
         $query->andFilterWhere($this->getDateTimeFilter('verified_date'));
+        $query->andFilterWhere($this->getNumericFilter('rating'));
 
         return $dataProvider;
     }

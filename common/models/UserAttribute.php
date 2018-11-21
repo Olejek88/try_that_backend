@@ -32,9 +32,9 @@ class UserAttribute extends BaseRecord
     public function rules()
     {
         return [
-            [['user_id'], 'required'],
+            [['user_id', 'name', 'value'], 'required'],
             [['user_id'], 'integer'],
-            [['name', 'value'], 'string', 'max' => 255],
+            [['name', 'value'], 'string', 'max' => 128],
             [
                 ['user_id'],
                 'exist',

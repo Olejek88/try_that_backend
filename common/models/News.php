@@ -34,11 +34,12 @@ class News extends BaseRecord
     public function rules()
     {
         return [
-            [['luminary_id', 'title', 'text', 'date'], 'required'],
+            [['luminary_id', 'title', 'text'], 'required'],
             [['luminary_id'], 'integer'],
             [['date'], 'datetime', 'format' => 'php:Y-m-d H:s:i'],
+            [['date'], 'default', 'value' => date('Y-m-d H:i:s')],
             [['text'], 'string'],
-            [['title'], 'string', 'max' => 255],
+            [['title'], 'string', 'max' => 128],
             [
                 ['luminary_id'],
                 'exist',

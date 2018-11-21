@@ -38,8 +38,9 @@ class Order extends BaseRecord
     public function rules()
     {
         return [
-            [['activity_listing_id', 'order_status_id', 'created_at', 'updated_at'], 'required'],
-            [['activity_listing_id', 'order_status_id', 'created_at', 'updated_at'], 'integer'],
+            [['activity_listing_id', 'customer_id', 'start_date'], 'required'],
+            [['activity_listing_id', 'order_status_id', 'customer_id', 'created_at', 'updated_at'], 'integer'],
+            [['order_status_id'], 'default', 'value' => 1],
             [['start_date'], 'datetime', 'format' => 'php:Y-m-d H:s:i'],
             [
                 ['activity_listing_id'],
@@ -54,6 +55,13 @@ class Order extends BaseRecord
                 'skipOnError' => true,
                 'targetClass' => OrderStatus::class,
                 'targetAttribute' => ['order_status_id' => 'id']
+            ],
+            [
+                ['customer_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Customer::class,
+                'targetAttribute' => ['customer_id' => 'id']
             ],
         ];
     }

@@ -50,7 +50,18 @@ class Activity extends BaseRecord
     public function rules()
     {
         return [
-            [['luminary_id', 'category_id', 'activity_category_id', 'start_date', 'end_date'], 'required'],
+            [
+                [
+                    'luminary_id',
+                    'category_id',
+                    'activity_category_id',
+                    'title',
+                    'description',
+                    'start_date',
+                    'end_date'
+                ],
+                'required'
+            ],
             [
                 [
                     'luminary_id',
@@ -62,9 +73,12 @@ class Activity extends BaseRecord
                 'integer'
             ],
             [
-                ['start_date', 'end_date'], 'datetime', 'format' => 'php:Y-m-d H:i:s',
+                ['start_date', 'end_date'],
+                'datetime',
+                'format' => 'php:Y-m-d H:i:s',
             ],
-            [['title', 'description'], 'string', 'max' => 255],
+            [['title'], 'string', 'max' => 128],
+            [['description'], 'string'],
             [
                 ['activity_category_id'],
                 'exist',

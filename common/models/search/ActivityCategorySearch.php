@@ -41,9 +41,6 @@ class ActivityCategorySearch extends ActivityCategory
     public function search($params)
     {
         $query = ActivityCategory::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -55,10 +52,7 @@ class ActivityCategorySearch extends ActivityCategory
             return $dataProvider;
         }
 
-        $query->andFilterWhere([
-            'id' => $this->id,
-        ]);
-
+        $query->andFilterWhere(['id' => $this->id]);
         $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;

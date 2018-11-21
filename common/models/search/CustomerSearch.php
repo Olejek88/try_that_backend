@@ -40,27 +40,19 @@ class CustomerSearch extends Customer
     public function search($params)
     {
         $query = Customer::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
         $this->load($params);
 
-        if (!$this->validate()) {
-            $query->where('0=1');
-            return $dataProvider;
-        }
-
         $query->andFilterWhere([
             'id' => $this->id,
-            'positive' => $this->positive,
-            'negative' => $this->negative,
             'active' => $this->active,
             'user_id' => $this->user_id,
         ]);
+        $query->andFilterWhere($this->getNumericFilter('positive'));
+        $query->andFilterWhere($this->getNumericFilter('negative'));
 
         return $dataProvider;
     }

@@ -37,10 +37,10 @@ class Location extends BaseRecord
     public function rules()
     {
         return [
-            [['title'], 'required'],
+            [['title'], 'string', 'max' => 128],
             [['latitude', 'longitude'], 'double'],
             [['image_id'], 'integer'],
-            [['title'], 'string', 'max' => 255],
+            [['title', 'latitude', 'longitude', 'image_id'], 'required'],
             [
                 ['image_id'],
                 'exist',

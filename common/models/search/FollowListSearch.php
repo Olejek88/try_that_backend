@@ -40,9 +40,6 @@ class FollowListSearch extends FollowList
     public function search($params)
     {
         $query = FollowList::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

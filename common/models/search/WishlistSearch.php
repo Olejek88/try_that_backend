@@ -18,7 +18,7 @@ class WishlistSearch extends Wishlist
     {
         return [
             [['id', 'activity_id', 'customer_id'], 'integer'],
-            [['date',], 'string'],
+            [['date'], 'string'],
         ];
     }
 
@@ -41,27 +41,18 @@ class WishlistSearch extends Wishlist
     public function search($params)
     {
         $query = Wishlist::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
         $this->load($params);
 
-        if (!$this->validate()) {
-            $query->where('0=1');
-            return $dataProvider;
-        }
-
         $query->andFilterWhere([
             'id' => $this->id,
             'activity_id' => $this->activity_id,
             'customer_id' => $this->customer_id,
         ]);
-
-        $query->andFilterWhere(['like', 'date', $this->date]);
+        $query->andFilterWhere($this->getDateTimeFilter('date'));
 
         return $dataProvider;
     }

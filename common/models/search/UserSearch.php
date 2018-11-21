@@ -18,7 +18,8 @@ class UserSearch extends User
     {
         return [
             [['id', 'status', 'location_id', 'country_id'], 'integer'],
-            [['username', 'email', 'firstName', 'lastName'], 'string'],
+            [['username', 'email', 'firstName', 'lastName', 'phone'], 'string'],
+            [['birthDate', 'registeredDate'], 'datetime', 'format' => 'php:Y-m-d H:i:s'],
         ];
     }
 
@@ -41,19 +42,11 @@ class UserSearch extends User
     public function search($params)
     {
         $query = User::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
         $this->load($params);
-
-        if (!$this->validate()) {
-            $query->where('0=1');
-            return $dataProvider;
-        }
 
         $query->andFilterWhere([
             'id' => $this->id,
@@ -61,11 +54,13 @@ class UserSearch extends User
             'location_id' => $this->location_id,
             'country_id' => $this->country_id,
         ]);
-
-        $query->andFilterWhere(['like', 'username', $this->username])
-            ->andFilterWhere(['like', 'email', $this->email])
-            ->andFilterWhere(['like', 'firstName', $this->firstName])
-            ->andFilterWhere(['like', 'lastName', $this->lastName]);
+        $query->andFilterWhere(['like', 'username', $this->username]);
+        $query->andFilterWhere(['like', 'email', $this->email]);
+        $query->andFilterWhere(['like', 'firstName', $this->firstName]);
+        $query->andFilterWhere(['like', 'lastName', $this->lastName]);
+        $query->andFilterWhere(['like', 'phone', $this->phone]);
+        $query->andFilterWhere($this->getDateTimeFilter('birthDate'));
+        $query->andFilterWhere($this->getDateTimeFilter('registeredDate'));
 
         return $dataProvider;
     }

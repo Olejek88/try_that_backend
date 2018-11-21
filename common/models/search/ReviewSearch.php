@@ -18,7 +18,7 @@ class ReviewSearch extends Review
     {
         return [
             [['id', 'activity_id', 'customer_id', 'rate'], 'integer'],
-            [['description',], 'string'],
+            [['description'], 'string'],
         ];
     }
 
@@ -47,13 +47,13 @@ class ReviewSearch extends Review
 
         $this->load($params);
 
-        $query->andFilterWhere($this->getNumericFilter('rate'));
         $query->andFilterWhere([
             'id' => $this->id,
             'activity_id' => $this->activity_id,
             'customer_id' => $this->customer_id,
         ]);
         $query->andFilterWhere(['like', 'description', $this->description]);
+        $query->andFilterWhere($this->getNumericFilter('rate'));
 
         return $dataProvider;
     }

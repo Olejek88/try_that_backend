@@ -18,7 +18,7 @@ class TrendingSearch extends Trending
     {
         return [
             [['id', 'activity_id'], 'integer'],
-            [['title',], 'string'],
+            [['title'], 'string'],
         ];
     }
 
@@ -41,9 +41,6 @@ class TrendingSearch extends Trending
     public function search($params)
     {
         $query = Trending::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -59,7 +56,6 @@ class TrendingSearch extends Trending
             'id' => $this->id,
             'activity_id' => $this->activity_id,
         ]);
-
         $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;

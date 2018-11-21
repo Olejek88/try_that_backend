@@ -18,7 +18,6 @@ class ActivityDurationSearch extends ActivityDuration
     {
         return [
             [['id', 'activity_id', 'duration_id'], 'integer'],
-            [['',], 'string'],
         ];
     }
 
@@ -41,9 +40,6 @@ class ActivityDurationSearch extends ActivityDuration
     public function search($params)
     {
         $query = ActivityDuration::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

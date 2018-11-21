@@ -40,9 +40,6 @@ class ActivityTagSearch extends ActivityTag
     public function search($params)
     {
         $query = ActivityTag::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

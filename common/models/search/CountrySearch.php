@@ -17,8 +17,8 @@ class CountrySearch extends Country
     public function rules()
     {
         return [
-            [['id',], 'integer'],
-            [['title',], 'string'],
+            [['id'], 'integer'],
+            [['title'], 'string'],
         ];
     }
 
@@ -41,9 +41,6 @@ class CountrySearch extends Country
     public function search($params)
     {
         $query = Country::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -55,10 +52,7 @@ class CountrySearch extends Country
             return $dataProvider;
         }
 
-        $query->andFilterWhere([
-            'id' => $this->id,
-        ]);
-
+        $query->andFilterWhere(['id' => $this->id,]);
         $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;

@@ -40,9 +40,6 @@ class NewsImageSearch extends NewsImage
     public function search($params)
     {
         $query = NewsImage::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);

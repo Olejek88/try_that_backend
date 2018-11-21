@@ -32,9 +32,15 @@ class Tag extends BaseRecord
     {
         return [
             [['title', 'category_id'], 'required'],
-            [['category_id',], 'integer'],
-            [['title'], 'string', 'max' => 255],
-            [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::class, 'targetAttribute' => ['category_id' => 'id']],
+            [['category_id'], 'integer'],
+            [['title'], 'string', 'max' => 128],
+            [
+                ['category_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Category::class,
+                'targetAttribute' => ['category_id' => 'id']
+            ],
         ];
     }
 

@@ -41,9 +41,6 @@ class ExceptionTTSearch extends ExceptionTT
     public function search($params)
     {
         $query = ExceptionTT::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -59,7 +56,6 @@ class ExceptionTTSearch extends ExceptionTT
             'id' => $this->id,
             'luminary_id' => $this->luminary_id,
         ]);
-
         $query->andFilterWhere(['like', 'date', $this->date]);
 
         return $dataProvider;

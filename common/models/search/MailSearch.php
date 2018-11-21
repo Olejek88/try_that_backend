@@ -44,19 +44,11 @@ class MailSearch extends Mail
     public function search($params)
     {
         $query = Mail::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
         $this->load($params);
-
-        if (!$this->validate()) {
-            $query->where('0=1');
-            return $dataProvider;
-        }
 
         $query->andFilterWhere([
             'id' => $this->id,
@@ -65,12 +57,11 @@ class MailSearch extends Mail
             'to_user_id' => $this->to_user_id,
             'status_id' => $this->status_id,
             'activity_id' => $this->activity_id,
-            'send_date' => $this->send_date,
-            'read_date' => $this->read_date,
         ]);
-
-        $query->andFilterWhere(['like', 'title', $this->title])
-            ->andFilterWhere(['like', 'text', $this->text]);
+        $query->andFilterWhere($this->getDateTimeFilter('send_date'));
+        $query->andFilterWhere($this->getDateTimeFilter('read_date'));
+        $query->andFilterWhere(['like', 'title', $this->title]);
+        $query->andFilterWhere(['like', 'text', $this->text]);
 
         return $dataProvider;
     }

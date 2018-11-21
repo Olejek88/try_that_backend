@@ -50,7 +50,7 @@ class InvoiceQuery extends BaseRecord
             [['extra_info'], 'string'],
             [['status_date', 'create_date', 'last_check'], 'datetime', 'format' => 'php:Y-m-d H:s:i'],
             [['pay_system_class', 'pay_system_name'], 'string', 'max' => 255],
-            [['description'], 'string', 'max' => 256],
+            [['description'], 'string', 'max' => 255],
             [['order_id'], 'unique'],
             [
                 ['order_id'],

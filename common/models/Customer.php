@@ -38,6 +38,15 @@ class Customer extends BaseRecord
     {
         return [
             [['positive', 'negative', 'active'], 'integer'],
+            [['user_id'], 'required'],
+            [['user_id'], 'integer'],
+            [
+                ['user_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => User::class,
+                'targetAttribute' => ['user_id' => 'id']
+            ],
         ];
     }
 

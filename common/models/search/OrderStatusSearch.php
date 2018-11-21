@@ -17,8 +17,8 @@ class OrderStatusSearch extends OrderStatus
     public function rules()
     {
         return [
-            [['id',], 'integer'],
-            [['title',], 'string'],
+            [['id'], 'integer'],
+            [['title'], 'string'],
         ];
     }
 
@@ -41,9 +41,6 @@ class OrderStatusSearch extends OrderStatus
     public function search($params)
     {
         $query = OrderStatus::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -55,10 +52,7 @@ class OrderStatusSearch extends OrderStatus
             return $dataProvider;
         }
 
-        $query->andFilterWhere([
-            'id' => $this->id,
-        ]);
-
+        $query->andFilterWhere(['id' => $this->id,]);
         $query->andFilterWhere(['like', 'title', $this->title]);
 
         return $dataProvider;

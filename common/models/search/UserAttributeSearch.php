@@ -41,9 +41,6 @@ class UserAttributeSearch extends UserAttribute
     public function search($params)
     {
         $query = UserAttribute::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
@@ -59,9 +56,8 @@ class UserAttributeSearch extends UserAttribute
             'id' => $this->id,
             'user_id' => $this->user_id,
         ]);
-
-        $query->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'value', $this->value]);
+        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'value', $this->value]);
 
         return $dataProvider;
     }

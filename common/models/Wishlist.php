@@ -36,6 +36,7 @@ class Wishlist extends BaseRecord
             [['activity_id', 'customer_id'], 'required'],
             [['activity_id', 'customer_id'], 'integer'],
             [['date'], 'datetime', 'format' => 'php:Y-m-d H:s:i'],
+            [['date'], 'default', 'value' => null],
             [
                 ['activity_id'],
                 'exist',

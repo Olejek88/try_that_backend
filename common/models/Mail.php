@@ -46,20 +46,18 @@ class Mail extends BaseRecord
                 [
                     'title',
                     'text',
-                    'order_id',
                     'from_user_id',
                     'to_user_id',
-                    'status_id',
                     'activity_id',
-                    'send_date',
-                    'read_date'
                 ],
                 'required'
             ],
             [['text'], 'string'],
             [['order_id', 'from_user_id', 'to_user_id', 'status_id', 'activity_id'], 'integer'],
+            [['order_id'], 'default', 'value' => null],
             [['send_date', 'read_date'], 'datetime', 'format' => 'php:Y-m-d H:s:i'],
-            [['title'], 'string', 'max' => 255],
+            [['read_date'], 'default', 'value' => null],
+            [['title'], 'string', 'max' => 128],
             [
                 ['activity_id'],
                 'exist',
