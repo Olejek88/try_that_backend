@@ -18,7 +18,7 @@ class LuminarySearch extends Luminary
     {
         return [
             [['id', 'verified', 'user_id'], 'integer'],
-            [['verified_date',], 'string'],
+            [['verified_date',], 'datetime', 'format' => 'php:Y-m-d H:s:i'],
             [['rating',], 'double'],
         ];
     }
@@ -42,28 +42,19 @@ class LuminarySearch extends Luminary
     public function search($params)
     {
         $query = Luminary::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
         $this->load($params);
 
-        if (!$this->validate()) {
-            $query->where('0=1');
-            return $dataProvider;
-        }
-
+        $query->andFilterWhere($this->getNumericFilter('rating'));
         $query->andFilterWhere([
             'id' => $this->id,
             'verified' => $this->verified,
-            'rating' => $this->rating,
             'user_id' => $this->user_id,
         ]);
-
-        $query->andFilterWhere(['like', 'verified_date', $this->verified_date]);
+        $query->andFilterWhere($this->getDateTimeFilter('verified_date'));
 
         return $dataProvider;
     }

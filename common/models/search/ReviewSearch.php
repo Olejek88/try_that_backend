@@ -41,27 +41,18 @@ class ReviewSearch extends Review
     public function search($params)
     {
         $query = Review::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
         $this->load($params);
 
-        if (!$this->validate()) {
-            $query->where('0=1');
-            return $dataProvider;
-        }
-
+        $query->andFilterWhere($this->getNumericFilter('rate'));
         $query->andFilterWhere([
             'id' => $this->id,
             'activity_id' => $this->activity_id,
             'customer_id' => $this->customer_id,
-            'rate' => $this->rate,
         ]);
-
         $query->andFilterWhere(['like', 'description', $this->description]);
 
         return $dataProvider;

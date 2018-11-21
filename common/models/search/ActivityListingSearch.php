@@ -41,26 +41,18 @@ class ActivityListingSearch extends ActivityListing
     public function search($params)
     {
         $query = ActivityListing::find();
-
-        // add conditions that should always apply here
-
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
         ]);
 
         $this->load($params);
 
-        if (!$this->validate()) {
-            $query->where('0=1');
-            return $dataProvider;
-        }
-
+        $query->andFilterWhere($this->getNumericFilter('cost'));
         $query->andFilterWhere([
             'id' => $this->id,
             'activity_id' => $this->activity_id,
             'duration_id' => $this->duration_id,
             'currency_id' => $this->currency_id,
-            'cost' => $this->cost,
             'is_group' => $this->is_group,
         ]);
 
