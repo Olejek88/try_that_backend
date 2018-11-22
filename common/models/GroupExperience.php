@@ -34,8 +34,20 @@ class GroupExperience extends BaseRecord
         return [
             [['activity_listing_id', 'customer_id'], 'required'],
             [['activity_listing_id', 'customer_id'], 'integer'],
-            [['activity_listing_id'], 'exist', 'skipOnError' => true, 'targetClass' => ActivityListing::class, 'targetAttribute' => ['activity_listing_id' => 'id']],
-            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::class, 'targetAttribute' => ['customer_id' => 'id']],
+            [
+                ['activity_listing_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => ActivityListing::class,
+                'targetAttribute' => ['activity_listing_id' => 'id']
+            ],
+            [
+                ['customer_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Customer::class,
+                'targetAttribute' => ['customer_id' => 'id']
+            ],
         ];
     }
 

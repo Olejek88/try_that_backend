@@ -11,16 +11,15 @@ class AuthController extends Controller
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-
-        // add CORS filter
         $behaviors['corsFilter'] = [
             'class' => Cors::class,
             'cors' => [
-                'Origin' => ['*'],
-                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
-            ],
-
+                'Origin' => ['http://localhost', 'http://localhost:3000'],
+                'Access-Control-Request-Method' => ['POST', 'OPTIONS'],
+                'Access-Control-Allow-Credentials' => true,
+            ]
         ];
+
         return $behaviors;
     }
 
@@ -32,6 +31,15 @@ class AuthController extends Controller
         $verbs = parent::verbs();
         $verbs['request'] = ['POST', 'OPTIONS'];
         return $verbs;
+    }
+
+    public function actions()
+    {
+        $actions = parent::actions();
+        $actions['options'] = [
+            'class' => 'yii\rest\OptionsAction',
+        ];
+        return $actions;
     }
 
     /**

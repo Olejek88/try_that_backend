@@ -80,6 +80,10 @@ class User extends BaseRecord implements IdentityInterface
             ['status', 'default', 'value' => self::STATUS_ACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
             ['country_id', 'default', 'value' => Country::NOT_SPECIFIED],
+            ['location_id', 'default', 'value' => Location::NOT_SPECIFIED],
+            [['firstName', 'lastName'], 'string', 'max' => 255],
+            ['firstName', 'default', 'value' => ''],
+            ['lastName', 'default', 'value' => ''],
             ['city_id', 'default', 'value' => CITY::NOT_SPECIFIED],
             [['firstName', 'lastName', 'birthDate'],'safe']
         ];
@@ -257,7 +261,7 @@ class User extends BaseRecord implements IdentityInterface
 
         $token = \Yii::createObject([
             'class' => TokenAuth::class,
-            'valid_till' => date('Y-m-d H:i:s', time() + $duration),
+            'valid_till' => date('Y-m-d\TH:i:s', time() + $duration),
             'token_type' => Token::AUTH_TYPE,
         ]);
 

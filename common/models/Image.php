@@ -39,16 +39,9 @@ class Image extends BaseRecord
     public function rules()
     {
         return [
-            [['title', 'user_id'], 'required'],
-            [['title', 'path'], 'string', 'max' => 255],
-            [['user_id'], 'integer'],
-            [
-                ['user_id'],
-                'exist',
-                'skipOnError' => true,
-                'targetClass' => User::class,
-                'targetAttribute' => ['user_id' => 'id']
-            ],
+            [['title'], 'string', 'max' => 128],
+            [['image'], 'required'],
+            [['image'], 'image', 'extensions' => 'jpg, jpeg, png, gif', 'maxSize' => 1024 * 1024]
         ];
     }
 

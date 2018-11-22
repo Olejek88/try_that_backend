@@ -34,11 +34,23 @@ class Review extends BaseRecord
     public function rules()
     {
         return [
-            [['customer_id', 'activity_id'], 'required'],
+            [['customer_id', 'activity_id', 'description'], 'required'],
             [['customer_id', 'activity_id', 'rate'], 'integer'],
             [['description'], 'string', 'max' => 255],
-            [['activity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::class, 'targetAttribute' => ['activity_id' => 'id']],
-            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::class, 'targetAttribute' => ['customer_id' => 'id']],
+            [
+                ['activity_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Activity::class,
+                'targetAttribute' => ['activity_id' => 'id']
+            ],
+            [
+                ['customer_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Customer::class,
+                'targetAttribute' => ['customer_id' => 'id']
+            ],
         ];
     }
 
