@@ -99,7 +99,7 @@ class Token extends ActiveRecord
      */
     public function extensionValidTill()
     {
-        $this->valid_till = date(DATE_W3C, strtotime('+1 week'));
+        $this->valid_till = date('Y-m-d\TH:i:s', strtotime('+1 week'));
         $this->save(false, ['valid_till']);
     }
 

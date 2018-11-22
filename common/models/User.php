@@ -80,6 +80,9 @@ class User extends BaseRecord implements IdentityInterface
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_DELETED]],
             ['country_id', 'default', 'value' => Country::NOT_SPECIFIED],
             ['location_id', 'default', 'value' => Location::NOT_SPECIFIED],
+            [['firstName', 'lastName'], 'string', 'max' => 255],
+            ['firstName', 'default', 'value' => ''],
+            ['lastName', 'default', 'value' => ''],
         ];
     }
 
@@ -255,7 +258,7 @@ class User extends BaseRecord implements IdentityInterface
 
         $token = \Yii::createObject([
             'class' => TokenAuth::class,
-            'valid_till' => date(DATE_W3C, time() + $duration),
+            'valid_till' => date('Y-m-d\TH:i:s', time() + $duration),
             'token_type' => Token::AUTH_TYPE,
         ]);
 
@@ -317,5 +320,10 @@ class User extends BaseRecord implements IdentityInterface
         $fields[] = 'location';
         $fields[] = 'country';
         return $fields;
+    }
+
+    public function formName()
+    {
+        return '';
     }
 }
