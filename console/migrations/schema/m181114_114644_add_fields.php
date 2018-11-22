@@ -21,7 +21,7 @@ class m181114_114644_add_fields extends Migration
     public function safeUp()
     {
         $this->addColumn(self::ACTIVITY, 'shortDescription', $this->text());
-        $this->addColumn(self::ACTIVITY, 'occasion_id', $this->integer()->notNull());
+/*        $this->addColumn(self::ACTIVITY, 'occasion_id', $this->integer()->notNull());
         $this->addForeignKey(
             self::FK_ACTIVITY2OCCASION,
             self::ACTIVITY,
@@ -40,7 +40,7 @@ class m181114_114644_add_fields extends Migration
             'id',
             self::FK_RESTRICT,
             self::FK_CASCADE
-        );
+        );*/
 
         $this->addColumn(self::ACTIVITY_LISTING, 'customers', $this->integer()->notNull());
     }
