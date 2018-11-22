@@ -5,8 +5,10 @@ return [
     'GET /' => 'site/index',
 
     // пока действий мало, оставим так
-    '/v1/signup/request' => 'v1/userAuth/signup/request',
-    '/v1/auth/request' => 'v1/userAuth/auth/request',
+    'POST /v1/signup/request' => 'v1/userAuth/signup/request',
+    'OPTIONS /v1/signup/request' => 'v1/userAuth/signup/options',
+    'POST /v1/auth/request' => 'v1/userAuth/auth/request',
+    'OPTIONS /v1/auth/request' => 'v1/userAuth/auth/options',
 
     // в качестве примера, т.к. модуль не про объекты а сервисный
 //    [
@@ -20,7 +22,11 @@ return [
 //    ],
 
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/activity-category',],
-    ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/user',],
+    ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/user',
+        'extraPatterns' => [
+            'POST upload' => 'upload',
+        ]
+    ],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/tag',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/activity-image',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/activity-listing',],
