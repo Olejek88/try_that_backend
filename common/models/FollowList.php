@@ -34,8 +34,20 @@ class FollowList extends BaseRecord
         return [
             [['customer_id', 'luminary_id'], 'required'],
             [['customer_id', 'luminary_id'], 'integer'],
-            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::class, 'targetAttribute' => ['customer_id' => 'id']],
-            [['luminary_id'], 'exist', 'skipOnError' => true, 'targetClass' => Luminary::class, 'targetAttribute' => ['luminary_id' => 'id']],
+            [
+                ['customer_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Customer::class,
+                'targetAttribute' => ['customer_id' => 'id']
+            ],
+            [
+                ['luminary_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Luminary::class,
+                'targetAttribute' => ['luminary_id' => 'id']
+            ],
         ];
     }
 

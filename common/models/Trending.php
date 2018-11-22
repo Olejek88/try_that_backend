@@ -35,7 +35,7 @@ class Trending extends BaseRecord
         return [
             [['title', 'activity_id'], 'required'],
             [['activity_id', 'image_id'], 'integer'],
-            [['title'], 'string', 'max' => 255],
+            [['title'], 'string', 'max' => 128],
             [
                 ['activity_id'],
                 'exist',

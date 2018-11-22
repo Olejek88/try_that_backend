@@ -35,9 +35,22 @@ class Wishlist extends BaseRecord
         return [
             [['activity_id', 'customer_id'], 'required'],
             [['activity_id', 'customer_id'], 'integer'],
-            [['date'], 'safe'],
-            [['activity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::class, 'targetAttribute' => ['activity_id' => 'id']],
-            [['customer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Customer::class, 'targetAttribute' => ['customer_id' => 'id']],
+            [['date'], 'datetime', 'format' => 'php:Y-m-d H:s:i'],
+            [['date'], 'default', 'value' => null],
+            [
+                ['activity_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Activity::class,
+                'targetAttribute' => ['activity_id' => 'id']
+            ],
+            [
+                ['customer_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Customer::class,
+                'targetAttribute' => ['customer_id' => 'id']
+            ],
         ];
     }
 

@@ -38,11 +38,30 @@ class ActivityListing extends BaseRecord
     public function rules()
     {
         return [
-            [['activity_id', 'duration_id', 'currency_id'], 'required'],
+            [['activity_id', 'duration_id', 'currency_id', 'cost',], 'required'],
             [['activity_id', 'duration_id', 'currency_id', 'is_group'], 'integer'],
-            [['cost'], 'number'],
-            [['activity_id'], 'exist', 'skipOnError' => true, 'targetClass' => Activity::class, 'targetAttribute' => ['activity_id' => 'id']],
-            [['duration_id'], 'exist', 'skipOnError' => true, 'targetClass' => Duration::class, 'targetAttribute' => ['duration_id' => 'id']],
+            [['cost'], 'double'],
+            [
+                ['activity_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Activity::class,
+                'targetAttribute' => ['activity_id' => 'id']
+            ],
+            [
+                ['duration_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Duration::class,
+                'targetAttribute' => ['duration_id' => 'id']
+            ],
+            [
+                ['currency_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Currency::class,
+                'targetAttribute' => ['currency_id' => 'id']
+            ],
         ];
     }
 

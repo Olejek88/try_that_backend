@@ -13,7 +13,7 @@ use Yii;
  * @property int $luminary_id
  * @property string $title
  * @property string $text
- * @property int $date
+ * @property string $date
  *
  * @property Luminary $luminary
  * @property NewsImage[] $newsImages
@@ -34,11 +34,19 @@ class News extends BaseRecord
     public function rules()
     {
         return [
-            [['luminary_id', 'title', 'text', 'date'], 'required'],
-            [['luminary_id', 'date'], 'integer'],
+            [['luminary_id', 'title', 'text'], 'required'],
+            [['luminary_id'], 'integer'],
+            [['date'], 'datetime', 'format' => 'php:Y-m-d H:s:i'],
+            [['date'], 'default', 'value' => date('Y-m-d H:i:s')],
             [['text'], 'string'],
-            [['title'], 'string', 'max' => 255],
-            [['luminary_id'], 'exist', 'skipOnError' => true, 'targetClass' => Luminary::class, 'targetAttribute' => ['luminary_id' => 'id']],
+            [['title'], 'string', 'max' => 128],
+            [
+                ['luminary_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Luminary::class,
+                'targetAttribute' => ['luminary_id' => 'id']
+            ],
         ];
     }
 

@@ -31,7 +31,7 @@ class MailStatus extends BaseRecord
     {
         return [
             [['title'], 'required'],
-            [['title'], 'string', 'max' => 255],
+            [['title'], 'string', 'max' => 128],
         ];
     }
 

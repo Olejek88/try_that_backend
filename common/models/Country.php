@@ -34,8 +34,8 @@ class Country extends BaseRecord
     {
         return [
             [['title'], 'required'],
+            [['title'], 'string', 'max' => 128],
             [['image_id'], 'integer'],
-            [['title'], 'string', 'max' => 255],
             [
                 ['image_id'],
                 'exist',

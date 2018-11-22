@@ -33,8 +33,9 @@ class ActivityCategory extends BaseRecord
     {
         return [
             [['title'], 'required'],
-            [['image_id'], 'integer'],
             [['title'], 'string', 'max' => 255],
+            [['image_id'], 'integer'],
+            [['image_id'], 'default', 'value' => null],
             [
                 ['image_id'],
                 'exist',

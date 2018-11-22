@@ -15,7 +15,7 @@ class TokenAuth extends Token
                 ['valid_till'],
                 'default',
                 'value' => function () {
-                    return date(DATE_W3C, strtotime('+1 week'));
+                    return date('Y-m-d\TH:i:s', strtotime('+1 week'));
                 }
             ],
             [['token'], 'string', 'max' => 32],
