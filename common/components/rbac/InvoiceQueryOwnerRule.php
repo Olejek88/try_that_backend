@@ -19,7 +19,7 @@ class InvoiceQueryOwnerRule extends Rule
         /* @var \common\models\InvoiceQuery $obj */
         $obj = isset($params['InvoiceQuery']) ? $params['InvoiceQuery'] : null;
         if ($obj != null) {
-            return $obj->order->customer_id == $user;
+            return $obj->order->customer->user_id == $user;
         } else {
             return false;
         }

@@ -19,7 +19,7 @@ class InvoiceQueryParentOwnerRule extends Rule
         /* @var \common\models\InvoiceQuery $obj */
         $obj = isset($params['InvoiceQuery']) ? $params['InvoiceQuery'] : null;
         if ($obj != null) {
-            return $obj->order->activityListing->activity->luminary_id == $user;
+            return $obj->order->activityListing->activity->luminary->user_id == $user;
         } else {
             return false;
         }

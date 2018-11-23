@@ -19,7 +19,7 @@ class NewsImageOwnerRule extends Rule
         /* @var \common\models\NewsImage $obj */
         $obj = isset($params['NewsImage']) ? $params['NewsImage'] : null;
         if ($obj != null) {
-            return $obj->news->luminary_id == $user;
+            return $obj->news->luminary->user_id == $user;
         } else {
             return false;
         }

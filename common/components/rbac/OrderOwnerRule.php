@@ -19,7 +19,7 @@ class OrderOwnerRule extends Rule
         /* @var \common\models\Order $obj */
         $obj = isset($params['Order']) ? $params['Order'] : null;
         if ($obj != null) {
-            return $obj->customer_id == $user;
+            return $obj->customer->user_id == $user;
         } else {
             return false;
         }
