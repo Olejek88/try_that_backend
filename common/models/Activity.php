@@ -253,4 +253,22 @@ class Activity extends BaseRecord
         $fields[] = 'wishlists';
         return $fields;
     }
+
+    public function getPermissions()
+    {
+        $perm = parent::getPermissions();
+        $perm['upload'] = 'uploadActivity';
+        return $perm;
+    }
+
+    public function getRuleParams($action)
+    {
+        switch ($action) {
+            case 'upload' :
+                $activityId = \Yii::$app->request->get('activityId', 0);
+                return ['Activity' => Activity::findOne($activityId)];
+            default:
+                return [];
+        }
+    }
 }

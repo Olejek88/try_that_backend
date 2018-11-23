@@ -19,7 +19,7 @@ class ExceptionTTOwnerRule extends Rule
         /* @var \common\models\ExceptionTT $obj */
         $obj = isset($params['ExceptionTT']) ? $params['ExceptionTT'] : null;
         if ($obj != null) {
-            return $obj->luminary_id == $user;
+            return $obj->luminary->user_id == $user;
         } else {
             return false;
         }
