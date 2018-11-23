@@ -19,7 +19,7 @@ class NewsOwnerRule extends Rule
         /* @var \common\models\News $obj */
         $obj = isset($params['News']) ? $params['News'] : null;
         if ($obj != null) {
-            return $obj->luminary_id == $user;
+            return $obj->luminary->user_id == $user;
         } else {
             return false;
         }
