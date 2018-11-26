@@ -17,7 +17,7 @@ class TrendingSearch extends Trending
     public function rules()
     {
         return [
-            [['id', 'activity_id'], 'integer'],
+            [['id'], 'integer'],
             [['title'], 'string'],
         ];
     }
@@ -54,7 +54,6 @@ class TrendingSearch extends Trending
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'activity_id' => $this->activity_id,
         ]);
         $query->andFilterWhere(['like', 'title', $this->title]);
 

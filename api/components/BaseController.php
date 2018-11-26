@@ -4,6 +4,7 @@ namespace api\components;
 
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
+use yii\filters\Cors;
 use yii\rest\ActiveController;
 
 /**
@@ -19,19 +20,28 @@ class BaseController extends ActiveController
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['class'] = HttpBearerAuth::class;
         $behaviors['authenticator']['except'] = [
-            'index', 'view',
+            'index', 'view', 'options'
+        ];
+        $behaviors['corsFilter'] = [
+            'class' => Cors::class,
+            'cors' => [
+                'Origin' => ['http://localhost', 'http://localhost:3000'],
+                //'Access-Control-Request-Method' => ['POST', 'OPTIONS'],
+                'Access-Control-Request-Headers' => ['X-File-Upload', 'content-type', 'Authorization'],
+                'Access-Control-Allow-Credentials' => true,
+            ],
         ];
         $behaviors['access'] = [
             'class' => AccessControl::class,
             'rules' => [
                 [
                     'allow' => true,
-                    'actions' => ['options', 'upload'],
+                    'actions' => ['upload'],
                     'roles' => ['admin', 'customer', 'luminary'],
                 ],
                 [
                     'allow' => true,
-                    'actions' => ['index', 'view'],
+                    'actions' => ['options','index', 'view'],
                     'roles' => [],
                 ],
             ]

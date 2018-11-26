@@ -27,7 +27,6 @@ class User extends \common\models\User
         if (!$user->save()) {
             throw new \DomainException('User create error: ' . strip_tags(Html::errorSummary([$user])));
         }
-
         return $user;
     }
 }

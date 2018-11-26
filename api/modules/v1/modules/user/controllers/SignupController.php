@@ -22,6 +22,7 @@ class SignupController extends Controller
             'cors' => [
                 'Origin' => ['http://localhost', 'http://localhost:3000'],
                 'Access-Control-Request-Method' => ['POST', 'OPTIONS'],
+                'Access-Control-Request-Headers' => ['Authorization','content-type'],
                 'Access-Control-Allow-Credentials' => true,
             ],
         ];

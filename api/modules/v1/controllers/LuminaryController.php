@@ -10,6 +10,13 @@ class LuminaryController extends BaseController
 {
     public $modelClass = Luminary::class;
 
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+        $behaviors['authenticator']['except'] = ['options'];
+        return $behaviors;
+    }
+
     public function actions()
     {
         $actions = parent::actions();
