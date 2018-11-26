@@ -19,7 +19,7 @@ class GroupExperienceOwnerRule extends Rule
         /* @var \common\models\GroupExperience $obj */
         $obj = isset($params['GroupExperience']) ? $params['GroupExperience'] : null;
         if ($obj != null) {
-            return $obj->customer_id == $user;
+            return $obj->customer->user_id == $user;
         } else {
             return false;
         }

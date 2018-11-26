@@ -12,7 +12,7 @@ class InvoiceQueryController extends BaseController
     public function behaviors()
     {
         $behaviors = parent::behaviors();
-        $behaviors['authenticator']['except'] = [];
+        $behaviors['authenticator']['except'] = ['options'];
         return $behaviors;
     }
 }

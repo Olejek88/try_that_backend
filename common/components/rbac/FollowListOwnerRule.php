@@ -19,7 +19,7 @@ class FollowListOwnerRule extends Rule
         /* @var \common\models\FollowList $obj */
         $obj = isset($params['FollowList']) ? $params['FollowList'] : null;
         if ($obj != null) {
-            return $obj->customer_id == $user;
+            return $obj->customer->user_id == $user;
         } else {
             return false;
         }

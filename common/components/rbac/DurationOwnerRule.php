@@ -19,7 +19,7 @@ class DurationOwnerRule extends Rule
         /* @var \common\models\Duration $obj */
         $obj = isset($params['Duration']) ? $params['Duration'] : null;
         if ($obj != null) {
-            return $obj->activities[0]->luminary_id == $user;
+            return $obj->activities[0]->luminary->user_id == $user;
         } else {
             return false;
         }

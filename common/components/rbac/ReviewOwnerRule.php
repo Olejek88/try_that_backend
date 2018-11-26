@@ -19,7 +19,7 @@ class ReviewOwnerRule extends Rule
         /* @var \common\models\Review $obj */
         $obj = isset($params['Review']) ? $params['Review'] : null;
         if ($obj != null) {
-            return $obj->customer_id == $user;
+            return $obj->customer->user_id == $user;
         } else {
             return false;
         }

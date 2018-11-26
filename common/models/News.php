@@ -96,4 +96,22 @@ class News extends BaseRecord
         $fields[] = 'newsImages';
         return $fields;
     }
+
+    public function getPermissions()
+    {
+        $perm = parent::getPermissions();
+        $perm['upload'] = 'uploadNews';
+        return $perm;
+    }
+
+    public function getRuleParams($action)
+    {
+        switch ($action) {
+            case 'upload' :
+                $newsId = \Yii::$app->request->get('newsId', 0);
+                return ['News' => News::findOne($newsId)];
+            default:
+                return [];
+        }
+    }
 }

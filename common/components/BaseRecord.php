@@ -2,6 +2,7 @@
 
 namespace common\components;
 
+use common\models\IRbacRuleParams;
 use yii\db\ActiveRecord;
 
 /** @noinspection UndetectableTableInspection */
@@ -12,7 +13,7 @@ use yii\db\ActiveRecord;
  *
  * @property array $permissions
  */
-class BaseRecord extends ActiveRecord
+class BaseRecord extends ActiveRecord implements IRbacRuleParams
 {
     /**
      * @return array
@@ -28,6 +29,11 @@ class BaseRecord extends ActiveRecord
             'update' => 'update' . $class,
             'delete'=> 'delete' . $class,
         ];
+    }
+
+    public function getRuleParams($action)
+    {
+        return [];
     }
 
     public function formName()
