@@ -39,7 +39,7 @@ class ActivityListing extends BaseRecord
     {
         return [
             [['activity_id', 'duration_id', 'currency_id', 'cost',], 'required'],
-            [['activity_id', 'duration_id', 'currency_id', 'is_group'], 'integer'],
+            [['activity_id', 'duration_id', 'currency_id', 'customers', 'is_group'], 'integer'],
             [['cost'], 'double'],
             [
                 ['activity_id'],

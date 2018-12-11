@@ -53,8 +53,8 @@ class ActivityImageSearch extends ActivityImage
 
         $query->andFilterWhere([
             'id' => $this->id,
-            'activity_id' => $this->id,
-            'image_id' => $this->id,
+            'activity_id' => $this->activity_id,
+            'image_id' => $this->image_id,
         ]);
 
         return $dataProvider;

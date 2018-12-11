@@ -30,6 +30,8 @@ class BaseController extends ActiveController
             'cors' => [
                 'Origin' => ['http://localhost', 'http://localhost:3000'],
                 'Access-Control-Request-Headers' => ['authorization', 'content-type'],
+                'Access-Control-Max-Age' => ['1728000'],
+                'Access-Control-Request-Method' => ['PUT','GET','POST','OPTIONS','DELETE'],
                 'Access-Control-Allow-Credentials' => true,
             ]
         ];

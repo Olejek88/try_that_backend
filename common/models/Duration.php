@@ -35,7 +35,7 @@ class Duration extends BaseRecord
     {
         return [
             [['duration'], 'string'],
-            [['luminary_id'], 'integer'],
+            [['luminary_id','seconds'], 'integer'],
             [['duration', 'luminary_id'], 'required'],
             [
                 ['luminary_id'],

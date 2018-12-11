@@ -84,6 +84,7 @@ class User extends BaseRecord implements IdentityInterface
             ['firstName', 'default', 'value' => ''],
             ['lastName', 'default', 'value' => ''],
             ['city_id', 'default', 'value' => CITY::NOT_SPECIFIED],
+            ['image_id', 'default', 'value' => ''],
             [['firstName', 'lastName', 'birthDate'],'safe']
         ];
     }

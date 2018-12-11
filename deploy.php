@@ -62,3 +62,24 @@ after('success', 'changeright');
 after('deploy:run_migrations', 'run_migration_content');
 after('deploy:run_migrations', 'run_migration_rbac_init');
 after('deploy:run_migrations', 'run_migration_rbac');
+
+
+// Project repository
+set('repository', 'https://github.com/Olejek88/trythat.git');
+
+// Hosts
+host('tt-dev.local')
+    ->set('deploy_path', '/media/www/front.tt.tehnosber.ru');
+
+task('changeright', function() {
+    run('cd {{deploy_path}} && sudo chown -R -h -L www-data\: html && sudo chmod -R g+w html');
+});
+
+task('run_node_update', function() {
+    run('{{node}} {{update}}');
+});
+
+// [Optional] if deploy fails automatically unlock.
+//after('deploy:failed', 'deploy:unlock');
+//after('success', 'changeright');
+//after('deploy:run_migrations', 'run_migration_content');

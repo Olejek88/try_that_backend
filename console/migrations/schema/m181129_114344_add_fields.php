@@ -7,16 +7,18 @@ use yii\db\Migration;
  */
 class m181129_114344_add_fields extends Migration
 {
-    const MAIL = '{{%mail}}';
+    const REVIEW = '{{%review}}';
+    const DURATION = '{{%duration}}';
+    const LUMINARY = '{{%luminary}}';
 
     /**
      * {@inheritdoc}
      */
     public function safeUp()
     {
-        $this->addColumn(self::LUMINARY, 'shortDescription', $this->text());
-        $this->addColumn(self::LUMINARY, 'description', $this->text());
-
+        $this->addColumn(self::REVIEW, 'date',$this->dateTime()->notNull()->defaultValue(date('Y-m-d H:i:s')));
+        $this->addColumn(self::DURATION, 'seconds', $this->integer()->defaultValue(0));
+        $this->addColumn(self::LUMINARY, 'total', $this->integer()->defaultValue(0));
     }
 
     /**

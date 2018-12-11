@@ -40,7 +40,15 @@ class Location extends BaseRecord
             [['title'], 'string', 'max' => 128],
             [['latitude', 'longitude'], 'double'],
             [['image_id'], 'integer'],
-            [['title', 'latitude', 'longitude', 'image_id'], 'required'],
+            [['city_id'], 'integer'],
+            [['title', 'latitude', 'longitude'], 'required'],
+            [
+                ['city_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => City::class,
+                'targetAttribute' => ['city_id' => 'id']
+            ],
             [
                 ['image_id'],
                 'exist',
@@ -76,6 +84,14 @@ class Location extends BaseRecord
     /**
      * @return \yii\db\ActiveQuery
      */
+    public function getCity()
+    {
+        return $this->hasOne(City::class, ['id' => 'city_id']);
+    }
+
+    /**
+     * @return \yii\db\ActiveQuery
+     */
     public function getUser()
     {
         return $this->hasOne(User::class, ['id' => 'user_id']);
@@ -94,6 +110,7 @@ class Location extends BaseRecord
     {
         $fields = parent::extraFields();
         $fields[] = 'image';
+        $fields[] = 'city';
         return $fields;
     }
 }

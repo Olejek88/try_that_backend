@@ -42,6 +42,7 @@ class Luminary extends BaseRecord
             [['verified_date'], 'default', 'value' => null],
             [['rating'], 'double'],
             [['rating'], 'default', 'value' => 0],
+            [['description','shortDescription'], 'string'],
             [['user_id'], 'required'],
         ];
     }

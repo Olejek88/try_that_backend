@@ -12,7 +12,9 @@ use Yii;
  * @property int $id
  * @property string $title
  * @property string $description
+ * @property string $shortDescription
  * @property int $luminary_id
+ * @property int $location_id
  * @property int $category_id
  * @property int $activity_category_id
  * @property int $min_customers
@@ -54,9 +56,11 @@ class Activity extends BaseRecord
                 [
                     'luminary_id',
                     'category_id',
+                    'location_id',
                     'activity_category_id',
                     'title',
                     'description',
+                    'shortDescription',
                     'start_date',
                     'end_date'
                 ],
@@ -66,6 +70,7 @@ class Activity extends BaseRecord
                 [
                     'luminary_id',
                     'category_id',
+                    'location_id',
                     'activity_category_id',
                     'min_customers',
                     'max_customers',
@@ -78,7 +83,7 @@ class Activity extends BaseRecord
                 'format' => 'php:Y-m-d H:i:s',
             ],
             [['title'], 'string', 'max' => 128],
-            [['description'], 'string'],
+            [['description','shortDescription'], 'string'],
             [
                 ['activity_category_id'],
                 'exist',
@@ -100,6 +105,13 @@ class Activity extends BaseRecord
                 'targetClass' => Luminary::class,
                 'targetAttribute' => ['luminary_id' => 'id']
             ],
+            [
+                ['location_id'],
+                'exist',
+                'skipOnError' => true,
+                'targetClass' => Location::class,
+                'targetAttribute' => ['location_id' => 'id']
+            ],
         ];
     }
 
@@ -113,6 +125,7 @@ class Activity extends BaseRecord
             'title' => Yii::t('app', 'Title'),
             'description' => Yii::t('app', 'Description'),
             'luminary_id' => Yii::t('app', 'Luminary ID'),
+            'location_id' => Yii::t('app', 'Location ID'),
             'category_id' => Yii::t('app', 'Category ID'),
             'activity_category_id' => Yii::t('app', 'Activity Category ID'),
             'min_customers' => Yii::t('app', 'Min Customers'),

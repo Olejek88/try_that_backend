@@ -40,8 +40,8 @@ class Image extends BaseRecord
     {
         return [
             [['title'], 'string', 'max' => 128],
-            [['image'], 'required'],
-            [['image'], 'image', 'extensions' => 'jpg, jpeg, png, gif', 'maxSize' => 1024 * 1024]
+//            [['image'], 'required'],
+//            [['image'], 'image', 'extensions' => 'jpg, jpeg, png, gif', 'maxSize' => 1024 * 1024]
         ];
     }
 
