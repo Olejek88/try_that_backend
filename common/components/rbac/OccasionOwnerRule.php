@@ -19,7 +19,7 @@ class OccasionOwnerRule extends Rule
         /* @var \common\models\Occasion $obj */
         $obj = isset($params['Occasion']) ? $params['Occasion'] : null;
         if ($obj != null) {
-            return $obj->activity->luminary_id == $user;
+            return $obj->activity->luminary->user_id == $user;
         } else {
             return false;
         }

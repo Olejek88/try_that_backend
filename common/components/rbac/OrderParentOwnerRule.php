@@ -19,7 +19,7 @@ class OrderParentOwnerRule extends Rule
         /* @var \common\models\Order $obj */
         $obj = isset($params['Order']) ? $params['Order'] : null;
         if ($obj != null) {
-            return $obj->activityListing->activity->luminary_id == $user;
+            return $obj->activityListing->activity->luminary->user_id == $user;
         } else {
             return false;
         }

@@ -2,6 +2,7 @@
 
 namespace api\components;
 
+use common\components\BaseRecord;
 use yii\filters\AccessControl;
 use yii\filters\auth\HttpBearerAuth;
 use yii\filters\Cors;
@@ -20,31 +21,49 @@ class BaseController extends ActiveController
         $behaviors = parent::behaviors();
         $behaviors['authenticator']['class'] = HttpBearerAuth::class;
         $behaviors['authenticator']['except'] = [
-            'index', 'view', 'options'
+            'index',
+            'view',
+            'options'
         ];
         $behaviors['corsFilter'] = [
             'class' => Cors::class,
             'cors' => [
                 'Origin' => ['http://localhost', 'http://localhost:3000'],
-                //'Access-Control-Request-Method' => ['POST', 'OPTIONS'],
-                'Access-Control-Request-Headers' => ['X-File-Upload', 'content-type', 'Authorization'],
+                'Access-Control-Request-Headers' => ['authorization', 'content-type'],
                 'Access-Control-Allow-Credentials' => true,
-            ],
+            ]
         ];
         $behaviors['access'] = [
             'class' => AccessControl::class,
             'rules' => [
                 [
                     'allow' => true,
-                    'actions' => ['upload'],
-                    'roles' => ['admin', 'customer', 'luminary'],
-                ],
-                [
-                    'allow' => true,
-                    'actions' => ['options','index', 'view'],
+                    'actions' => ['index', 'view'],
                     'roles' => [],
                 ],
             ]
+        ];
+        $behaviors['access']['rules']['baseRules'] = [
+            'allow' => true,
+            'matchCallback' => function (
+                /** @noinspection PhpUnusedParameterInspection */
+                $rule,
+                $action
+            ) {
+                /* @var BaseRecord $modelClass */
+                $modelClass = $this->modelClass;
+                /* @var BaseRecord $model */
+                $model = new $modelClass;
+                $modelPermissions = $model->getPermissions();
+                if (isset($modelPermissions[$action->id])) {
+                    $params = $model->getRuleParams($action->id);
+                    if (\Yii::$app->user->can($modelPermissions[$action->id], $params)) {
+                        return true;
+                    }
+                }
+
+                return false;
+            },
         ];
 
         return $behaviors;

@@ -19,7 +19,7 @@ class ActivityOwnerRule extends Rule
         /* @var \common\models\Activity $obj */
         $obj = isset($params['Activity']) ? $params['Activity'] : null;
         if ($obj != null) {
-            return $obj->luminary_id == $user;
+            return $obj->luminary->user_id == $user;
         } else {
             return false;
         }

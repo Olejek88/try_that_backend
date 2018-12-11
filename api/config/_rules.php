@@ -22,15 +22,15 @@ return [
 //    ],
 
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/activity-category',],
-    ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/user',
-        'extraPatterns' => [
-            'POST upload' => 'upload',
-        ]
-    ],
+    ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/user',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/tag',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/activity-image',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/activity-listing',],
-    ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/activity',],
+    ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/activity',
+        'extraPatterns' => [
+            'POST <activityId>/upload' => 'upload',
+        ]
+    ],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/category',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/country',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/city',],
@@ -45,7 +45,11 @@ return [
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/luminary',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/mail',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/mail-status',],
-    ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/news',],
+    ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/news',
+        'extraPatterns' => [
+            'POST <newsId>/upload' => 'upload',
+        ]
+    ],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/news-image',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/occasion',],
     ['class' => 'yii\rest\UrlRule', 'controller' => 'v1/order',],

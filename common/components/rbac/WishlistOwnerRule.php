@@ -19,7 +19,7 @@ class WishlistOwnerRule extends Rule
         /* @var \common\models\Wishlist $obj */
         $obj = isset($params['Wishlist']) ? $params['Wishlist'] : null;
         if ($obj != null) {
-            return $obj->customer_id == $user;
+            return $obj->customer->user_id == $user;
         } else {
             return false;
         }
